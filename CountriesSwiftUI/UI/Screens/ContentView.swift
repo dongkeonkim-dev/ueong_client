@@ -25,6 +25,9 @@ struct ContentView: View {
             if isRunningTests {
                 Text("Running unit tests")
             } else {
+                // 로그인 체크
+                // 로그인 시 유저대시
+                // 비로그인 시 로그인 페이지
                 CountriesList()
                     .attachEnvironmentOverrides(onChange: onChangeHandler)
                     .inject(container)
