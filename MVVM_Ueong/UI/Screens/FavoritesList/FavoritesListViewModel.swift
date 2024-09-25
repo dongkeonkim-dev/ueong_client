@@ -4,7 +4,7 @@
 //
 //  Created by 김석원 on 9/24/24.
 //
-
+//
 import SwiftUI
 
 extension FavoritesList {
@@ -18,7 +18,7 @@ extension FavoritesList {
             
         func loadFavorites() {
             self.favoritePosts = [
-                Post(id: 1, name: "MacBook Pro", price: 1500.0,isFavorite: true)
+     
             ]
         }
         

@@ -17,9 +17,9 @@ class MessageRepository {
         
         // 예시 메시지 데이터 생성
         let messages = [
-            Message(id: 1, sender: "cat1", text: "Hello, how are you?", sentTime: dates[0]),
-            Message(id: 2, sender: "", text: "I'm fine, thanks!", sentTime: dates[1]),
-            Message(id: 3, sender: "cat1", text: "Good to hear!", sentTime: dates[2])
+            Message(id: 19, sender: "cat1", text: "Hello, how are you?", sentTime: dates[0]),
+            Message(id: 20, sender: "", text: "I'm fine, thanks!", sentTime: dates[1]),
+            Message(id: 43, sender: "cat1", text: "Good to hear!", sentTime: dates[2])
         ]
         
         return messages

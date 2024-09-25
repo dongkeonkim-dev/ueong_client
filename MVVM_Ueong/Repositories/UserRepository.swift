@@ -11,7 +11,7 @@ class UserRepository {
     func getUserById(userId:Int) -> User {
         // MySQL에서 데이터 받아오는 로직
         
-        let user = User(id: 3, username: "hong", nickname: "홍길동", email: "hong@gmail.com")
+        let user = User(id: 12, username: "hong", nickname: "홍길동", email: "hong@gmail.com")
         
         return user
     }

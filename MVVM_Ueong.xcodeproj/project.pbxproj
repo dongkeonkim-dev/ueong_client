@@ -26,7 +26,6 @@
 		1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
-		1F8C121B2CA3ECE400A33802 /* MockData_Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121A2CA3ECE400A33802 /* MockData_Post.swift */; };
 		1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121C2CA3FDCB00A33802 /* example.swift */; };
 		1F8C121F2CA4071F00A33802 /* PostRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121E2CA4071F00A33802 /* PostRow.swift */; };
 		1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC52F7A2CA2CF72001A933B /* MVVM_UeongApp.swift */; };
@@ -86,7 +85,6 @@
 		1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDtl.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
-		1F8C121A2CA3ECE400A33802 /* MockData_Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData_Post.swift; sourceTree = "<group>"; };
 		1F8C121C2CA3FDCB00A33802 /* example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = example.swift; sourceTree = "<group>"; };
 		1F8C121E2CA4071F00A33802 /* PostRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRow.swift; sourceTree = "<group>"; };
 		1FC52F7A2CA2CF72001A933B /* MVVM_UeongApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_UeongApp.swift; sourceTree = "<group>"; };
@@ -154,7 +152,7 @@
 				0DB6932D2CA401F600A3E3B7 /* MessageRepository.swift */,
 				0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */,
 			);
-			path = repositories;
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		0DB6931C2CA3EF3F00A3E3B7 /* utils */ = {
@@ -219,14 +217,6 @@
 			path = Component;
 			sourceTree = "<group>";
 		};
-		1F8C12192CA3EAC300A33802 /* Repository */ = {
-			isa = PBXGroup;
-			children = (
-				1F8C121A2CA3ECE400A33802 /* MockData_Post.swift */,
-			);
-			path = Repository;
-			sourceTree = "<group>";
-		};
 		1FC52F6E2CA2CF72001A933B = {
 			isa = PBXGroup;
 			children = (
@@ -243,8 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				0DB6931C2CA3EF3F00A3E3B7 /* utils */,
-				0DB693192CA3ED2000A3E3B7 /* repositories */,
-				1F8C12192CA3EAC300A33802 /* Repository */,
+				0DB693192CA3ED2000A3E3B7 /* Repositories */,
 				1FC52FC12CA2DE5C001A933B /* Models */,
 				1FC52FA92CA2CFCD001A933B /* UI */,
 				1F8C121C2CA3FDCB00A33802 /* example.swift */,
@@ -495,7 +484,6 @@
 				1FC52FC72CA2E660001A933B /* Chat.swift in Sources */,
 				1FC52FBA2CA2DCA0001A933B /* PostsListViewModel.swift in Sources */,
 				0DB693352CA40E4000A3E3B7 /* MyAccountViewModel.swift in Sources */,
-				1F8C121B2CA3ECE400A33802 /* MockData_Post.swift in Sources */,
 				1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */,
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
 				1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */,

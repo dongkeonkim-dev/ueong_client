@@ -9,6 +9,8 @@ import SwiftUI
 extension PostsList {
     class ViewModel: ObservableObject {
         @Published var posts: [Post] = []
+        let postRepository = PostRepository()
+        
         
         init() {
             // 예시 데이터 로드
@@ -20,10 +22,8 @@ extension PostsList {
          
             
             //예시 데이터
-            self.posts = [
-                Post(id: 1, name: "iPhone 12", price: 600.0, isFavorite: false),
-                Post(id: 2, name: "MacBook Pro", price: 1500.0, isFavorite: true)
-            ]
+            self.posts = postRepository.getPostList()
+            
         }
         
         

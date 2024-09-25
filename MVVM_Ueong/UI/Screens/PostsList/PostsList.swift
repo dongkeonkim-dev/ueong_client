@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct PostsList: View {
     @ObservedObject var viewModel: PostsList.ViewModel
     
@@ -21,7 +23,6 @@ struct PostsList: View {
                         Text("\(post.title) - \(post.price, specifier: "%.2f")원")
                     }
                 }
-                
             }
         }
     }

@@ -17,8 +17,8 @@ class ChatRepository {
         let dates = rawDateStrings.compactMap { dateFormatter.date(from: $0) }
         
         let chats = [
-            Chat(id: 1, chatter: "cat1", profileImage: "cat1", lastSentTime: dates[0], lastMessageText: "Hello, I'm cat1"),
-            Chat(id: 2, chatter: "cat2", profileImage: "cat2", lastSentTime: dates[1], lastMessageText: "Hello, I'm cat2"),
+            Chat(id: 154, chatter: "cat1", profileImage: "cat1", lastSentTime: dates[0], lastMessageText: "Hello, I'm cat1"),
+            Chat(id: 545, chatter: "cat2", profileImage: "cat2", lastSentTime: dates[1], lastMessageText: "Hello, I'm cat2"),
             ]
         
         return chats
