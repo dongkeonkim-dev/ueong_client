@@ -17,7 +17,7 @@ extension PostsList {
         
         func fetchPosts() {
             //실제 데이터는 API나 로컬에서 가져올 수 있습니다.
-            self.Posts = convertPostDtlToPost(mockData_Post)
+         
             
             //예시 데이터
             self.Posts = [
@@ -26,11 +26,6 @@ extension PostsList {
             ]
         }
         
-        // PostDtl 배열을 Post 배열로 변환하는 함수
-        func convertPostDtlToPost(_ postDtls: [PostDtl]) -> [Post] {
-            return postDtls.map { postDtl in
-                Post(id: postDtl.id, name: postDtl.name, price: postDtl.price, isFavorite: postDtl.isFavorite)
-            }
-        }
+        
     }
 }

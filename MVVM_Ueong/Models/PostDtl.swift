@@ -8,7 +8,7 @@ import Foundation
 
 struct PostDtl: Identifiable {
     
-    let id: UUID
+    let id: Int
     let name: String
     let price: Double
     let isFavorite: Bool

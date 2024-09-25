@@ -12,11 +12,11 @@ import SwiftUI
 extension PostDetail {
     class ViewModel: ObservableObject {
         @Published var PostDetail: PostDtl?
-        let postID: UUID
+        let postID: Int
         
-        init(postID: UUID) {
+        init(postID: Int) {
             // 예시 데이터 초기화
-            self.PostDetail = PostDtl(id: UUID(), name: "", price: 0.0, isFavorite: false, description: "")
+            self.PostDetail = PostDtl(id: 1, name: "", price: 0.0, isFavorite: false, description: "")
             self.postID = postID
             
             // 예시 데이터 로드
@@ -25,14 +25,13 @@ extension PostDetail {
         }
         
         func fetchPostDetail() {
-            //실제 데이터는 API나 로컬에서 가져올 수 있습니다.
-            self.PostDetail = findPostById(postId: postID, in: mockData_Post)
+         
             
 
         }
         
         // UUID로 데이터를 찾는 함수
-        func findPostById(postId: UUID, in posts: [PostDtl]) -> PostDtl? {
+        func findPostById(postId: Int, in posts: [PostDtl]) -> PostDtl? {
             return posts.first(where: { $0.id == postId })
         }
     }
