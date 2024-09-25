@@ -9,6 +9,15 @@ import Foundation
 
 struct User: Identifiable {
     let id: Int
-    let name: String
+    let username: String
+    let nickname: String
     let email: String
+}
+
+struct EditedUserData {
+    var username: String
+    var password: String
+    var confirmPassword: String
+    var email: String
+    var nickname: String
 }

@@ -15,6 +15,9 @@
 		0DB6932E2CA401FD00A3E3B7 /* MessageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6932D2CA401F600A3E3B7 /* MessageRepository.swift */; };
 		0DB693352CA40E4000A3E3B7 /* MyAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693342CA40E4000A3E3B7 /* MyAccountViewModel.swift */; };
 		0DB693372CA40E4800A3E3B7 /* MyAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693362CA40E4800A3E3B7 /* MyAccountView.swift */; };
+		0DB693392CA4123300A3E3B7 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693382CA4122E00A3E3B7 /* UserRepository.swift */; };
+		0DB6933D2CA41B7700A3E3B7 /* AccountEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6933C2CA41B7200A3E3B7 /* AccountEditView.swift */; };
+		0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */; };
 		1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
@@ -64,6 +67,9 @@
 		0DB6932D2CA401F600A3E3B7 /* MessageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRepository.swift; sourceTree = "<group>"; };
 		0DB693342CA40E4000A3E3B7 /* MyAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountViewModel.swift; sourceTree = "<group>"; };
 		0DB693362CA40E4800A3E3B7 /* MyAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountView.swift; sourceTree = "<group>"; };
+		0DB693382CA4122E00A3E3B7 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		0DB6933C2CA41B7200A3E3B7 /* AccountEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditView.swift; sourceTree = "<group>"; };
+		0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditViewModel.swift; sourceTree = "<group>"; };
 		1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDtl.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -118,6 +124,7 @@
 		0DB693192CA3ED2000A3E3B7 /* repositories */ = {
 			isa = PBXGroup;
 			children = (
+				0DB693382CA4122E00A3E3B7 /* UserRepository.swift */,
 				0DB6932D2CA401F600A3E3B7 /* MessageRepository.swift */,
 				0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */,
 			);
@@ -148,6 +155,16 @@
 			);
 			name = MyAccount;
 			path = MVVM_Ueong/UI/Screens/MyAccount;
+			sourceTree = SOURCE_ROOT;
+		};
+		0DB6933B2CA41B6900A3E3B7 /* AccountEdit */ = {
+			isa = PBXGroup;
+			children = (
+				0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */,
+				0DB6933C2CA41B7200A3E3B7 /* AccountEditView.swift */,
+			);
+			name = AccountEdit;
+			path = MVVM_Ueong/UI/Screens/AccountEdit;
 			sourceTree = SOURCE_ROOT;
 		};
 		1F691BB52CA3CD100076E8A8 /* PostDetail */ = {
@@ -231,6 +248,7 @@
 		1FC52FAA2CA2CFE4001A933B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				0DB6933B2CA41B6900A3E3B7 /* AccountEdit */,
 				1FC52F7C2CA2CF72001A933B /* ContentView.swift */,
 				1FC52FAB2CA2DA55001A933B /* MainTabView.swift */,
 				1FC52FAD2CA2DAC3001A933B /* PostsList */,
@@ -415,6 +433,7 @@
 				1FC52F842CA2CF73001A933B /* Persistence.swift in Sources */,
 				1FC52F7D2CA2CF72001A933B /* ContentView.swift in Sources */,
 				1FC52F872CA2CF73001A933B /* MVVM_Ueong.xcdatamodeld in Sources */,
+				0DB693392CA4123300A3E3B7 /* UserRepository.swift in Sources */,
 				0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */,
 				0DB6932A2CA3F66400A3E3B7 /* ChatView.swift in Sources */,
 				1FC52FBC2CA2DCC3001A933B /* ChatListViewModel.swift in Sources */,
@@ -429,12 +448,14 @@
 				1FC52FC52CA2E4AF001A933B /* User.swift in Sources */,
 				1FC52FAC2CA2DA55001A933B /* MainTabView.swift in Sources */,
 				1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */,
+				0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */,
 				0DB6932C2CA3FC2000A3E3B7 /* Message.swift in Sources */,
 				1FC52FBE2CA2DCD3001A933B /* FavoritesListViewModel.swift in Sources */,
 				1FC52FB22CA2DBDC001A933B /* PostsList.swift in Sources */,
 				1FC52FC32CA2DE98001A933B /* Post.swift in Sources */,
 				0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */,
 				0DB693372CA40E4800A3E3B7 /* MyAccountView.swift in Sources */,
+				0DB6933D2CA41B7700A3E3B7 /* AccountEditView.swift in Sources */,
 				0DB6932E2CA401FD00A3E3B7 /* MessageRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

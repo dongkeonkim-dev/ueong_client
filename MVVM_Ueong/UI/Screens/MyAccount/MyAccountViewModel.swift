@@ -9,7 +9,21 @@ import SwiftUI
 
 extension MyAccountView {
     class ViewModel: ObservableObject {
-        @Published var user: User = User(id: 3, name: "홍길동", email: "hong@gmail.com")
+        @Published var user: User = User(id: 0, username:"", nickname: "", email: "")
+        let userId: Int
+        private let userRepository = UserRepository()
+        func getUserById() {
+                
+        }
+        
+        init(userId: Int) {
+            self.userId = userId
+            getUserDetail()
+        }
+        
+        func getUserDetail() {
+            self.user = userRepository.getUserById(userId: userId)
+        }
     }
 }
 
