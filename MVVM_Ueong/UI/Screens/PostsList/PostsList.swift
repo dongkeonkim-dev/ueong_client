@@ -11,15 +11,18 @@ struct PostsList: View {
     @ObservedObject var viewModel: PostsList.ViewModel
     
     var body: some View {
-        NavigationView {
-            List(viewModel.Posts) { post in
-                NavigationLink(
-                    destination: PostDetail(viewModel: PostDetail.ViewModel())
-                ) {
-                    Text("\(post.name) - \(post.price, specifier: "%.2f")원")
-                }
-            }
+        VStack(spacing: 30){
             
+            NavigationView {
+                List(viewModel.Posts) { post in
+                    NavigationLink(
+                        destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
+                    ) {
+                        Text("\(post.name) - \(post.price, specifier: "%.2f")원")
+                    }
+                }
+                
+            }
         }
     }
 }
