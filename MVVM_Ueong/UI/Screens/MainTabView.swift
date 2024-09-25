@@ -16,7 +16,7 @@ struct MainTabView: View {
                     Text("홈")
                 }
             
-            ChatList(viewModel: ChatList.ViewModel())
+            ChatListView(viewModel: ChatListView.ViewModel())
                 .tabItem {
                     Image(systemName: "message")
                     Text("채팅")
@@ -28,7 +28,7 @@ struct MainTabView: View {
                     Text("좋아요")
                 }
             
-            Profile(viewModel: Profile.ViewModel())
+            MyAccountView(viewModel: MyAccountView.ViewModel())
                 .tabItem {
                     Image(systemName: "person")
                     Text("내 정보")

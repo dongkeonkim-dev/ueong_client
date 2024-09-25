@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-extension Profile {
+extension MyAccountView {
     class ViewModel: ObservableObject {
-        @Published var user: User = User(id: UUID(), name: "홍길동", email: "hong@gmail.com")
+        @Published var user: User = User(id: 3, name: "홍길동", email: "hong@gmail.com")
     }
 }
 

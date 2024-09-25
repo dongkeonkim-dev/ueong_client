@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-struct Profile: View {
-    @ObservedObject var viewModel: Profile.ViewModel
+struct MyAccountView: View {
+    @ObservedObject var viewModel: MyAccountView.ViewModel
         
         var body: some View {
             NavigationView {
@@ -23,5 +23,5 @@ struct Profile: View {
 }
 
 #Preview {
-    Profile(viewModel: Profile.ViewModel())
+    MyAccountView(viewModel: MyAccountView.ViewModel())
 }

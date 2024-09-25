@@ -9,7 +9,7 @@ import Foundation
 
 struct Chat: Identifiable {
     let id: Int
-    let name: String
+    let chatter: String
     let profileImage: String
     let lastSentTime: Date
     let lastMessageText: String
