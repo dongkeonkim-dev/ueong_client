@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDtl.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -105,6 +107,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DB693192CA3ED2000A3E3B7 /* repositories */ = {
+			isa = PBXGroup;
+			children = (
+				0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */,
+			);
+			path = repositories;
+			sourceTree = "<group>";
+		};
+		0DB6931C2CA3EF3F00A3E3B7 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		1F691BB52CA3CD100076E8A8 /* PostDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +154,8 @@
 		1FC52F792CA2CF72001A933B /* MVVM_Ueong */ = {
 			isa = PBXGroup;
 			children = (
+				0DB6931C2CA3EF3F00A3E3B7 /* utils */,
+				0DB693192CA3ED2000A3E3B7 /* repositories */,
 				1FC52FC12CA2DE5C001A933B /* Models */,
 				1FC52FA92CA2CFCD001A933B /* UI */,
 				1FC52F7A2CA2CF72001A933B /* MVVM_UeongApp.swift */,
@@ -391,6 +410,7 @@
 				1FC52FBE2CA2DCD3001A933B /* FavoritesListViewModel.swift in Sources */,
 				1FC52FB22CA2DBDC001A933B /* PostsList.swift in Sources */,
 				1FC52FC32CA2DE98001A933B /* Post.swift in Sources */,
+				0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,20 +8,17 @@
 import SwiftUI
 
 extension ChatList {
-    class ViewModel: ObservableObject{
+    class ViewModel: ObservableObject {
         @Published var chats: [Chat] = []
+        private let chatRepository = ChatRepository() // ChatRepository 인스턴스 생성
         
         init() {
-            loadChats()
+            getAllChats()
         }
         
-        func loadChats() {
-            // 실제 데이터는 API나 로컬에서 가져올 수 있습니다.
-            self.chats = [
-                Chat(id: UUID(), name: "Bob", lastMessage: "hello"),
-                Chat(id: UUID(), name: "Bob", lastMessage: "hahahah")
-            ]
+        func getAllChats() {
+            // ChatRepository에서 데이터를 가져와 chats에 저장
+            self.chats = chatRepository.getAllChats()
         }
-        
     }
 }
