@@ -8,7 +8,9 @@
 import SwiftUI
 
 extension Profile {
-    class ProfileViewModel: ObservableObject {
+    class ViewModel: ObservableObject {
         @Published var user: User = User(id: UUID(), name: "홍길동", email: "hong@gmail.com")
     }
 }
+
+

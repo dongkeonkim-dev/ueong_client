@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProfileV: View {
+struct Profile: View {
     @ObservedObject var viewModel: Profile.ViewModel
         
         var body: some View {

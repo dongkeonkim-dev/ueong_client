@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FavoritesListV: View {
+struct FavoritesList: View {
     @ObservedObject var viewModel: FavoritesList.ViewModel
         
         var body: some View {

@@ -9,7 +9,7 @@ import SwiftUI
 
 extension FavoritesList {
     class ViewModel: ObservableObject{
-        @Published var favoriteProducts: [Product] = []
+        @Published var favoritePosts: [Post] = []
             
         init() {
             // 예시 좋아요 상품 로드
@@ -17,8 +17,8 @@ extension FavoritesList {
         }
             
         func loadFavorites() {
-            self.favoriteProducts = [
-                Product(id: UUID(), name: "MacBook Pro", price: 1500.0,isFavorite: true)
+            self.favoritePosts = [
+                Post(id: UUID(), name: "MacBook Pro", price: 1500.0,isFavorite: true)
             ]
         }
         

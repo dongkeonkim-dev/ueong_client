@@ -13,7 +13,11 @@ struct PostsList: View {
     var body: some View {
         NavigationView {
             List(viewModel.Posts) { post in
-                Text("\(post.name) - \(post.price, specifier: "%.2f")원")
+                NavigationLink(
+                    destination: PostDetail(viewModel: PostDetail.ViewModel())
+                ) {
+                    Text("\(post.name) - \(post.price, specifier: "%.2f")원")
+                }
             }
             
         }

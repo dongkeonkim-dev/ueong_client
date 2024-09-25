@@ -12,10 +12,10 @@ extension PostsList {
         
         init() {
             // 예시 데이터 로드
-            fetchProducts()
+            fetchPosts()
         }
         
-        func fetchProducts() {
+        func fetchPosts() {
             //실제 데이터는 API나 로컬에서 가져올 수 있습니다.
             
             //예시 데이터

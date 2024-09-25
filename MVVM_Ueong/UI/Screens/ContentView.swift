@@ -9,18 +9,12 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-
     var body: some View {
-        
-        
-        
-    }
-
-   
+            MainTabView() // 앱의 메인 화면을 TabView로 설정
+        }
 }
 
 
-
 #Preview {
-    ContentView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+    ContentView()
 }

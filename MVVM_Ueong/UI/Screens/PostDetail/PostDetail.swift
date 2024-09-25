@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct PostDetail: View {
+    @ObservedObject var viewModel: PostDetail.ViewModel
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading, spacing: 20) {
+            Text(viewModel.PostDetail.name)
+                .font(.largeTitle)
+                .fontWeight(.bold)
+            Text("\(viewModel.PostDetail.price, specifier: "%.2f")원")
+                .font(.title)
+                .foregroundColor(.secondary)
+            Text(viewModel.PostDetail.description)
+                .font(.body)
+            Spacer()
+        }
+        .padding()
+        .navigationBarTitleDisplayMode(.inline)
+        
     }
 }
 
 #Preview {
-    PostDetail()
+    PostDetail(viewModel: PostDetail.ViewModel())
 }

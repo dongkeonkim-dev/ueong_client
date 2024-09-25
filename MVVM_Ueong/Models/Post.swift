@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Product: Identifiable {
+struct Post: Identifiable {
     
     let id: UUID
     let name: String
