@@ -10,16 +10,17 @@ import SwiftUI
 extension FavoritesList {
     class ViewModel: ObservableObject{
         @Published var favoritePosts: [Post] = []
+        let postRepository = PostRepository()
+        let userId: Int
             
-        init() {
+        init(userId: Int) {
             // 예시 좋아요 상품 로드
+            self.userId = userId
             loadFavorites()
         }
             
         func loadFavorites() {
-            self.favoritePosts = [
-     
-            ]
+            self.favoritePosts = postRepository.getFavoriteList(userId: userId)
         }
         
     }

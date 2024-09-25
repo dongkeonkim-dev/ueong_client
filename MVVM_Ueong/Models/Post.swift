@@ -9,15 +9,15 @@ import Foundation
 struct Post: Identifiable {
     let id: Int
     let title: String
-    let category: Int
+//    let category: Int
     let price: Double
-    let emdId: Int
-    let latitude: Double
-    let longitude: Double
-    let locationDetail: String
-    let text: String
-    let createdAt: Date
+//    let emdId: Int
+//    let latitude: Double
+//    let longitude: Double
+//    let locationDetail: String
+//    let createdAt: Date
     let isFavorite: Bool
+    let text: String
 }
 
 struct PostPost {

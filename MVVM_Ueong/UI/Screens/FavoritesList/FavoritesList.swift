@@ -13,7 +13,7 @@ struct FavoritesList: View {
         var body: some View {
             NavigationView {
                 List(viewModel.favoritePosts) { post in
-                    Text("\(post.name) - \(post.price, specifier: "%.2f")원")
+                    Text("\(post.title) - \(post.price, specifier: "%.2f")원")
                 }
             
             }
@@ -21,5 +21,5 @@ struct FavoritesList: View {
 }
 
 #Preview {
-    FavoritesList(viewModel: FavoritesList.ViewModel())
+    FavoritesList(viewModel: FavoritesList.ViewModel(userId: 9))
 }

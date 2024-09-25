@@ -22,7 +22,7 @@ struct MainTabView: View {
                     Text("채팅")
                 }
             
-            FavoritesList(viewModel: FavoritesList.ViewModel())
+            FavoritesList(viewModel: FavoritesList.ViewModel(userId: 9))
                 .tabItem {
                     Image(systemName: "heart")
                     Text("좋아요")
