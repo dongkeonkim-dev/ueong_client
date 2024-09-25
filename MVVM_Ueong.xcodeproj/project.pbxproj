@@ -18,6 +18,9 @@
 		0DB693392CA4123300A3E3B7 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693382CA4122E00A3E3B7 /* UserRepository.swift */; };
 		0DB6933D2CA41B7700A3E3B7 /* AccountEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6933C2CA41B7200A3E3B7 /* AccountEditView.swift */; };
 		0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */; };
+		0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693452CA42A8100A3E3B7 /* SalesListView.swift */; };
+		0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */; };
+		0DB6934B2CA42C1C00A3E3B7 /* PostRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6934A2CA42C1800A3E3B7 /* PostRepository.swift */; };
 		1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
@@ -70,6 +73,9 @@
 		0DB693382CA4122E00A3E3B7 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		0DB6933C2CA41B7200A3E3B7 /* AccountEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditView.swift; sourceTree = "<group>"; };
 		0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditViewModel.swift; sourceTree = "<group>"; };
+		0DB693452CA42A8100A3E3B7 /* SalesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListView.swift; sourceTree = "<group>"; };
+		0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListViewModel.swift; sourceTree = "<group>"; };
+		0DB6934A2CA42C1800A3E3B7 /* PostRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepository.swift; sourceTree = "<group>"; };
 		1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDtl.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
@@ -124,6 +130,7 @@
 		0DB693192CA3ED2000A3E3B7 /* repositories */ = {
 			isa = PBXGroup;
 			children = (
+				0DB6934A2CA42C1800A3E3B7 /* PostRepository.swift */,
 				0DB693382CA4122E00A3E3B7 /* UserRepository.swift */,
 				0DB6932D2CA401F600A3E3B7 /* MessageRepository.swift */,
 				0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */,
@@ -166,6 +173,15 @@
 			name = AccountEdit;
 			path = MVVM_Ueong/UI/Screens/AccountEdit;
 			sourceTree = SOURCE_ROOT;
+		};
+		0DB693472CA42A8100A3E3B7 /* SalesList */ = {
+			isa = PBXGroup;
+			children = (
+				0DB693452CA42A8100A3E3B7 /* SalesListView.swift */,
+				0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */,
+			);
+			path = SalesList;
+			sourceTree = "<group>";
 		};
 		1F691BB52CA3CD100076E8A8 /* PostDetail */ = {
 			isa = PBXGroup;
@@ -248,6 +264,7 @@
 		1FC52FAA2CA2CFE4001A933B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				0DB693472CA42A8100A3E3B7 /* SalesList */,
 				0DB6933B2CA41B6900A3E3B7 /* AccountEdit */,
 				1FC52F7C2CA2CF72001A933B /* ContentView.swift */,
 				1FC52FAB2CA2DA55001A933B /* MainTabView.swift */,
@@ -430,6 +447,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */,
+				0DB6934B2CA42C1C00A3E3B7 /* PostRepository.swift in Sources */,
+				0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */,
 				1FC52F842CA2CF73001A933B /* Persistence.swift in Sources */,
 				1FC52F7D2CA2CF72001A933B /* ContentView.swift in Sources */,
 				1FC52F872CA2CF73001A933B /* MVVM_Ueong.xcdatamodeld in Sources */,

@@ -23,7 +23,7 @@ struct MyAccountView: View {
                        
                        AccountActionsView(
                            editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel(userId: viewModel.user.id)),
-                           salesListDestination: SalesListView(), // 판매 목록 뷰를 여기에 추가
+                           salesListDestination: SalesListView(viewModel:SalesListView.ViewModel()), // 판매 목록 뷰를 여기에 추가
                            deleteAccountAction: {
                                // 탈퇴 액션
                            }
@@ -145,14 +145,6 @@ struct AccountActionsView: View {
                 .padding(.horizontal)
             }
         }
-    }
-}
-
-
-// MARK: - 판매 목록 View
-struct SalesListView: View {
-    var body: some View {
-        Text("판매 목록 보기 화면")
     }
 }
 
