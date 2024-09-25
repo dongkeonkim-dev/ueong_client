@@ -7,12 +7,19 @@
 
 import SwiftUI
 
-struct FavoritesList: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+struct FavoritesListV: View {
+    @ObservedObject var viewModel: FavoritesList.ViewModel
+        
+        var body: some View {
+            NavigationView {
+                List(viewModel.favoritePosts) { post in
+                    Text("\(post.name) - \(post.price, specifier: "%.2f")원")
+                }
+            
+            }
+        }
 }
 
 #Preview {
-    FavoritesList()
+    FavoritesList(viewModel: FavoritesList.ViewModel())
 }

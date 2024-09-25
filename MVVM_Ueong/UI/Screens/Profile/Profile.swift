@@ -7,12 +7,21 @@
 
 import SwiftUI
 
-struct Profile: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+struct ProfileV: View {
+    @ObservedObject var viewModel: Profile.ViewModel
+        
+        var body: some View {
+            NavigationView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("이름: \(viewModel.user.name)")
+                    Text("이메일: \(viewModel.user.email)")
+                }
+                .padding()
+              
+            }
+        }
 }
 
 #Preview {
-    Profile()
+    Profile(viewModel: Profile.ViewModel())
 }

@@ -12,11 +12,16 @@ struct ChatList: View {
     
     var body: some View {
         NavigationView {
-            List(viewModel.chats, id: \.self) { chat in
-                Text(chat)
+            List(viewModel.chats) { chat in
+                Text("\(chat.name) - \(chat.lastMessage)")
             }
-            .navigationTitle("채팅")
+//            .navigationTitle("채팅")
         }
     }
+}
+
+
+#Preview {
+    ChatList(viewModel: ChatList.ViewModel())
 }
 
