@@ -14,11 +14,11 @@ struct PostsList: View {
         VStack(spacing: 30){
             
             NavigationView {
-                List(viewModel.Posts) { post in
+                List(viewModel.posts) { post in
                     NavigationLink(
                         destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
                     ) {
-                        Text("\(post.name) - \(post.price, specifier: "%.2f")원")
+                        Text("\(post.title) - \(post.price, specifier: "%.2f")원")
                     }
                 }
                 
