@@ -22,18 +22,19 @@ struct MyAccountView: View {
                        })
                        
                        AccountActionsView(
-                           editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel(userId: viewModel.user.id)),
-                           salesListDestination: SalesListView(viewModel:SalesListView.ViewModel()), // 판매 목록 뷰를 여기에 추가
-                           deleteAccountAction: {
-                               // 탈퇴 액션
-                           }
+                        editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel(userId: viewModel.user.id)),
+                            salesListDestination: AnyView(Text("판매목록 임시 화면")), // 임시 텍스트로 대체
+                            deleteAccountAction: {
+                                // 탈퇴 액션
+                            }
                        )
-                   }
-                   .padding(.leading, 5)
-               }
-           }
-       }
-    }
+                    
+                  }
+                  .padding(.leading, 5)
+              }
+          }
+      }
+   }
 }
 
 // MARK: - 프로필 헤더
@@ -102,7 +103,7 @@ struct AccountInfoView: View {
 // MARK: - 네비게이션 링크 및 액션 버튼을 포함한 뷰 (AccountActionsView)
 struct AccountActionsView: View {
     let editInfoDestination: AccountEditView
-    let salesListDestination: SalesListView
+    let salesListDestination : AnyView //SalesListView
     var deleteAccountAction: () -> Void
 
     var body: some View {

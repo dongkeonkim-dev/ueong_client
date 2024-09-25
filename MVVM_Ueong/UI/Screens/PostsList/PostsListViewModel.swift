@@ -20,8 +20,8 @@ extension PostsList {
             
             //예시 데이터
             self.Posts = [
-                Post(id: UUID(), name: "iPhone 12", price: 600.0, isFavorite: false),
-                Post(id: UUID(), name: "MacBook Pro", price: 1500.0, isFavorite: true)
+                Post(id: 1, name: "iPhone 12", price: 600.0, isFavorite: false),
+                Post(id: 2, name: "MacBook Pro", price: 1500.0, isFavorite: true)
             ]
         }
     }

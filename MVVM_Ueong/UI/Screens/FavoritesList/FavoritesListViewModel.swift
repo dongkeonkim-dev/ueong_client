@@ -18,7 +18,7 @@ extension FavoritesList {
             
         func loadFavorites() {
             self.favoritePosts = [
-                Post(id: UUID(), name: "MacBook Pro", price: 1500.0,isFavorite: true)
+                Post(id: 1, name: "MacBook Pro", price: 1500.0,isFavorite: true)
             ]
         }
         
