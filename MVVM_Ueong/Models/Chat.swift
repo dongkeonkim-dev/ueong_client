@@ -8,8 +8,9 @@
 import Foundation
 
 struct Chat: Identifiable {
-    let id: UUID
-    let name: String
-    let lastMessage: String
-    // 마지막 메시지 시간 데이터 추가필요
+    let id: Int
+    let chatter: String
+    let profileImage: String
+    let lastSentTime: Date
+    let lastMessageText: String
 }

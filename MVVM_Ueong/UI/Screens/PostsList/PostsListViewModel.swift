@@ -19,6 +19,11 @@ extension PostsList {
             //실제 데이터는 API나 로컬에서 가져올 수 있습니다.
             self.Posts = convertPostDtlToPost(mockData_Post)
             
+            //예시 데이터
+            self.Posts = [
+                Post(id: 1, name: "iPhone 12", price: 600.0, isFavorite: false),
+                Post(id: 2, name: "MacBook Pro", price: 1500.0, isFavorite: true)
+            ]
         }
         
         // PostDtl 배열을 Post 배열로 변환하는 함수

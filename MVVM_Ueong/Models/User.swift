@@ -8,7 +8,16 @@
 import Foundation
 
 struct User: Identifiable {
-    let id: UUID
-    let name: String
+    let id: Int
+    let username: String
+    let nickname: String
     let email: String
+}
+
+struct EditedUserData {
+    var username: String
+    var password: String
+    var confirmPassword: String
+    var email: String
+    var nickname: String
 }
