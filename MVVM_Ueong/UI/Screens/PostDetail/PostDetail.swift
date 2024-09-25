@@ -9,24 +9,27 @@ import SwiftUI
 
 struct PostDetail: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
+
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text(viewModel.PostDetail.name)
-                .font(.largeTitle)
-                .fontWeight(.bold)
-            Text("\(viewModel.PostDetail.price, specifier: "%.2f")원")
-                .font(.title)
-                .foregroundColor(.secondary)
-            Text(viewModel.PostDetail.description)
-                .font(.body)
+            if let postDetail = viewModel.PostDetail { // 옵셔널 바인딩
+                Text(postDetail.name)
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                Text("\(postDetail.price, specifier: "%.2f")원")
+                    .font(.title)
+                    .foregroundColor(.secondary)
+                Text(postDetail.description)
+                    .font(.body)
+            } else {
+                Text("포스트를 찾을 수 없습니다.") // nil일 경우의 대체 텍스트
+                    .font(.body)
+                    .foregroundColor(.red)
+            }
             Spacer()
         }
         .padding()
         .navigationBarTitleDisplayMode(.inline)
-        
     }
 }
 
-#Preview {
-    PostDetail(viewModel: PostDetail.ViewModel())
-}

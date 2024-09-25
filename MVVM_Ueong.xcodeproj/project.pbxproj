@@ -24,6 +24,9 @@
 		1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
+		1F8C121B2CA3ECE400A33802 /* MockData_Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121A2CA3ECE400A33802 /* MockData_Post.swift */; };
+		1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121C2CA3FDCB00A33802 /* example.swift */; };
+		1F8C121F2CA4071F00A33802 /* PostRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121E2CA4071F00A33802 /* PostRow.swift */; };
 		1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC52F7A2CA2CF72001A933B /* MVVM_UeongApp.swift */; };
 		1FC52F7D2CA2CF72001A933B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FC52F7C2CA2CF72001A933B /* ContentView.swift */; };
 		1FC52F7F2CA2CF73001A933B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FC52F7E2CA2CF73001A933B /* Assets.xcassets */; };
@@ -79,16 +82,16 @@
 		1F691BB32CA3CC8D0076E8A8 /* PostDtl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDtl.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
-		1FC52F772CA2CF72001A933B /* MVVM_Ueong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVVM_Ueong.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F8C121A2CA3ECE400A33802 /* MockData_Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData_Post.swift; sourceTree = "<group>"; };
+		1F8C121C2CA3FDCB00A33802 /* example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = example.swift; sourceTree = "<group>"; };
+		1F8C121E2CA4071F00A33802 /* PostRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRow.swift; sourceTree = "<group>"; };
 		1FC52F7A2CA2CF72001A933B /* MVVM_UeongApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_UeongApp.swift; sourceTree = "<group>"; };
 		1FC52F7C2CA2CF72001A933B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		1FC52F7E2CA2CF73001A933B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1FC52F812CA2CF73001A933B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1FC52F832CA2CF73001A933B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		1FC52F862CA2CF73001A933B /* MVVM_Ueong.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MVVM_Ueong.xcdatamodel; sourceTree = "<group>"; };
-		1FC52F8C2CA2CF73001A933B /* MVVM_UeongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MVVM_UeongTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC52F902CA2CF73001A933B /* MVVM_UeongTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_UeongTests.swift; sourceTree = "<group>"; };
-		1FC52F962CA2CF73001A933B /* MVVM_UeongUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MVVM_UeongUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FC52F9A2CA2CF73001A933B /* MVVM_UeongUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_UeongUITests.swift; sourceTree = "<group>"; };
 		1FC52F9C2CA2CF73001A933B /* MVVM_UeongUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVVM_UeongUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		1FC52FAB2CA2DA55001A933B /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
@@ -100,6 +103,9 @@
 		1FC52FC22CA2DE98001A933B /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		1FC52FC42CA2E4AF001A933B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		1FC52FC62CA2E660001A933B /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
+		1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MVVM_Ueong.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FD1345F2CA4209100B48F6B /* MVVM_UeongTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MVVM_UeongTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FD134602CA4209100B48F6B /* MVVM_UeongUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MVVM_UeongUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,24 +198,32 @@
 			path = PostDetail;
 			sourceTree = "<group>";
 		};
+		1F8C12182CA3E72900A33802 /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				1F8C121E2CA4071F00A33802 /* PostRow.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		1F8C12192CA3EAC300A33802 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				1F8C121A2CA3ECE400A33802 /* MockData_Post.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		1FC52F6E2CA2CF72001A933B = {
 			isa = PBXGroup;
 			children = (
 				1FC52F792CA2CF72001A933B /* MVVM_Ueong */,
 				1FC52F8F2CA2CF73001A933B /* MVVM_UeongTests */,
 				1FC52F992CA2CF73001A933B /* MVVM_UeongUITests */,
-				1FC52F782CA2CF72001A933B /* Products */,
+				1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */,
+				1FD1345F2CA4209100B48F6B /* MVVM_UeongTests.xctest */,
+				1FD134602CA4209100B48F6B /* MVVM_UeongUITests.xctest */,
 			);
-			sourceTree = "<group>";
-		};
-		1FC52F782CA2CF72001A933B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1FC52F772CA2CF72001A933B /* MVVM_Ueong.app */,
-				1FC52F8C2CA2CF73001A933B /* MVVM_UeongTests.xctest */,
-				1FC52F962CA2CF73001A933B /* MVVM_UeongUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		1FC52F792CA2CF72001A933B /* MVVM_Ueong */ = {
@@ -217,8 +231,10 @@
 			children = (
 				0DB6931C2CA3EF3F00A3E3B7 /* utils */,
 				0DB693192CA3ED2000A3E3B7 /* repositories */,
+				1F8C12192CA3EAC300A33802 /* Repository */,
 				1FC52FC12CA2DE5C001A933B /* Models */,
 				1FC52FA92CA2CFCD001A933B /* UI */,
+				1F8C121C2CA3FDCB00A33802 /* example.swift */,
 				1FC52F7A2CA2CF72001A933B /* MVVM_UeongApp.swift */,
 				1FC52F832CA2CF73001A933B /* Persistence.swift */,
 				1FC52F852CA2CF73001A933B /* MVVM_Ueong.xcdatamodeld */,
@@ -256,6 +272,7 @@
 		1FC52FA92CA2CFCD001A933B /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				1F8C12182CA3E72900A33802 /* Component */,
 				1FC52FAA2CA2CFE4001A933B /* Screens */,
 			);
 			path = UI;
@@ -334,7 +351,7 @@
 			);
 			name = MVVM_Ueong;
 			productName = MVVM_Ueong;
-			productReference = 1FC52F772CA2CF72001A933B /* MVVM_Ueong.app */;
+			productReference = 1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */;
 			productType = "com.apple.product-type.application";
 		};
 		1FC52F8B2CA2CF73001A933B /* MVVM_UeongTests */ = {
@@ -352,7 +369,7 @@
 			);
 			name = MVVM_UeongTests;
 			productName = MVVM_UeongTests;
-			productReference = 1FC52F8C2CA2CF73001A933B /* MVVM_UeongTests.xctest */;
+			productReference = 1FD1345F2CA4209100B48F6B /* MVVM_UeongTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		1FC52F952CA2CF73001A933B /* MVVM_UeongUITests */ = {
@@ -370,7 +387,7 @@
 			);
 			name = MVVM_UeongUITests;
 			productName = MVVM_UeongUITests;
-			productReference = 1FC52F962CA2CF73001A933B /* MVVM_UeongUITests.xctest */;
+			productReference = 1FD134602CA4209100B48F6B /* MVVM_UeongUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -405,7 +422,9 @@
 				Base,
 			);
 			mainGroup = 1FC52F6E2CA2CF72001A933B;
-			productRefGroup = 1FC52F782CA2CF72001A933B /* Products */;
+			packageReferences = (
+			);
+			productRefGroup = 1FC52F6E2CA2CF72001A933B;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -450,6 +469,7 @@
 				0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */,
 				0DB6934B2CA42C1C00A3E3B7 /* PostRepository.swift in Sources */,
 				0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */,
+				1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */,
 				1FC52F842CA2CF73001A933B /* Persistence.swift in Sources */,
 				1FC52F7D2CA2CF72001A933B /* ContentView.swift in Sources */,
 				1FC52F872CA2CF73001A933B /* MVVM_Ueong.xcdatamodeld in Sources */,
@@ -457,9 +477,11 @@
 				0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */,
 				0DB6932A2CA3F66400A3E3B7 /* ChatView.swift in Sources */,
 				1FC52FBC2CA2DCC3001A933B /* ChatListViewModel.swift in Sources */,
+				1F8C121F2CA4071F00A33802 /* PostRow.swift in Sources */,
 				1FC52FC72CA2E660001A933B /* Chat.swift in Sources */,
 				1FC52FBA2CA2DCA0001A933B /* PostsListViewModel.swift in Sources */,
 				0DB693352CA40E4000A3E3B7 /* MyAccountViewModel.swift in Sources */,
+				1F8C121B2CA3ECE400A33802 /* MockData_Post.swift in Sources */,
 				1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */,
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
 				1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */,
