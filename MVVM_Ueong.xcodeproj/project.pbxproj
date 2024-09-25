@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D45B7B92CA44CD800AA516F /* WritePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7B82CA44CD400AA516F /* WritePostView.swift */; };
+		0D45B7BB2CA44CE000AA516F /* WritePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7BA2CA44CDC00AA516F /* WritePostViewModel.swift */; };
 		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */; };
 		0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693272CA3F66400A3E3B7 /* ChatViewModel.swift */; };
@@ -65,6 +67,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0D45B7B82CA44CD400AA516F /* WritePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostView.swift; sourceTree = "<group>"; };
+		0D45B7BA2CA44CDC00AA516F /* WritePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritePostViewModel.swift; sourceTree = "<group>"; };
 		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		0DB693262CA3F66400A3E3B7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -133,6 +137,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D45B7B72CA44CC600AA516F /* WritePost */ = {
+			isa = PBXGroup;
+			children = (
+				0D45B7BA2CA44CDC00AA516F /* WritePostViewModel.swift */,
+				0D45B7B82CA44CD400AA516F /* WritePostView.swift */,
+			);
+			path = WritePost;
+			sourceTree = "<group>";
+		};
 		0DB693192CA3ED2000A3E3B7 /* repositories */ = {
 			isa = PBXGroup;
 			children = (
@@ -281,6 +294,7 @@
 		1FC52FAA2CA2CFE4001A933B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				0D45B7B72CA44CC600AA516F /* WritePost */,
 				0DB693472CA42A8100A3E3B7 /* SalesList */,
 				0DB6933B2CA41B6900A3E3B7 /* AccountEdit */,
 				1FC52F7C2CA2CF72001A933B /* ContentView.swift */,
@@ -486,6 +500,7 @@
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
 				1F691BB42CA3CC8D0076E8A8 /* PostDtl.swift in Sources */,
 				0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */,
+				0D45B7B92CA44CD800AA516F /* WritePostView.swift in Sources */,
 				1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */,
 				1FC52FC52CA2E4AF001A933B /* User.swift in Sources */,
 				1FC52FAC2CA2DA55001A933B /* MainTabView.swift in Sources */,
@@ -496,6 +511,7 @@
 				1FC52FB22CA2DBDC001A933B /* PostsList.swift in Sources */,
 				1FC52FC32CA2DE98001A933B /* Post.swift in Sources */,
 				0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */,
+				0D45B7BB2CA44CE000AA516F /* WritePostViewModel.swift in Sources */,
 				0DB693372CA40E4800A3E3B7 /* MyAccountView.swift in Sources */,
 				0DB6933D2CA41B7700A3E3B7 /* AccountEditView.swift in Sources */,
 				0DB6932E2CA401FD00A3E3B7 /* MessageRepository.swift in Sources */,
