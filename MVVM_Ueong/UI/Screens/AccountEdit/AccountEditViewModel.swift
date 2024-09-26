@@ -13,27 +13,35 @@ extension AccountEditView {
         @Published var editedUserData: EditedUserData
         @Published var isImagePickerPresented = false
         
-        let userId: Int
+        let username: String
         private let userRepository = UserRepository()
         
         init(userId: Int) {
-            self.userId = userId
+            self.username = "username1"
             self.editedUserData = EditedUserData(username: "", password: "", confirmPassword: "", email: "", nickname: "")
             getUserDetail()
         }
         
         func getUserDetail() {
-            self.user = userRepository.getUserById(userId: userId)
-            
-            // 불러온 유저 데이터를 기반으로 편집 가능한 데이터를 초기화
-            self.editedUserData = EditedUserData(
-                username: user.username,
-                password: "",
-                confirmPassword: "",
-                email: user.email,
-                nickname: user.nickname
-            )
-        }
+            userRepository.getUserByUsername(username: username) { result in
+               switch result {
+               case .success(let user):
+                   DispatchQueue.main.async {
+                       self.user = user
+                       // 불러온 유저 데이터를 기반으로 편집 가능한 데이터를 초기화
+                       self.editedUserData = EditedUserData(
+                           username: user.username,
+                           password: "",
+                           confirmPassword: "",
+                           email: user.email,
+                           nickname: user.nickname
+                       )
+                   }
+               case .failure(let error):
+                   print("Error fetching user data: \(error)")
+               }
+           }
+       }
         
         func saveChanges() {
             // 변경된 데이터를 저장하는 로직 구현 (유효성 검사 및 서버로 전송 등)

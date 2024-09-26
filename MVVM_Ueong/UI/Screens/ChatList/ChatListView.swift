@@ -65,9 +65,9 @@ struct ChatListView: View {
 
                 ScrollView {
                     ForEach(viewModel.chats, id: \.id) { chat in
-                        NavigationLink(destination: ChatView(viewModel: ChatViewModel(userId:3, chatter:chat.chatter))) {
+                        NavigationLink(destination: ChatView(viewModel: ChatViewModel(chatterUsername: chat.chatterUsername ?? "", chatterNickname:chat.chatterNickname ?? ""))) {
                             HStack {
-                                Image(chat.profileImage)
+                                Image(systemName: "person.circle.fill")
                                     .resizable()
                                     .frame(width: 60, height: 60)
                                     .clipShape(Circle())
@@ -75,12 +75,18 @@ struct ChatListView: View {
 
                                 VStack(alignment: .leading) {
                                     HStack {
-                                        Text(chat.chatter)
+                                        Text(chat.chatterNickname ?? "Unknown User") // chatterNickname을 사용하여 nickname 표시
                                             .padding(.bottom, 3)
                                         Spacer()
-                                        Text(chat.lastSentTime, style: .time)
-                                            .font(.system(size: 12))
-                                            .foregroundColor(Color(.lightGray))
+                                        if let lastSentTime = chat.lastSentTime {
+                                            Text(lastSentTime, style: .time) // lastSentTime이 있을 경우
+                                                .font(.system(size: 12))
+                                                .foregroundColor(Color(.lightGray))
+                                        } else {
+                                            Text("Unknown Time") // lastSentTime이 없을 경우
+                                                .font(.system(size: 12))
+                                                .foregroundColor(Color(.lightGray))
+                                        }
                                     }
                                     HStack {
                                         Text(chat.lastMessageText)
@@ -94,6 +100,7 @@ struct ChatListView: View {
                             }
                             .padding(.top, 30)
                         }
+
                     }
                 }
                 .padding(.horizontal, 15)

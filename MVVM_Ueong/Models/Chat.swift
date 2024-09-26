@@ -7,10 +7,36 @@
 
 import Foundation
 
-struct Chat: Identifiable {
+//struct Chat: Identifiable {
+//    let id: Int
+//    let chatter: String
+//    let profileImage: String
+//    let rawLastSentTime: String // 서버에서 받은 날짜 문자열
+//    let lastSentTime: Date
+//    let lastMessageText: String
+//}
+
+struct Chat: Decodable {
     let id: Int
-    let chatter: String
-    let profileImage: String
-    let lastSentTime: Date
+    let senderUsername: String
+    let receiverUsername: String
+    let senderNickname: String
+    let receiverNickname: String
     let lastMessageText: String
+    let rawlastSentTime: String
+    
+    var lastSentTime: Date?
+    var chatterUsername: String?
+    var chatterNickname: String?
+    
+    // CodingKeys를 통해 JSON 키와 Swift 속성 간의 매핑
+    enum CodingKeys: String, CodingKey {
+        case id = "chat_id"
+        case senderNickname = "sender_nickname"
+        case receiverNickname = "receiver_nickname"
+        case lastMessageText = "message_text"
+        case rawlastSentTime = "sent_time"
+        case senderUsername = "sender_username"
+        case receiverUsername = "receiver_username"
+    }
 }

@@ -8,19 +8,37 @@
 import Foundation
 
 class ChatRepository {
-    func getAllChats() -> [Chat] {
-        // MySQL에서 데이터 받아오는 로직
-        
-        //날짜형식변환 DATETIME -> Date()
-        let rawDateStrings = ["2024-09-25T15:30:45Z", "2024-09-26T10:20:30Z"]
-        let dateFormatter = ISO8601DateFormatter()
-        let dates = rawDateStrings.compactMap { dateFormatter.date(from: $0) }
-        
-        let chats = [
-            Chat(id: 154, chatter: "cat1", profileImage: "cat1", lastSentTime: dates[0], lastMessageText: "Hello, I'm cat1"),
-            Chat(id: 545, chatter: "cat2", profileImage: "cat2", lastSentTime: dates[1], lastMessageText: "Hello, I'm cat2"),
-            ]
-        
-        return chats
+    func getChatsByUsername(username: String, completion: @escaping (Result<[Chat], Error>) -> Void) {
+        // API 호출을 통해 chats 데이터를 받아오는 로직
+        APICall.shared.get("chat/by-username", parameters: ["username": username]) { (result: Result<[Chat], Error>) in
+            switch result {
+            case .success(var chats):
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+                // 받은 chats 데이터를 처리
+                for i in 0..<chats.count {
+                    // rawlastSentTime을 Date로 변환
+                    if let date = dateFormatter.date(from: chats[i].rawlastSentTime) {
+                        chats[i].lastSentTime = date
+                    }
+
+                    // chatter 설정: senderUsername과 receiverUsername 중 username과 다른 것을 chatter로 설정
+                    if chats[i].senderUsername == username {
+                        chats[i].chatterUsername = chats[i].receiverUsername
+                        chats[i].chatterNickname = chats[i].receiverNickname
+                        
+                    } else {
+                        chats[i].chatterUsername = chats[i].senderUsername
+                        chats[i].chatterNickname = chats[i].senderNickname
+                    }
+                }
+
+                // 결과를 completion으로 반환
+                completion(.success(chats))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

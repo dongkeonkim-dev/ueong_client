@@ -28,7 +28,7 @@ struct MainTabView: View {
                     Text("좋아요")
                 }
             
-            MyAccountView(viewModel: MyAccountView.ViewModel(userId:3))
+            MyAccountView(viewModel: MyAccountView.ViewModel())
                 .tabItem {
                     Image(systemName: "person")
                     Text("내 정보")

@@ -150,5 +150,5 @@ struct AccountActionsView: View {
 }
 
 #Preview {
-    MyAccountView(viewModel: MyAccountView.ViewModel(userId: 3))
+    MyAccountView(viewModel: MyAccountView.ViewModel())
 }

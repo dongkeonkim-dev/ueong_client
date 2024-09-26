@@ -13,8 +13,9 @@ struct ChatView: View {
 
     var body: some View {
         VStack {
+            
             // 메시지 목록 스크롤
-            MessageListView(messages: viewModel.messages)
+            MessageListView(viewModel: viewModel)
 
             // 메시지 입력 및 전송
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
@@ -22,27 +23,27 @@ struct ChatView: View {
                 newMessage = ""
             })
         }
-        .navigationTitle("\(viewModel.chatter)")
+        .navigationTitle("\(viewModel.chatterNickname)")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 // MARK: - 채팅 목록
 struct MessageListView: View {
-    let messages: [Message]
+    @ObservedObject var viewModel: ChatViewModel
 
     var body: some View {
         ScrollViewReader { scrollViewProxy in
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(messages) { message in
-                        ChatBubbleView(message: message)
+                    ForEach(viewModel.messages) { message in
+                        ChatBubbleView(viewModel: viewModel, message:message)
                     }
                 }
                 .padding()
             }
-            .onChange(of: messages.count) {
-                if let lastMessageId = messages.last?.id {
+            .onChange(of: viewModel.messages.count) {
+                if let lastMessageId = viewModel.messages.last?.id {
                     withAnimation {
                         scrollViewProxy.scrollTo(lastMessageId, anchor: .bottom)
                     }
@@ -54,23 +55,33 @@ struct MessageListView: View {
 
 // MARK: - 채팅 버블
 struct ChatBubbleView: View {
+    @ObservedObject var viewModel: ChatViewModel
     let message: Message
 
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("\(message.sender)")
+                
+                Text(message.sender == viewModel.username ? "" : message.sender)
                     .font(.caption)
                     .foregroundColor(.gray)
                 Text(message.text)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
-                    .frame(maxWidth: .infinity, alignment: message.sender == "" ? .trailing : .leading)
-                Text(message.sentTime, style: .time)
-                    .font(.caption2)
-                    .foregroundColor(.gray)
-                    .frame(maxWidth: .infinity, alignment: message.sender == "" ? .trailing : .leading)
+                    .frame(maxWidth: .infinity, alignment: message.sender == viewModel.username ? .trailing : .leading)
+                if let sentTime = message.sentTime {
+                    Text(sentTime, style: .time)
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: message.sender == viewModel.username ? .trailing : .leading)
+                } else {
+                    // sentTime이 nil일 때 처리할 내용을 여기 작성
+                    Text("Unknown Time")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity, alignment: message.sender == viewModel.username ? .trailing : .leading)
+                }
             }
             Spacer()
         }
@@ -111,5 +122,5 @@ struct MessageInputView: View {
 
 // Preview 구성
 #Preview {
-    ChatView(viewModel: ChatViewModel(userId: 1, chatter:"cat1"))
+    ChatView(viewModel: ChatViewModel(chatterUsername:"username2", chatterNickname:"유저2"))
 }
