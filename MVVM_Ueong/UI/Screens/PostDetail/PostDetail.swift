@@ -13,13 +13,13 @@ struct PostDetail: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
             if let postDetail = viewModel.PostDetail { // 옵셔널 바인딩
-                Text(postDetail.name)
+                Text(postDetail.title)
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 Text("\(postDetail.price, specifier: "%.2f")원")
                     .font(.title)
                     .foregroundColor(.secondary)
-                Text(postDetail.description)
+                Text(postDetail.text)
                     .font(.body)
             } else {
                 Text("포스트를 찾을 수 없습니다.") // nil일 경우의 대체 텍스트

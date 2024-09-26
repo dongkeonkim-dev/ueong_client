@@ -11,7 +11,7 @@ import SwiftUI
 
 extension PostDetail {
     class ViewModel: ObservableObject {
-        @Published var PostDetail: PostDtl? = PostDtl(id: 100, name: "", price: 0.0, isFavorite: false, description: "")
+        @Published var PostDetail: Post? = nil
         let postID: Int
         
         init(postID: Int) {

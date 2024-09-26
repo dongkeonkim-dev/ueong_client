@@ -9,7 +9,9 @@ import SwiftUI
 extension PostsList {
     class ViewModel: ObservableObject {
         @Published var posts: [Post] = []
+        var postImage: PostImage = PostImage(id: 1, postId: 1, image: "cat2")
         let postRepository = PostRepository()
+        let imageRepository = ImageRepository()
         
         
         init() {
@@ -23,6 +25,7 @@ extension PostsList {
             
             //예시 데이터
             self.posts = postRepository.getPostList()
+            self.postImage = imageRepository.getImageById()
             
         }
         

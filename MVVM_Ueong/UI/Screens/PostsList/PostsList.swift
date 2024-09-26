@@ -1,28 +1,34 @@
-//
-//  ProductsList.swift
-//  MVVM_Ueong
-//
-//  Created by 김석원 on 9/24/24.
-//
-
-import SwiftUI
-
 import SwiftUI
 
 struct PostsList: View {
     @ObservedObject var viewModel: PostsList.ViewModel
     
     var body: some View {
-        VStack(spacing: 30){
+        VStack(spacing: 20) {
+            HStack(spacing: -15){
+                SelectRegion()
+                SearchBar()
+                
+            }
+            .zIndex(1)
+            
+            SelectPostOption()
             
             NavigationView {
-                List(viewModel.posts) { post in
-                    NavigationLink(
-                        destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
-                    ) {
-                        Text("\(post.title) - \(post.price, specifier: "%.2f")원")
+                ScrollView {
+                    VStack(spacing: 13) {
+                        ForEach(viewModel.posts) { post in
+                            NavigationLink(
+                                destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
+                            ) {
+                                PostRow(post: post, image: viewModel.postImage)
+                            }
+                            
+                        }
                     }
+                    
                 }
+                
             }
         }
     }
@@ -31,3 +37,4 @@ struct PostsList: View {
 #Preview {
     PostsList(viewModel: PostsList.ViewModel())
 }
+
