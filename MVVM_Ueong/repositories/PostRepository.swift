@@ -38,12 +38,17 @@ class PostRepository {
         return posts
     }
     
-    func getPostDetail(userId:Int) -> Post {
-        // MySQL에서 데이터 받아오는 로직
-        
-        let posts = Post(id:7, title:"자전거", price:3000, isFavorite: false, text: "hahahah")
-      
-        return posts
+    func searchPosts(username: String, searchTerm: String, completion: @escaping (Result<[Post], Error>) -> Void) {
+        APICall.shared.get("post/search", parameters: ["username":username], queryParameters: ["searchTerm":searchTerm]) { (result: Result<[Post], Error>) in
+                switch result {
+                case .success(let posts):
+                    print("Posts retrieved successfully: \(posts.count) posts found.")
+                    completion(.success(posts))
+                case .failure(let error):
+                    print("Error fetching posts: \(error)")
+                    completion(.failure(error))
+                }
+            }
     }
     
     func getFavoriteList(userId:Int) -> [Post] {

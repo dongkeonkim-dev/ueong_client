@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PostRow: View {
     var post: Post
-    var image: PostImage
     
     var body: some View {
         HStack {
@@ -26,12 +25,34 @@ struct PostRow: View {
 
 private extension PostRow {
     var productImage: some View {
-        Image(image.image) // Use the post's imageNames
-            .resizable()
-            .scaledToFill()
-            .frame(width: 140)
-            .clipped()
-    }
+            // 포스트에 사진이 있는지 확인
+            if let firstPhoto = post.photos?.first, let url = URL(string: baseURL + firstPhoto.url) {
+                // AsyncImage를 사용하여 이미지 로드
+                return AnyView(
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 140)
+                            .clipped()
+                    } placeholder: {
+                        // 로딩 중 대체 뷰
+                        ProgressView()
+                            .frame(width: 140, height: 140)
+                    }
+                )
+            } else {
+                // 기본 이미지를 반환
+                return AnyView(
+                    Image(systemName: "photo.artframe") // 기본 이미지 사용
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 140)
+                        .clipped()
+                        .foregroundColor(.gray) // 이미지 색상 설정
+                )
+            }
+        }
     
     var productDescription: some View {
         VStack(alignment: .leading) {
@@ -70,12 +91,26 @@ private extension PostRow {
                     .foregroundColor(Color.blue)
                     .frame(width: 32, height: 32)
             }
-            
         }
     }
 }
 
 
 #Preview {
-    PostRow(post: Post(id:9, title:"자전거", price:3000, isFavorite: false, text: "soososososo"), image: PostImage(id: 1, postId: 1, image: "cat1"))
+    PostRow(post: Post(
+        id: 9,
+        title: "자전거",
+        category: 1,
+        price: 3000.0,
+        emdId: 1,
+        latitude: 37.5,
+        longitude: 160.0,
+        locationDetail: "아무데나",
+        createAt: Date(), // Date()로 초기화
+        isFavorite: false,
+        text: "soososososo",
+        photos: [
+            Photo(id: 1, postId: 1, url: "cat1.jpg") // 여기에 사진의 URL을 적어주세요
+        ]
+    ))
 }

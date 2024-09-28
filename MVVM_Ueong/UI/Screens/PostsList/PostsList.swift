@@ -21,7 +21,7 @@ struct PostsList: View {
                             NavigationLink(
                                 destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
                             ) {
-                                PostRow(post: post, image: viewModel.postImage)
+                                PostRow(post: post)
                             }
                             
                         }

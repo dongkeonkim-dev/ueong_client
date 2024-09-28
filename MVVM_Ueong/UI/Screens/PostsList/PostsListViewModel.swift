@@ -9,26 +9,41 @@ import SwiftUI
 extension PostsList {
     class ViewModel: ObservableObject {
         @Published var posts: [Post] = []
-        var postImage: PostImage = PostImage(id: 1, postId: 1, image: "cat2")
+        let username: String
         let postRepository = PostRepository()
-        let imageRepository = ImageRepository()
+        let photoRepository = PhotoRepository()
         
         
         init() {
-            // 예시 데이터 로드
+            self.username = "username1"
             fetchPosts()
         }
         
-        func fetchPosts() {
-            //실제 데이터는 API나 로컬에서 가져올 수 있습니다.
-         
-            
-            //예시 데이터
-            self.posts = postRepository.getPostList()
-            self.postImage = imageRepository.getImageById()
-            
+        private func fetchPosts() {
+            postRepository.searchPosts(username: username, searchTerm: "") { [weak self] result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(let posts):
+                        self?.posts = posts // UI 업데이트는 메인 스레드에서
+                        self?.fetchPhotosForPosts()
+                        print("Successfully retrieved \(posts.count) posts.")
+                    case .failure(let error):
+                        print("Error fetching posts: \(error)")
+                    }
+                }
+            }
         }
         
-        
+        private func fetchPhotosForPosts() {
+            for post in posts {
+                photoRepository.getPhotosForPost(postId: post.id) { [weak self] photos in
+                    DispatchQueue.main.async {
+                        if let index = self?.posts.firstIndex(where: { $0.id == post.id }) {
+                            self?.posts[index].photos = photos // 각 포스트에 대한 photos 업데이트
+                        }
+                    }
+                }
+            }
+        }
     }
 }

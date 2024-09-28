@@ -10,9 +10,8 @@ import SwiftUI
 extension FavoritesListView {
     class ViewModel: ObservableObject{
         @Published var favoritePosts: [Post] = []
-        var postImage: PostImage = PostImage(id: 1, postId: 1, image: "cat2")
         let postRepository = PostRepository()
-        let imageRepository = ImageRepository()
+        let imageRepository = PhotoRepository()
         let userId: Int
             
         init(userId: Int) {
@@ -23,8 +22,6 @@ extension FavoritesListView {
             
         func loadFavorites() {
             self.favoritePosts = postRepository.getFavoriteList(userId: userId)
-            self.postImage = imageRepository.getImageById()
         }
-        
     }
 }
