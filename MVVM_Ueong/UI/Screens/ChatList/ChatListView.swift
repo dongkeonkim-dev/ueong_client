@@ -4,7 +4,7 @@ struct ChatListView: View {
     @ObservedObject var viewModel: ChatListView.ViewModel
     
     var body: some View {
-        NavigationView { // NavigationView 추가
+        // NavigationView 추가
             VStack {
                 
                 //----------------------------------------------------------------------------
@@ -105,7 +105,6 @@ struct ChatListView: View {
                 }
                 .padding(.horizontal, 15)
             }
-        }
     }
 }
 

@@ -9,7 +9,7 @@ struct FavoritesListView: View {
                 VStack(spacing: 13) {
                     ForEach(viewModel.favoritePosts) { post in
                         NavigationLink(
-                            destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
+                            destination: PostDetail(viewModel: PostDetail.ViewModel(post: post))
                         ) {
                             PostRow(post: post)
                         }

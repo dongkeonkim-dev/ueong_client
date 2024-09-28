@@ -11,23 +11,10 @@ import SwiftUI
 
 extension PostDetail {
     class ViewModel: ObservableObject {
-        @Published var PostDetail: Post? = nil
-        let postID: Int
+        @Published var post: Post
         
-        init(postID: Int) {
-            // 예시 데이터 초기화
-            self.postID = postID
-            
-            // 예시 데이터 로드
-            loadPostDetail()
-            
+        init(post: Post) {
+            self.post = post
         }
-        
-        func loadPostDetail() {
-         
-            
-
-        }
-        
     }
 }

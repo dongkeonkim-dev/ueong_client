@@ -4,33 +4,32 @@ struct PostsList: View {
     @ObservedObject var viewModel: PostsList.ViewModel
     
     var body: some View {
-        VStack(spacing: 20) {
-            HStack(spacing: -15){
-                SelectRegion()
-                SearchBar()
+            VStack(spacing: 20) {
+                HStack(spacing: -15){
+                    SelectRegion()
+                    SearchBar()
+                    
+                }
+                .zIndex(1)
                 
-            }
-            .zIndex(1)
+                SelectPostOption()
             
-            SelectPostOption()
             
-            NavigationView {
                 ScrollView {
                     VStack(spacing: 13) {
                         ForEach(viewModel.posts) { post in
                             NavigationLink(
-                                destination: PostDetail(viewModel: PostDetail.ViewModel(postID: post.id))
+                                destination: PostDetail(viewModel: PostDetail.ViewModel(post: post))
                             ) {
                                 PostRow(post: post)
                             }
                             
                         }
                     }
-                    
                 }
                 
             }
-        }
+        
     }
 }
 
