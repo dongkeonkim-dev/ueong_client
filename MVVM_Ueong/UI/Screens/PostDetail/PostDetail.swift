@@ -188,7 +188,8 @@ struct PostDetail: View {
         text: "soososososo",
         photos: [
             Photo(id: 1, postId: 1, url: "cat1.jpg") // 여기에 사진의 URL을 적어주세요
-        ]
+        ],
+        status: "판매중"
     )))
 }
 

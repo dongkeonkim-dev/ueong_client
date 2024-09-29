@@ -19,6 +19,7 @@ struct Post: Identifiable, Decodable {
     var isFavorite: Bool
     let text: String
     var photos: [Photo]?
+    let status: String
 
     enum CodingKeys: String, CodingKey {
         case id = "post_id"
@@ -33,6 +34,7 @@ struct Post: Identifiable, Decodable {
         case isFavorite = "is_favorite"
         case text
         case photos
+        case status
     }
     
     //디코더에서 쓰는 생성자
@@ -56,11 +58,11 @@ struct Post: Identifiable, Decodable {
         isFavorite = favoriteValue != 0 // 0이면 false, 그 외에는 true
         
         text = try container.decode(String.self, forKey: .text)
-
+        status = try container.decode(String.self, forKey: .status)
     }
     
     // 목업데이터를 위한 생성자
-    init(id: Int, title: String, category: Int, price: Double, emdId: Int, latitude: Double, longitude: Double, locationDetail: String, createAt: Date?, isFavorite: Bool, text: String, photos: [Photo]? = nil) {
+    init(id: Int, title: String, category: Int, price: Double, emdId: Int, latitude: Double, longitude: Double, locationDetail: String, createAt: Date?, isFavorite: Bool, text: String, photos: [Photo]? = nil, status: String) {
         self.id = id
         self.title = title
         self.category = category
@@ -73,6 +75,7 @@ struct Post: Identifiable, Decodable {
         self.isFavorite = isFavorite
         self.text = text
         self.photos = photos
+        self.status = status
     }
     
 }
