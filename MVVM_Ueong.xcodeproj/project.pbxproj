@@ -28,6 +28,7 @@
 		0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */; };
 		0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693452CA42A8100A3E3B7 /* SalesListView.swift */; };
 		0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */; };
+		1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B22CA972920071A8C8 /* AddPostButton.swift */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
 		1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121C2CA3FDCB00A33802 /* example.swift */; };
@@ -95,6 +96,7 @@
 		0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditViewModel.swift; sourceTree = "<group>"; };
 		0DB693452CA42A8100A3E3B7 /* SalesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListView.swift; sourceTree = "<group>"; };
 		0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListViewModel.swift; sourceTree = "<group>"; };
+		1F53E2B22CA972920071A8C8 /* AddPostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostButton.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		1F8C121C2CA3FDCB00A33802 /* example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = example.swift; sourceTree = "<group>"; };
@@ -243,6 +245,7 @@
 				1FD1346D2CA588B000B48F6B /* SelectRegion.swift */,
 				1FD1346F2CA594BB00B48F6B /* SearchBar.swift */,
 				1FD134712CA5980D00B48F6B /* SelectPostOption.swift */,
+				1F53E2B22CA972920071A8C8 /* AddPostButton.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -315,11 +318,11 @@
 		1FC52FAA2CA2CFE4001A933B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				1FC52F7C2CA2CF72001A933B /* ContentView.swift */,
+				1FC52FAB2CA2DA55001A933B /* MainTabView.swift */,
 				0D45B7B72CA44CC600AA516F /* WritePost */,
 				0DB693472CA42A8100A3E3B7 /* SalesList */,
 				0DB6933B2CA41B6900A3E3B7 /* AccountEdit */,
-				1FC52F7C2CA2CF72001A933B /* ContentView.swift */,
-				1FC52FAB2CA2DA55001A933B /* MainTabView.swift */,
 				1FC52FAD2CA2DAC3001A933B /* PostsList */,
 				1F691BB52CA3CD100076E8A8 /* PostDetail */,
 				1FC52FAE2CA2DB1D001A933B /* ChatList */,
@@ -515,6 +518,7 @@
 				0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */,
 				0DB6932A2CA3F66400A3E3B7 /* ChatView.swift in Sources */,
 				1FC52FBC2CA2DCC3001A933B /* ChatListViewModel.swift in Sources */,
+				1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */,
 				1F8C121F2CA4071F00A33802 /* PostRow.swift in Sources */,
 				0D45B7CA2CA5745500AA516F /* APICall.swift in Sources */,
 				1FC52FC72CA2E660001A933B /* Chat.swift in Sources */,

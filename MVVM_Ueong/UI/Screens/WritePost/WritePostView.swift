@@ -105,10 +105,14 @@ struct WritePostView: View {
             .padding(.leading, 20)
             .navigationBarTitle("내 물건 팔기", displayMode: .inline)
             Spacer()
-        }
-        .overlay(
+            
             AddButton()
-        )
+                .padding(.top,20)
+                .padding(.bottom,20)
+        }
+        
+           
+    
     }
 }
 
