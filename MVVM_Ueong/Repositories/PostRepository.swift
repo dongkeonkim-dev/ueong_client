@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 class PostRepository {
     func getMyPosts(username: String, completion: @escaping (Result<[Post], Error>) -> Void) {
         // MySQL에서 데이터 받아오는 로직

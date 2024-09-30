@@ -19,10 +19,10 @@ import Foundation
 struct Chat: Decodable {
     let id: Int
     let senderUsername: String
-    let receiverUsername: String
-    let senderNickname: String
-    let receiverNickname: String
-    let lastMessageText: String
+    let receiverUsername: String  //판매자 id
+    let senderNickname: String    //구매자
+    let receiverNickname: String  //판매자
+    let lastMessageText: String   
     let rawlastSentTime: String
     
     var lastSentTime: Date?

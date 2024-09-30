@@ -9,7 +9,7 @@ import SwiftUI
 
 extension ChatListView {
     class ViewModel: ObservableObject {
-        @Published var chats: [Chat] = []
+        @Published var chats: [Chat] = [] 
         let username: String
         private let chatRepository = ChatRepository() // ChatRepository 인스턴스 생성
         
