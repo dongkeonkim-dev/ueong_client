@@ -8,9 +8,11 @@
 import Foundation
 
 class UserRepository {
-    func getUserByUsername(username: String, completion: @escaping (Result<User, Error>) -> Void) {
-        // API 클래스의 get 메서드를 호출하여 데이터를 받아옴
-        APICall.shared.get("user/by-username", parameters: ["username": username], completion: completion)
+    // 비동기 함수로 사용자 이름에 따른 사용자 정보를 가져오기
+    func getUserByUsername(username: String) async throws -> User {
+        // APICall의 get 메서드를 호출하여 사용자 데이터를 받아옴
+        let user: User = try await APICall.shared.get("user/by-username", parameters: [username])
+        return user
     }
 }
 

@@ -7,25 +7,27 @@
 import Foundation
 
 struct Post: Identifiable, Decodable {
-    let id: Int
-    let title: String
-    let category: Int
-    let price: Double
-    let emdId: Int
-    let latitude: Double
-    let longitude: Double
-    let locationDetail: String
-    let createAt: Date? // Optional Date
+    var id: Int
+    var title: String
+    var category: Int
+    var price: Double
+    var writerUsername: String
+    var emdId: Int
+    var latitude: Double
+    var longitude: Double
+    var locationDetail: String
+    var createAt: Date? // Optional Date
     var isFavorite: Bool
-    let text: String
+    var text: String
     var photos: [Photo]?
-    let status: String
+    var status: String
 
     enum CodingKeys: String, CodingKey {
         case id = "post_id"
         case title = "post_title"
         case category = "category_id"
         case price
+        case writerUsername = "writer_username"
         case emdId = "emd_id"
         case latitude = "desired_trading_location_latitude"
         case longitude = "desired_trading_location_longitude"
@@ -45,6 +47,7 @@ struct Post: Identifiable, Decodable {
         title = try container.decode(String.self, forKey: .title)
         category = try container.decode(Int.self, forKey: .category)
         price = try container.decode(Double.self, forKey: .price)
+        writerUsername = try container.decode(String.self, forKey: .writerUsername)
         emdId = try container.decode(Int.self, forKey: .emdId)
         latitude = try container.decode(Double.self, forKey: .latitude)
         longitude = try container.decode(Double.self, forKey: .longitude)
@@ -62,20 +65,21 @@ struct Post: Identifiable, Decodable {
     }
     
     // 목업데이터를 위한 생성자
-    init(id: Int, title: String, category: Int, price: Double, emdId: Int, latitude: Double, longitude: Double, locationDetail: String, createAt: Date?, isFavorite: Bool, text: String, photos: [Photo]? = nil, status: String) {
-        self.id = id
-        self.title = title
-        self.category = category
-        self.price = price
-        self.emdId = emdId
-        self.latitude = latitude
-        self.longitude = longitude
-        self.locationDetail = locationDetail
-        self.createAt = createAt
-        self.isFavorite = isFavorite
-        self.text = text
-        self.photos = photos
-        self.status = status
+    init() {
+        self.id = 0
+        self.title = "제목"
+        self.category = 1
+        self.price = 3000.0
+        self.writerUsername = "username1"
+        self.emdId = 1
+        self.latitude = 37
+        self.longitude = 126
+        self.locationDetail = "위치상세"
+        self.createAt = Date()
+        self.isFavorite = false
+        self.text = "본문"
+        self.photos = []
+        self.status = "거래대기"
     }
     
 }

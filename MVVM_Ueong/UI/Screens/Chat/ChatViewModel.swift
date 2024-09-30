@@ -4,7 +4,6 @@
 //
 //  Created by 김동건 on 9/25/24.
 //
-
 import Foundation
 
 class ChatViewModel: ObservableObject {
@@ -12,38 +11,60 @@ class ChatViewModel: ObservableObject {
     let username: String
     let chatterUsername: String
     let chatterNickname: String
-    let messageRepository = MessageRepository() // MessageRepository 인스턴스 생성
+    var postId: Int
+    var relatedPost: Post
+    let messageRepository = MessageRepository()
+    let postRepository = PostRepository()
+    let photoRepository = PhotoRepository()
     
-    init(chatterUsername: String, chatterNickname: String) {
+    init(chatterUsername: String, chatterNickname: String, postId: Int) {
         self.username = "username1"
         self.chatterUsername = chatterUsername
         self.chatterNickname = chatterNickname
-        loadChatMessages() // 메시지 로드
+        self.relatedPost = Post()
+        self.postId = postId
+        fetchPage() // 메시지 로드
     }
     
-    // MessageRepository를 이용해 메시지 로드
-    func loadChatMessages() {
-        messageRepository.getMessagesByChatter(username: username, chatter: chatterUsername) { result in
-            switch result {
-            case .success(let messages):
-                DispatchQueue.main.async {
-                    self.messages = messages // UI 업데이트는 메인 스레드에서
-                }
-            case .failure(let error):
-                print("Error fetching messages: \(error)")
-            }
+    // 비동기 작업을 순차적으로 처리하도록 개선한 메서드
+    func fetchPage(){
+        Task{
+            await fetchMessages()
+            await fetchPost()
         }
-        
+    }
+
+    private func fetchMessages() async {
+        do {
+            let messages = try await messageRepository.getMessagesByChatter(username: username, chatter: chatterUsername)
+            DispatchQueue.main.async {
+                self.messages = messages
+            }
+        } catch {
+            print("Error fetching messages: \(error)")
+        }
     }
     
-    // 새로운 메시지 전송
-    func sendMessage(_ text: String) {
-//        // 목킹 데이터로 메시지 추가
-//        let newMessage = Message(id: messages.count + 1, sender: "", text: text, sentTime: Date())
-//        
-//        // 목킹 데이터로 메시지 전송
-//        DispatchQueue.main.async {
-//            self.messages.append(newMessage)
-//        }
+    private func fetchPost() async {
+        do {
+            let post = try await postRepository.getPostById(username: username, postId: postId)
+            DispatchQueue.main.async {
+                self.relatedPost = post
+            }
+            await fetchPhotosForPost(postId: postId) // 게시물 데이터를 가져온 후에 사진 데이터를 가져옵니다.
+        } catch {
+            print("Error fetching post: \(error)")
+        }
+    }
+
+    private func fetchPhotosForPost(postId: Int) async {
+        do {
+            let photos = try await photoRepository.getPhotosForPost(postId: postId)
+            DispatchQueue.main.async {
+                self.relatedPost.photos = photos // 게시물 사진 업데이트
+            }
+        } catch {
+            print("Error fetching photos: \(error)")
+        }
     }
 }

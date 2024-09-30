@@ -7,29 +7,31 @@
 
 import SwiftUI
 
+import SwiftUI
+
 extension MyAccountView {
     class ViewModel: ObservableObject {
-        @Published var user: User = User(id: 0, username:"", nickname: "", email: "")
+        @Published var user: User = User(id: 0, username: "", nickname: "", email: "")
         let username: String
         private let userRepository = UserRepository()
 
-        
         init() {
             self.username = "username2"
-            getUserDetail()
+            Task {
+                await getUserDetail()
+            }
         }
-        
-        func getUserDetail() {
-            userRepository.getUserByUsername(username: username) { result in
-                switch result {
-                case .success(let user):
-                    DispatchQueue.main.async {
-                        self.user = user // UI 업데이트는 메인 스레드에서
-                    }
-                case .failure(let error):
-                    print("Error: \(error)")
+
+        func getUserDetail() async {
+            do {
+                let user = try await userRepository.getUserByUsername(username: username)
+                DispatchQueue.main.async {
+                    self.user = user // UI 업데이트는 메인 스레드에서
                 }
+            } catch {
+                print("Error: \(error)")
             }
         }
     }
 }
+

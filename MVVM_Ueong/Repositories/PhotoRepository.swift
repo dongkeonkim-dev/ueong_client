@@ -8,17 +8,15 @@
 import Foundation
 
 class PhotoRepository {
-    func getPhotosForPost(postId: Int, completion: @escaping ([Photo]) -> Void) {
-        // API 호출을 통해 사진을 가져오는 로직
-        APICall.shared.get("photo/by-post-id", parameters: ["postId": postId]) { (result: Result<[Photo], Error>) in
-            switch result {
-            case .success(let photos):
-                print("Successfully retrieved \(photos.count) photos for post ID \(postId).")
-                completion(photos)
-            case .failure(let error):
-                print("Error fetching photos for post ID \(postId): \(error)")
-                completion([]) // 실패 시 빈 배열 반환
-            }
+    // 비동기 함수로 특정 포스트의 사진 목록을 가져오기
+    func getPhotosForPost(postId: Int) async throws -> [Photo] {
+        do {
+            let photos: [Photo] = try await APICall.shared.get("photo/by-post-id", parameters: [postId])
+            print("Successfully retrieved \(photos.count) photos for post ID \(postId).")
+            return photos
+        } catch {
+            print("Error fetching photos for post ID \(postId): \(error)")
+            throw error
         }
     }
 }

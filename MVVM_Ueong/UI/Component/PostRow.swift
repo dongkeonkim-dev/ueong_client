@@ -97,21 +97,5 @@ private extension PostRow {
 
 
 #Preview {
-    PostRow(post: Post(
-        id: 9,
-        title: "자전거",
-        category: 1,
-        price: 3000.0,
-        emdId: 1,
-        latitude: 37.5,
-        longitude: 160.0,
-        locationDetail: "아무데나",
-        createAt: Date(), // Date()로 초기화
-        isFavorite: false,
-        text: "soososososo",
-        photos: [
-            Photo(id: 1, postId: 1, url: "cat1.jpg") // 여기에 사진의 URL을 적어주세요
-        ],
-        status: "판매중"
-    ))
+    PostRow(post: Post())
 }

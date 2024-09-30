@@ -4,85 +4,66 @@
 //
 //  Created by 김동건 on 9/25/24.
 //
-
 import Foundation
 
 class PostRepository {
-       
-    func getMyPosts(username: String, completion: @escaping (Result<[Post], Error>) -> Void) {
-        // MySQL에서 데이터 받아오는 로직
-        APICall.shared.get("post/myPosts/by-username", parameters: ["username":username], queryParameters: [:]) { (result: Result<[Post], Error>) in
-            switch result {
-            case .success(let posts):
-                print("Posts retrieved successfully: \(posts.count) my posts found.")
-                completion(.success(posts))
-            case .failure(let error):
-                print("Error fetching my posts: \(error)")
-                completion(.failure(error))
-            }
+    
+    // 비동기 함수로 나의 포스트 가져오기
+    func getMyPosts(username: String) async throws -> [Post] {
+        do {
+            let posts: [Post] = try await APICall.shared.get("post/myPosts/by-username", parameters: [username])
+            print("Posts retrieved successfully: \(posts.count) my posts found.")
+            return posts
+        } catch {
+            print("Error fetching my posts: \(error)")
+            throw error
         }
     }
     
-    func searchPosts(username: String, searchTerm: String, completion: @escaping (Result<[Post], Error>) -> Void) {
-        APICall.shared.get("post/search", parameters: ["username":username], queryParameters: ["searchTerm":searchTerm]) { (result: Result<[Post], Error>) in
-                switch result {
-                case .success(let posts):
-                    print("Posts retrieved successfully: \(posts.count) posts found.")
-                    completion(.success(posts))
-                case .failure(let error):
-                    print("Error fetching posts: \(error)")
-                    completion(.failure(error))
-                }
-            }
+    // 비동기 함수로 검색된 포스트 가져오기
+    func searchPosts(username: String, searchTerm: String) async throws -> [Post] {
+        do {
+            let posts: [Post] = try await APICall.shared.get("post/search", parameters: [username], queryParameters: ["searchTerm": searchTerm])
+            print("Posts retrieved successfully: \(posts.count) posts found.")
+            return posts
+        } catch {
+            print("Error fetching posts: \(error)")
+            throw error
+        }
     }
     
-    func getPostDetail(userId:Int) -> Post {
-        // MySQL에서 데이터 받아오는 로직
-        
-        let posts = Post(
-            id: 9,
-            title: "자전거",
-            category: 1,
-            price: 3000.0,
-            emdId: 1,
-            latitude: 37.5,
-            longitude: 160.0,
-            locationDetail: "아무데나",
-            createAt: Date(), // Date()로 초기화
-            isFavorite: false,
-            text: "soososososo",
-            photos: [
-                Photo(id: 1, postId: 1, url: "cat1.jpg") // 여기에 사진의 URL을 적어주세요
-            ],
-            status: "판매중"
-        )
-      
-        return posts
+    // 비동기 함수로 특정 포스트 아이디로 포스트 가져오기
+    func getPostById(username: String, postId: Int) async throws -> Post {
+        do {
+            let post: Post = try await APICall.shared.get("post/by-id", parameters: [username,postId])
+            print("Post retrieved successfully: post found.")
+            return post
+        } catch {
+            print("Error fetching a post: \(error)")
+            throw error
+        }
     }
     
-    func getFavoriteList(username: String, completion: @escaping (Result<[Post], Error>) -> Void) {
-        // MySQL에서 데이터 받아오는 로직
-        APICall.shared.get("post/favorite/by-username", parameters: ["username":username], queryParameters: [:]) { (result: Result<[Post], Error>) in
-                switch result {
-                case .success(let posts):
-                    print("Posts retrieved successfully: \(posts.count) favorite posts found.")
-                    completion(.success(posts))
-                case .failure(let error):
-                    print("Error fetching favorite posts: \(error)")
-                    completion(.failure(error))
-                }
-            }
+    // 비동기 함수로 사용자 즐겨찾기 목록 가져오기
+    func getFavoriteList(username: String) async throws -> [Post] {
+        do {
+            let posts: [Post] = try await APICall.shared.get("post/favorite/by-username", parameters: [username])
+            print("Posts retrieved successfully: \(posts.count) favorite posts found.")
+            return posts
+        } catch {
+            print("Error fetching favorite posts: \(error)")
+            throw error
+        }
     }
     
-    func postPost(post: PostPost, completion: @escaping (Result<Void, Error>) -> Void) {
-        APICall.shared.post("post/postPost", body: post) { result in
-            switch result {
-            case .success:
-                completion(.success(()))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+    // 비동기 함수로 포스트 작성하기
+    func postPost(post: PostPost) async throws {
+        do {
+            try await APICall.shared.post("post/postPost", body: post)
+            print("Post created successfully.")
+        } catch {
+            print("Error creating post: \(error)")
+            throw error
         }
     }
 }
-

@@ -18,50 +18,38 @@ extension SalesListView {
         init() {
             // 예시 사용자 이름으로 설정
             self.username = "username1"
-            fetchMyPosts()
+            fetchPage()
         }
 
-        func fetchMyPosts() {
-            postRepository.getMyPosts(username: username) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let posts):
-                        self?.myPosts = posts
-                        self?.postsForSale = posts.filter { $0.status == "거래대기" }
-                        self?.postsSold = posts.filter { $0.status == "거래완료" }
-                        self?.fetchPhotosForPostsForSaleAndSold()
-                        print("Successfully retrieved \(posts.count) posts.")
-                    case .failure(let error):
-                        print("Error fetching posts: \(error)")
-                    }
+        func fetchPage(){
+            Task{
+                await fetchMyPosts()
+                await fetchPhotos(for: &postsForSale)
+                await fetchPhotos(for: &postsSold)
+            }
+        }
+        func fetchMyPosts() async {
+            do {
+                let posts = try await postRepository.getMyPosts(username: username)
+                myPosts = posts
+                postsForSale = posts.filter { $0.status == "거래대기" }
+                postsSold = posts.filter { $0.status == "거래완료" }
+                print("Successfully retrieved \(posts.count) posts.")
+                
+            } catch {
+                print("Error fetching posts: \(error)")
+            }
+        }
+
+        private func fetchPhotos(for posts: inout [Post]) async {
+            for index in posts.indices {
+                do {
+                    let photos = try await photoRepository.getPhotosForPost(postId: posts[index].id)
+                    posts[index].photos = photos // 각 포스트에 대한 photos 업데이트
+                } catch {
+                    print("Error fetching photos for post \(posts[index].id): \(error)")
                 }
-            }
-        }
-
-        private func fetchPhotos(for posts: [Post], updateHandler: @escaping ([Post]) -> Void) {
-            var updatedPosts = posts
-            for (index, post) in posts.enumerated() {
-                photoRepository.getPhotosForPost(postId: post.id) { [weak self] photos in
-                    DispatchQueue.main.async {
-                        updatedPosts[index].photos = photos
-                        updateHandler(updatedPosts)
-                    }
-                }
-            }
-        }
-
-        private func fetchPhotosForPostsForSaleAndSold() {
-            // 판매중 포스트에 대한 사진 업데이트
-            fetchPhotos(for: postsForSale) { [weak self] updatedPosts in
-                self?.postsForSale = updatedPosts
-            }
-
-            // 판매완료 포스트에 대한 사진 업데이트
-            fetchPhotos(for: postsSold) { [weak self] updatedPosts in
-                self?.postsSold = updatedPosts
             }
         }
     }
 }
-
-

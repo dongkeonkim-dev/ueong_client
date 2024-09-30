@@ -6,18 +6,15 @@
 //
 import Foundation
 
-
 class MessageRepository {
-    func getMessagesByChatter(username: String, chatter: String, completion: @escaping (Result<[Message], Error>) -> Void) {
-        // APICall을 통해 서버에서 메시지를 받아옴
-        APICall.shared.get("message/by-chatter", parameters: ["username": username, "chatter": chatter]) { (result: Result<[Message], Error>) in
-            switch result {
-            case .success(let messages):
-                completion(.success(messages))
-            case .failure(let error):
-                completion(.failure(error))
-            }
+    // 비동기 함수로 채팅 상대방에 따른 메시지 목록 가져오기
+    func getMessagesByChatter(username: String, chatter: String) async throws -> [Message] {
+        do {
+            let messages: [Message] = try await APICall.shared.get("message/by-chatter", parameters: [username, chatter])
+            return messages
+        } catch {
+            print("Error fetching messages: \(error)")
+            throw error
         }
     }
 }
-

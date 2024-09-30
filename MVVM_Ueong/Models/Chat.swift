@@ -17,13 +17,14 @@ import Foundation
 //}
 
 struct Chat: Decodable {
-    let id: Int
-    let senderUsername: String
-    let receiverUsername: String
-    let senderNickname: String
-    let receiverNickname: String
-    let lastMessageText: String
-    let rawlastSentTime: String
+    var id: Int
+    var sellerUsername: String
+    var buyerUsername: String
+    var sellerNickname: String
+    var buyerNickname: String
+    var lastMessageText: String
+    var rawlastSentTime: String
+    var relatedPostId: Int
     
     var lastSentTime: Date?
     var chatterUsername: String?
@@ -32,11 +33,12 @@ struct Chat: Decodable {
     // CodingKeys를 통해 JSON 키와 Swift 속성 간의 매핑
     enum CodingKeys: String, CodingKey {
         case id = "chat_id"
-        case senderNickname = "sender_nickname"
-        case receiverNickname = "receiver_nickname"
+        case sellerUsername = "seller_username"
+        case buyerUsername = "buyer_username"
+        case sellerNickname = "seller_nickname"
+        case buyerNickname = "buyer_nickname"
         case lastMessageText = "message_text"
         case rawlastSentTime = "sent_time"
-        case senderUsername = "sender_username"
-        case receiverUsername = "receiver_username"
+        case relatedPostId = "post_id"
     }
 }

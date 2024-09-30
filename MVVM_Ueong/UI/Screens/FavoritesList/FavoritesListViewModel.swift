@@ -15,33 +15,42 @@ extension FavoritesListView {
         var username: String
 
         init(userId: Int) {
-            // 예시 좋아요 상품 로드
             self.username = "username1"
-            loadFavorites()
+            fetchPage()
         }
-
-        func loadFavorites() {
-            postRepository.getFavoriteList(username: username) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success(let posts):
-                        self?.favoritePosts = posts // UI 업데이트는 메인 스레드에서
-                        self?.fetchPhotosForPosts()
-                        print("Successfully retrieved \(posts.count) posts.")
-                    case .failure(let error):
-                        print("Error fetching posts: \(error)")
-                    }
+        
+        func fetchPage(){
+            Task{
+                await loadFavorites()
+                await fetchPhotosForPosts()
+            }
+        }
+        
+        // 좋아요 목록을 불러오는 함수
+        private func loadFavorites() async{
+            do {
+                let posts = try await postRepository.getFavoriteList(username: username)
+                DispatchQueue.main.sync {
+                    self.favoritePosts = posts
+                    print("Successfully retrieved \(posts.count) posts.")
                 }
+                await fetchPhotosForPosts()
+            } catch {
+                print("Error fetching favorite posts: \(error)")
             }
         }
 
-        private func fetchPhotosForPosts() {
+        // 모든 좋아요 포스트에 대한 사진 데이터를 가져오는 함수
+        private func fetchPhotosForPosts() async {
             for index in favoritePosts.indices {
                 let postId = favoritePosts[index].id
-                photoRepository.getPhotosForPost(postId: postId) { [weak self] photos in
+                do {
+                    let photos = try await photoRepository.getPhotosForPost(postId: postId)
                     DispatchQueue.main.async {
-                        self?.favoritePosts[index].photos = photos // 각 포스트에 대한 photos 업데이트
+                        self.favoritePosts[index].photos = photos // 각 포스트에 대한 photos 업데이트
                     }
+                } catch {
+                    print("Error fetching photos for post \(postId): \(error)")
                 }
             }
         }

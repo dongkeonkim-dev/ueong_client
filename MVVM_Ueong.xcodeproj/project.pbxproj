@@ -156,8 +156,8 @@
 		0D45B7B72CA44CC600AA516F /* WritePost */ = {
 			isa = PBXGroup;
 			children = (
-				0D45B7BA2CA44CDC00AA516F /* WritePostViewModel.swift */,
 				0D45B7B82CA44CD400AA516F /* WritePostView.swift */,
+				0D45B7BA2CA44CDC00AA516F /* WritePostViewModel.swift */,
 			);
 			path = WritePost;
 			sourceTree = "<group>";
@@ -213,8 +213,8 @@
 		0DB6933B2CA41B6900A3E3B7 /* AccountEdit */ = {
 			isa = PBXGroup;
 			children = (
-				0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */,
 				0DB6933C2CA41B7200A3E3B7 /* AccountEditView.swift */,
+				0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */,
 			);
 			name = AccountEdit;
 			path = MVVM_Ueong/UI/Screens/AccountEdit;

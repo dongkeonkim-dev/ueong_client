@@ -65,7 +65,7 @@ struct ChatListView: View {
 
                 ScrollView {
                     ForEach(viewModel.chats, id: \.id) { chat in
-                        NavigationLink(destination: ChatView(viewModel: ChatViewModel(chatterUsername: chat.chatterUsername ?? "", chatterNickname:chat.chatterNickname ?? ""))) {
+                        NavigationLink(destination: ChatView(viewModel: ChatViewModel(chatterUsername: chat.chatterUsername ?? "", chatterNickname:chat.chatterNickname ?? "", postId:chat.relatedPostId))) {
                             HStack {
                                 Image(systemName: "person.circle.fill")
                                     .resizable()

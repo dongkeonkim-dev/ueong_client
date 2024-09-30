@@ -13,18 +13,26 @@ struct ChatView: View {
 
     var body: some View {
         VStack {
+            NavigationLink(
+                destination: PostDetail(viewModel: PostDetail.ViewModel(postId: viewModel.relatedPost.id))
+            ) {
+                PostRow(post: viewModel.relatedPost)
+            }
             
             // 메시지 목록 스크롤
             MessageListView(viewModel: viewModel)
 
             // 메시지 입력 및 전송
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
-                viewModel.sendMessage(newMessage)
+                //viewModel.sendMessage(newMessage)
                 newMessage = ""
             })
         }
         .navigationTitle("\(viewModel.chatterNickname)")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear(){
+            viewModel.fetchPage() // Call the async function here
+        }
     }
 }
 
@@ -122,5 +130,5 @@ struct MessageInputView: View {
 
 // Preview 구성
 #Preview {
-    ChatView(viewModel: ChatViewModel(chatterUsername:"username2", chatterNickname:"유저2"))
+    ChatView(viewModel: ChatViewModel(chatterUsername:"username2", chatterNickname:"유저2", postId:1))
 }

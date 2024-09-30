@@ -82,7 +82,7 @@ struct ForSalesView: View {
             VStack(spacing: 13) {
                 ForEach(viewModel.postsForSale) { post in
                     NavigationLink(
-                        destination: PostDetail(viewModel: PostDetail.ViewModel(post: post))
+                        destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                     ) {
                         PostRow(post: post)
                     }
@@ -102,7 +102,7 @@ struct SoldView: View {
             VStack(spacing: 13) {
                 ForEach(viewModel.postsSold) { post in
                     NavigationLink(
-                        destination: PostDetail(viewModel: PostDetail.ViewModel(post: post))
+                        destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                     ) {
                         PostRow(post: post)
                     }

@@ -4,17 +4,34 @@
 //
 //  Created by 김석원 on 9/25/24.
 //
-
 import Foundation
-
-import SwiftUI
+import MapKit
 
 extension PostDetail {
     class ViewModel: ObservableObject {
-        @Published var post: Post
+        @Published var post: Post = Post()
         
-        init(post: Post) {
-            self.post = post
+        var username: String
+        var postId: Int
+        
+        let postRepository = PostRepository()
+        let photoRepository = PhotoRepository()
+        
+        init(postId: Int) {
+            self.username = "username1"
+            self.postId = postId
+            fetchPage()
+        }
+        
+        func fetchPage() {
+            Task {
+                let post = try await postRepository.getPostById(username: username, postId: postId)
+                let photos = try await photoRepository.getPhotosForPost(postId: postId)
+                DispatchQueue.main.async {
+                    self.post = post
+                    self.post.photos = photos
+                }
+            }
         }
     }
 }
