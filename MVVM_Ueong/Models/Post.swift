@@ -81,10 +81,11 @@ struct Post: Identifiable, Decodable {
 }
 
 
-struct PostPost {
+struct PostPost :Encodable{
     var title: String
     var category: Int
     var price: Double
+    var writerUsername: String
     var emdId: Int
     var latitude: Double
     var longitude: Double
