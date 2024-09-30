@@ -32,8 +32,7 @@ struct PostDetail: View {
                         postText: viewModel.post.text
                     ) // 포스트 상세 정보 추가
                     TradingLocation(
-                        postTitle: viewModel.post.title,
-                        location: viewModel.post.location
+                        viewModel:viewModel
                     )
                 }
                 .onAppear {
@@ -140,8 +139,7 @@ struct PostDetailContent: View {
 
 // MARK: - TradingLocation
 struct TradingLocation: View {
-    var postTitle: String
-    var location: CLLocationCoordinate2D
+    @ObservedObject var viewModel: PostDetail.ViewModel
     var body: some View {
         VStack {
             Text("거래 희망 장소")
@@ -150,14 +148,20 @@ struct TradingLocation: View {
                 .padding(.top, 20)
 
             
-            Map(initialPosition: .region(MKCoordinateRegion(center: location, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
-                Marker(postTitle, coordinate: location)
+            if let coordinate = viewModel.mapCoordinate {
+                Map(initialPosition: .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
+                    Marker(viewModel.post.title, coordinate: coordinate)
                         .tint(.blue)
                 }
                 .frame(height: 200)
                 .cornerRadius(10)
                 .padding(.bottom, 20)
-            
+            } else {
+                ProgressView("지도 정보를 불러오는 중입니다...")
+                    .frame(height: 200)
+                    .cornerRadius(10)
+                    .padding(.bottom, 20)
+            }
         }
         .padding(.horizontal)
     }

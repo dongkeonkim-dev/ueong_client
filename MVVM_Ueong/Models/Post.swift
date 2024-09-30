@@ -14,7 +14,8 @@ struct Post: Identifiable, Decodable {
     var price: Double
     var writerUsername: String
     var emdId: Int
-    var location: CLLocationCoordinate2D
+    var latitude: Double
+    var longitude: Double
     var locationDetail: String
     var createAt: Date? // Optional Date
     var isFavorite: Bool
@@ -49,11 +50,8 @@ struct Post: Identifiable, Decodable {
         price = try container.decode(Double.self, forKey: .price)
         writerUsername = try container.decode(String.self, forKey: .writerUsername)
         emdId = try container.decode(Int.self, forKey: .emdId)
-        
-        let latitude = try container.decode(Double.self, forKey: .latitude)
-        let longitude = try container.decode(Double.self, forKey: .longitude)
-        location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        
+        latitude = try container.decode(Double.self, forKey: .latitude)
+        longitude = try container.decode(Double.self, forKey: .longitude)
         locationDetail = try container.decode(String.self, forKey: .locationDetail)
         // rawCreateAt을 Date로 변환
         let rawCreateAt = try container.decode(String.self, forKey: .rawCreateAt)
@@ -75,7 +73,8 @@ struct Post: Identifiable, Decodable {
         self.price = 3000.0
         self.writerUsername = "username1"
         self.emdId = 1
-        self.location = CLLocationCoordinate2D(latitude: 37.5665, longitude: 126.9780)
+        self.latitude = 37
+        self.longitude = 126
         self.locationDetail = "위치상세"
         self.createAt = Date()
         self.isFavorite = false
