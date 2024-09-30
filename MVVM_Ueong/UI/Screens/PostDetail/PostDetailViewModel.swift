@@ -10,6 +10,7 @@ import MapKit
 extension PostDetail {
     class ViewModel: ObservableObject {
         @Published var post: Post = Post()
+        @Published var mapCoordinate : CLLocationCoordinate2D?
         
         var username: String
         var postId: Int
@@ -29,6 +30,7 @@ extension PostDetail {
                 DispatchQueue.main.sync {
                     self.post = post
                     self.post.photos = photos
+                    self.mapCoordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)
                 }
             }
         }
