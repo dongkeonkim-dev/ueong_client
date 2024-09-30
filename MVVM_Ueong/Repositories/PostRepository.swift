@@ -9,6 +9,7 @@ import Foundation
 
 
 class PostRepository {
+       
     func getMyPosts(username: String, completion: @escaping (Result<[Post], Error>) -> Void) {
         // MySQL에서 데이터 받아오는 로직
         APICall.shared.get("post/myPosts/by-username", parameters: ["username":username], queryParameters: [:]) { (result: Result<[Post], Error>) in
@@ -72,6 +73,17 @@ class PostRepository {
                     completion(.failure(error))
                 }
             }
+    }
+    
+    func postPost(post: PostPost, completion: @escaping (Result<Void, Error>) -> Void) {
+        APICall.shared.post("post/postPost", body: post) { result in
+            switch result {
+            case .success:
+                completion(.success(()))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 
