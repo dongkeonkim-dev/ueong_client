@@ -6,6 +6,7 @@
 //
 import Foundation
 
+
 class PostRepository {
     
     // 비동기 함수로 나의 포스트 가져오기

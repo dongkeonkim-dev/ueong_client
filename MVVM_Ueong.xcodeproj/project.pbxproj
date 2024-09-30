@@ -29,6 +29,7 @@
 		0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693452CA42A8100A3E3B7 /* SalesListView.swift */; };
 		0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */; };
 		1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B22CA972920071A8C8 /* AddPostButton.swift */; };
+		1F53E2B82CA9B9B50071A8C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F53E2B72CA9B9B50071A8C8 /* SocketIO */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
 		1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121C2CA3FDCB00A33802 /* example.swift */; };
@@ -133,6 +134,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F53E2B82CA9B9B50071A8C8 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,6 +231,13 @@
 			path = SalesList;
 			sourceTree = "<group>";
 		};
+		1F53E2B62CA9B9B50071A8C8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1F691BB52CA3CD100076E8A8 /* PostDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -259,6 +268,7 @@
 				1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */,
 				1FD1345F2CA4209100B48F6B /* MVVM_UeongTests.xctest */,
 				1FD134602CA4209100B48F6B /* MVVM_UeongUITests.xctest */,
+				1F53E2B62CA9B9B50071A8C8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -388,6 +398,9 @@
 			dependencies = (
 			);
 			name = MVVM_Ueong;
+			packageProductDependencies = (
+				1F53E2B72CA9B9B50071A8C8 /* SocketIO */,
+			);
 			productName = MVVM_Ueong;
 			productReference = 1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */;
 			productType = "com.apple.product-type.application";
@@ -461,6 +474,7 @@
 			);
 			mainGroup = 1FC52F6E2CA2CF72001A933B;
 			packageReferences = (
+				1F53E2B52CA9B7CD0071A8C8 /* XCRemoteSwiftPackageReference "socket" */,
 			);
 			productRefGroup = 1FC52F6E2CA2CF72001A933B;
 			projectDirPath = "";
@@ -870,6 +884,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1F53E2B52CA9B7CD0071A8C8 /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1F53E2B72CA9B9B50071A8C8 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F53E2B52CA9B7CD0071A8C8 /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		1FC52F852CA2CF73001A933B /* MVVM_Ueong.xcdatamodeld */ = {
