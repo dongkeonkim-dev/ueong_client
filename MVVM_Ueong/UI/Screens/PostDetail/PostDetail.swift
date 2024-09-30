@@ -13,42 +13,39 @@ struct PostDetail: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
 
     var body: some View {
-        NavigationView {
-            VStack {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
-                        PostImageSlider(photos: viewModel.post.photos ?? [])
-                        UserInfoView(
-                            writerUsername:viewModel.post.writerUsername,
-                            emd_name: "충주시 단월동"
-                        ) // 사용자 정보 추가
-                        
-                        Rectangle()
-                            .fill(Color.gray)
-                            .frame(height: 1)
-                            .padding(.horizontal, 20)
-                        
-                        PostDetailContent(
-                            postTitle: viewModel.post.title,
-                            postText: viewModel.post.text
-                        ) // 포스트 상세 정보 추가
-                        TradingLocation(
-                            postTitle: viewModel.post.title,
-                            latitude: viewModel.post.latitude,
-                            longitude: viewModel.post.longitude
-                        )
-                    }
-                    .onAppear {
-                        viewModel.fetchPage()
-                    }
-                }
-                VStack(spacing: 20) {
+        VStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    PostImageSlider(photos: viewModel.post.photos ?? [])
+                    UserInfoView(
+                        writerUsername:viewModel.post.writerUsername,
+                        emd_name: "충주시 단월동"
+                    ) // 사용자 정보 추가
+                    
                     Rectangle()
                         .fill(Color.gray)
                         .frame(height: 1)
+                        .padding(.horizontal, 20)
+                    
+                    PostDetailContent(
+                        postTitle: viewModel.post.title,
+                        postText: viewModel.post.text
+                    ) // 포스트 상세 정보 추가
+                    TradingLocation(
+                        postTitle: viewModel.post.title,
+                        location: viewModel.post.location
+                    )
                 }
-                .padding(.bottom, 20)
+                .onAppear {
+                    viewModel.fetchPage()
+                }
             }
+            VStack(spacing: 20) {
+                Rectangle()
+                    .fill(Color.gray)
+                    .frame(height: 1)
+            }
+            .padding(.bottom, 20)
         }
     }
 }
@@ -144,9 +141,7 @@ struct PostDetailContent: View {
 // MARK: - TradingLocation
 struct TradingLocation: View {
     var postTitle: String
-    var latitude: Double
-    var longitude: Double
-
+    var location: CLLocationCoordinate2D
     var body: some View {
         VStack {
             Text("거래 희망 장소")
@@ -154,15 +149,15 @@ struct TradingLocation: View {
                 .fontWeight(.bold)
                 .padding(.top, 20)
 
-            let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-
-            Map(initialPosition: .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
-                Marker(postTitle, coordinate: coordinate)
-                    .tint(.blue)
-            }
-            .frame(height: 200)
-            .cornerRadius(10)
-            .padding(.bottom, 20)
+            
+            Map(initialPosition: .region(MKCoordinateRegion(center: location, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
+                Marker(postTitle, coordinate: location)
+                        .tint(.blue)
+                }
+                .frame(height: 200)
+                .cornerRadius(10)
+                .padding(.bottom, 20)
+            
         }
         .padding(.horizontal)
     }

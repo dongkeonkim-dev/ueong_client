@@ -23,7 +23,6 @@ class ChatViewModel: ObservableObject {
         self.chatterNickname = chatterNickname
         self.relatedPost = Post()
         self.postId = postId
-        fetchPage() // 메시지 로드
     }
     
     // 비동기 작업을 순차적으로 처리하도록 개선한 메서드

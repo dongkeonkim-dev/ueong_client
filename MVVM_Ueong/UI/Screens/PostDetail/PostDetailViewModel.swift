@@ -20,14 +20,13 @@ extension PostDetail {
         init(postId: Int) {
             self.username = "username1"
             self.postId = postId
-            fetchPage()
         }
         
         func fetchPage() {
             Task {
                 let post = try await postRepository.getPostById(username: username, postId: postId)
                 let photos = try await photoRepository.getPhotosForPost(postId: postId)
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
                     self.post = post
                     self.post.photos = photos
                 }
