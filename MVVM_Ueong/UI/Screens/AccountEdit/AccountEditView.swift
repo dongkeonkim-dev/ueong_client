@@ -7,7 +7,8 @@
 import SwiftUI
 
 struct AccountEditView: View {
-    @ObservedObject var viewModel : AccountEditView.ViewModel
+    @ObservedObject var viewModel: AccountEditView.ViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -19,19 +20,45 @@ struct AccountEditView: View {
                             .font(.system(size: 25).weight(.bold))
                         Spacer()
                     }
-                    
+
                     // 프로필 이미지
                     VStack {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 325, height: 325)
-                            .foregroundColor(.gray)
-                        
-                        
+                        if let profilePhotoData = viewModel.editedUserData.profilePhoto,
+                           let uiImage = UIImage(data: profilePhotoData) {
+                            // 새로 선택된 이미지가 있을 때 표시
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 325, height: 325)
+                                .clipped()
+                                .clipShape(Circle())
+                        } else if let photoUrl = viewModel.user.profilePhotoUrl,
+                                  let url = URL(string: baseURL.joinPath(photoUrl)) {
+                            // 서버에서 불러온 기존 이미지를 표시
+                            AsyncImage(url: url) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 325, height: 325)
+                                    .clipped()
+                                    .clipShape(Circle())
+                            } placeholder: {
+                                ProgressView()
+                                    .frame(width: 325, height: 325)
+                            }
+                        } else {
+                            // 기본 이미지
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 325, height: 325)
+                                .foregroundColor(.gray)
+                        }
+
                         HStack {
                             Button(action: {
                                 viewModel.isImagePickerPresented = true
+                                viewModel.imageSource = .photoLibrary
                             }) {
                                 Image(systemName: "photo")
                                     .resizable()
@@ -39,9 +66,10 @@ struct AccountEditView: View {
                                     .frame(width: 25, height: 25)
                             }
                             .padding(.top, 5)
-                            
+
                             Button(action: {
                                 viewModel.isImagePickerPresented = true
+                                viewModel.imageSource = .camera
                             }) {
                                 Image(systemName: "camera")
                                     .resizable()
@@ -55,16 +83,16 @@ struct AccountEditView: View {
 
                     // 별명 입력 필드
                     InputFieldView(title: "별명", text: $viewModel.editedUserData.nickname)
-                    
+
                     // 이메일 입력 필드
                     InputFieldView(title: "이메일", text: $viewModel.editedUserData.email)
-                    
+
                     // 비밀번호 입력 필드
                     SecureInputFieldView(title: "비밀번호", text: $viewModel.editedUserData.password)
-                    
+
                     // 비밀번호 확인 필드
                     SecureInputFieldView(title: "비밀번호 확인", text: $viewModel.editedUserData.confirmPassword)
-                    
+
                     // 완료 및 취소 버튼
                     HStack {
                         Button(action: {
@@ -78,9 +106,9 @@ struct AccountEditView: View {
                                 .cornerRadius(10)
                         }
                         .padding(.horizontal)
-                        
+
                         Button(action: {
-                            // 취소 액션 추가
+                            presentationMode.wrappedValue.dismiss()
                         }) {
                             Text("취소")
                                 .padding()
@@ -95,9 +123,21 @@ struct AccountEditView: View {
                 .padding()
             }
         }
+        .onAppear(){
+            viewModel.fetchPage()
+        }
+        .onChange(of: viewModel.editing) { oldValue, newValue in
+            if !viewModel.editing {
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
+        .sheet(isPresented: $viewModel.isImagePickerPresented) {
+            ImagePicker(imageData: $viewModel.editedUserData.profilePhoto, sourceType: viewModel.imageSource)
+        }
         Spacer()
     }
 }
+
 
 struct InputFieldView: View {
     let title: String
@@ -134,5 +174,5 @@ struct SecureInputFieldView: View {
 }
 
 #Preview {
-    AccountEditView(viewModel: AccountEditView.ViewModel(userId: 3))
+    AccountEditView(viewModel: AccountEditView.ViewModel())
 }

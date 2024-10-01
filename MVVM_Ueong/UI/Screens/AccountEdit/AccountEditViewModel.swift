@@ -9,48 +9,53 @@ import SwiftUI
 
 extension AccountEditView {
     class ViewModel: ObservableObject {
-        @Published var user: User = User(id: 0, username: "", nickname: "", email: "")
-        @Published var editedUserData: EditedUserData
+        @Published var user: User = User()
+        @Published var editedUserData = EditedUserData()
         @Published var isImagePickerPresented = false
+        @Published var imageSource: UIImagePickerController.SourceType = .photoLibrary
+        @Published var editing: Bool = false
         
         let username: String
         private let userRepository = UserRepository()
         
-        init(userId: Int) {
+        init() {
             self.username = "username1"
-            self.editedUserData = EditedUserData(username: "", password: "", confirmPassword: "", email: "", nickname: "")
-            fetchPage()
         }
         
         func fetchPage(){
-            Task{
-                await getUserDetail()
-            }
-        }
-        
-        func getUserDetail() async {
-            do {
-                let user = try await userRepository.getUserByUsername(username: username)
-                DispatchQueue.main.async {
-                    self.user = user
-                    // Initialize editable data based on loaded user data
-                    self.editedUserData = EditedUserData(
-                        username: user.username,
-                        password: "",
-                        confirmPassword: "",
-                        email: user.email,
-                        nickname: user.nickname
-                    )
-                }
-            } catch {
-                print("Error fetching user data: \(error)")
+            Task { @MainActor in
+                self.editing = true
+                self.user = try await userRepository.getUserByUsername(username: username)
+                self.editedUserData = EditedUserData(
+                    username: user.username,
+                    password: "",
+                    confirmPassword: "",
+                    email: user.email,
+                    nickname: user.nickname
+                )
+                self.isImagePickerPresented = false
             }
         }
         
         func saveChanges() {
-            // Logic to save changed data (validation and sending to server, etc.)
-            print("Saved nickname: \(editedUserData.nickname)")
-            print("Saved email: \(editedUserData.email)")
+            // 업로드 직전 데이터 로그 출력
+            Task{
+                print("=== 업로드 전 데이터 확인 ===")
+                print("Username: \(editedUserData.username)")
+                print("Email: \(editedUserData.email)")
+                print("Nickname: \(editedUserData.nickname)")
+                
+                if let profilePhotoData = editedUserData.profilePhoto {
+                    print("프로필 사진 크기: \(profilePhotoData.count) bytes")
+                } else {
+                    print("프로필 사진이 없습니다.")
+                }
+                
+                // API 요청을 보내는 코드 (실제 서버로 업로드)
+                try await userRepository.editUser(userData: editedUserData)
+                // 저장 후 현재 뷰를 닫기
+                self.editing = false
+            }
         }
     }
 }

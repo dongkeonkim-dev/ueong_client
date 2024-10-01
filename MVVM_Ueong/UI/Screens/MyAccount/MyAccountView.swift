@@ -1,4 +1,5 @@
 import SwiftUI
+import PhotosUI
 
 // MARK: - 내 정보
 struct MyAccountView: View {
@@ -22,13 +23,16 @@ struct MyAccountView: View {
                         })
                         
                         AccountActionsView(
-                            editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel(userId: viewModel.user.id)),
+                            editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel()),
                             salesListDestination: SalesListView(viewModel: SalesListView.ViewModel()), // 임시 텍스트로 대체
                             deleteAccountAction: {
                                 // 탈퇴 액션
                             }
                         )
                         
+                    }
+                    .onAppear(){
+                        viewModel.fetchPage()
                     }
                     .padding(.leading, 5)
                 }
@@ -43,9 +47,26 @@ struct ProfileHeaderView: View {
 
     var body: some View {
         VStack {
-            Image(systemName: "person.circle.fill")
-                .foregroundColor(.gray)
-                .font(.system(size: 325, weight: .thin))
+            if let photoUrl = user.profilePhotoUrl, let url = URL(string: baseURL.joinPath(photoUrl)) {
+                // 서버에서 불러온 기존 이미지를 표시
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 325, height: 325)
+                        .clipped()
+                        .clipShape(Circle())
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: 325, height: 325)
+                }
+            } else {
+                // 기본 이미지
+                Image(systemName: "person.circle.fill")
+                    .foregroundColor(.gray)
+                    .font(.system(size: 325, weight: .thin))
+            }
+            
             HStack {
                 Text(user.nickname)
                     .padding(.leading, 8)

@@ -10,7 +10,7 @@ import MapKit
 struct Post: Identifiable, Decodable {
     var id: Int
     var title: String
-    var category: Int
+    var categoryId: Int
     var price: Double
     var writerUsername: String
     var emdId: Int
@@ -26,7 +26,7 @@ struct Post: Identifiable, Decodable {
     enum CodingKeys: String, CodingKey {
         case id = "post_id"
         case title = "post_title"
-        case category = "category_id"
+        case categoryId = "category_id"
         case price
         case writerUsername = "writer_username"
         case emdId = "emd_id"
@@ -46,7 +46,7 @@ struct Post: Identifiable, Decodable {
         
         id = try container.decode(Int.self, forKey: .id)
         title = try container.decode(String.self, forKey: .title)
-        category = try container.decode(Int.self, forKey: .category)
+        categoryId = try container.decode(Int.self, forKey: .categoryId)
         price = try container.decode(Double.self, forKey: .price)
         writerUsername = try container.decode(String.self, forKey: .writerUsername)
         emdId = try container.decode(Int.self, forKey: .emdId)
@@ -69,7 +69,7 @@ struct Post: Identifiable, Decodable {
     init() {
         self.id = 0
         self.title = "제목"
-        self.category = 1
+        self.categoryId = 1
         self.price = 3000.0
         self.writerUsername = "username1"
         self.emdId = 1
@@ -88,7 +88,7 @@ struct Post: Identifiable, Decodable {
 
 struct PostPost :Encodable{
     var title: String
-    var category: Int
+    var categoryId: Int
     var price: Double
     var writerUsername: String
     var emdId: Int

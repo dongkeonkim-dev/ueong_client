@@ -8,6 +8,7 @@
 import SwiftUI
 import MapKit
 
+
 // MARK: - PostDetail
 struct PostDetail: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
@@ -18,8 +19,8 @@ struct PostDetail: View {
                 VStack(alignment: .leading, spacing: 20) {
                     PostImageSlider(photos: viewModel.post.photos ?? [])
                     UserInfoView(
-                        writerUsername:viewModel.post.writerUsername,
-                        emd_name: "충주시 단월동"
+                        writer: viewModel.writer,
+                        siGuDong: viewModel.siGuDong
                     ) // 사용자 정보 추가
                     
                     Rectangle()
@@ -59,7 +60,7 @@ struct PostImageSlider: View {
         } else {
             TabView {
                 ForEach(photos) { photo in
-                    AsyncImage(url: URL(string: baseURL + photo.url)) { image in
+                    AsyncImage(url: URL(string: baseURL.joinPath(photo.url))) { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -79,22 +80,40 @@ struct PostImageSlider: View {
 
 // MARK: - UserInfoView
 struct UserInfoView: View {
-    var writerUsername : String
-    let emd_name: String
+    var writer : User
+    let siGuDong: String
 
     var body: some View {
         HStack {
-            Image("cat2")
-                .resizable()
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
-                .padding(.trailing, 10)
-
+            if let photoUrl = writer.profilePhotoUrl,
+                let url = URL(string: baseURL.joinPath(photoUrl)) {
+                // 서버에서 불러온 기존 이미지를 표시
+                AsyncImage(url: url) { image in
+                    image
+                        .resizable()
+                        .frame(width: 60, height: 60)
+                        .clipShape(Circle())
+                        .padding(.trailing, 10)
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: 325, height: 325)
+                }
+            } else {
+                // 기본 이미지
+                Image(systemName: "person.circle.fill")
+                    .resizable()
+                    .frame(width: 60, height: 60)
+                    .clipShape(Circle())
+                    .padding(.trailing, 10)
+                    .foregroundColor(.gray)
+            }
+            
+            
             VStack(alignment: .leading) {
-                Text(writerUsername)
+                Text(writer.nickname)
                     .font(.system(size: 18, weight: .bold))
                 Spacer().frame(height: 5)
-                Text(emd_name)
+                Text(siGuDong)
                     .font(.system(size: 14))
             }
         }

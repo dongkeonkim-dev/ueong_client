@@ -16,7 +16,7 @@ extension WritePostView {
         @Published var errorMessage: String? = nil
 
         init() {
-            self.post = PostPost(title: "", category: 1, price: 0, writerUsername: "username1", emdId: 1, latitude: 37, longitude: 136, locationDetail: "", text: "")
+            self.post = PostPost(title: "", categoryId: 1, price: 0, writerUsername: "username1", emdId: 1, latitude: 37, longitude: 136, locationDetail: "", text: "")
         }
         func postPost() {
             guard !isPosting else { return } // 중복 요청 방지
