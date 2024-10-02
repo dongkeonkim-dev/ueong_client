@@ -16,7 +16,6 @@ extension FavoritesListView {
 
         init(userId: Int) {
             self.username = "username1"
-            fetchPage()
         }
         
         func fetchPage(){

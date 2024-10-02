@@ -22,6 +22,7 @@ struct Post: Identifiable, Decodable {
     var text: String
     var photos: [Photo]?
     var status: String
+    var favoriteCount: Int
 
     enum CodingKeys: String, CodingKey {
         case id = "post_id"
@@ -38,6 +39,7 @@ struct Post: Identifiable, Decodable {
         case text
         case photos
         case status
+        case favoriteCount = "favorite_count"
     }
     
     //디코더에서 쓰는 생성자
@@ -63,6 +65,7 @@ struct Post: Identifiable, Decodable {
         
         text = try container.decode(String.self, forKey: .text)
         status = try container.decode(String.self, forKey: .status)
+        favoriteCount = try container.decode(Int.self, forKey: .favoriteCount)
     }
     
     // 목업데이터를 위한 생성자
@@ -81,6 +84,7 @@ struct Post: Identifiable, Decodable {
         self.text = "본문"
         self.photos = []
         self.status = "거래대기"
+        self.favoriteCount = 1
     }
     
 }

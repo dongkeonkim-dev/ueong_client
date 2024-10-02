@@ -22,9 +22,9 @@ class PostRepository {
     }
     
     // 비동기 함수로 검색된 포스트 가져오기
-    func searchPosts(username: String, searchTerm: String) async throws -> [Post] {
+    func searchPosts(username: String, village: Int, searchTerm: String, sortBy: String) async throws -> [Post] {
         do {
-            let posts: [Post] = try await APICall.shared.get("post/search", parameters: [username], queryParameters: ["searchTerm": searchTerm])
+            let posts: [Post] = try await APICall.shared.get("post/search", parameters: [username, village, sortBy], queryParameters: ["searchTerm": searchTerm])
             print("Posts retrieved successfully: \(posts.count) posts found.")
             return posts
         } catch {
