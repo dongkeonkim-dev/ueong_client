@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct SelectPostOption: View {
+    let viewModel : PostsList.ViewModel
     var body: some View {
         HStack(){
-            Button(action:{}){
+            Button(action:{
+                viewModel.sortBy = "createAt"
+                viewModel.fetchPosts()
+            }){
                 Text("전체")
                     .padding(.vertical, 5)
                     .padding(.horizontal, 10)
@@ -29,7 +33,10 @@ struct SelectPostOption: View {
                 RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
             )
             
-            Button(action:{}){
+            Button(action:{
+                viewModel.sortBy = "price"
+                viewModel.fetchPosts()
+            }){
                 Text("가격순")
                     .padding(.vertical, 5)
                     .padding(.horizontal, 10)
@@ -38,7 +45,10 @@ struct SelectPostOption: View {
                 RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
             )
             
-            Button(action:{}){
+            Button(action:{
+                viewModel.sortBy = "favoriteCount"
+                viewModel.fetchPosts()
+            }){
                 Text("관심순")
                     .padding(.vertical, 5)
                     .padding(.horizontal, 10)
@@ -54,5 +64,5 @@ struct SelectPostOption: View {
 }
 
 #Preview {
-    SelectPostOption()
+    SelectPostOption(viewModel: PostsList.ViewModel())
 }

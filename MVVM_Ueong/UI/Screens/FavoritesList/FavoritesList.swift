@@ -23,6 +23,8 @@ struct FavoritesListView: View {
                     }
                 }
             }
+        }.onAppear(){
+            viewModel.fetchPage()
         }
     }
 }

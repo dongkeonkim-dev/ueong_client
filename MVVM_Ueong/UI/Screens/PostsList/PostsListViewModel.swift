@@ -9,33 +9,38 @@ import SwiftUI
 extension PostsList {
     class ViewModel: ObservableObject {
         @Published var posts: [Post] = []
+        @Published var myVillages : [MyVillage] = []
+        @Published var selection: MyVillage? = nil// 기본값을 사용하여 초기화
+        @Published var sortBy: String = "create_at" // 기본 정렬 기준
+        
         let username: String
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
+        let myVillageRepository = MyVillageRepository()
 
         init() {
             self.username = "username1"
-            fetchPage()
-        }
-
-        // 전체 페이지 데이터를 가져오는 함수
-        func fetchPage(){
             Task{
-                await fetchPosts() // 먼저 포스트를 가져옵니다.
-                await fetchPhotosForPosts() // 포스트가 로드된 후에 사진을 가져옵니다.
+                fetchVillageList()
+                fetchPosts()
             }
         }
 
-        // 포스트 데이터를 가져오는 함수
-        private func fetchPosts() async {
-            do {
-                let posts = try await postRepository.searchPosts(username: username, searchTerm: "")
-                DispatchQueue.main.sync {
-                    self.posts = posts
-                    print("Successfully retrieved \(posts.count) posts.")
-                }
-            } catch {
-                print("Error fetching posts: \(error)")
+        func fetchVillageList(){
+            Task{ @MainActor in
+                self.myVillages = try await myVillageRepository.getMyVillagesByUsername(username: username)
+                self.selection = myVillages[0]
+            }
+        }
+        // 전체 페이지 데이터를 가져오는 함수
+        func fetchPosts(){
+            Task{ @MainActor in
+                self.posts = try await postRepository.searchPosts(
+                    username: username,
+                    village: selection?.id ?? 0,
+                    searchTerm: "",
+                    sortBy:sortBy)
+                await fetchPhotosForPosts() // 포스트가 로드된 후에 사진을 가져옵니다.
             }
         }
 

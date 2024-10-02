@@ -9,12 +9,19 @@ struct PostsList: View {
         ZStack {
             VStack(spacing: 20) {
                 HStack(spacing: -15){
-                    SelectRegion()
+                    SelectRegion(
+                        selection: $viewModel.selection,
+                        options: viewModel.myVillages,
+                        maxWidth: 130
+                    )
+                    .onChange(of: viewModel.selection) {
+                        viewModel.fetchPosts()
+                    }
                     SearchBar()
                 }
                 .zIndex(1)
                 
-                SelectPostOption()
+                SelectPostOption(viewModel: viewModel)
                 
                 ScrollView {
                     VStack(spacing: 13) {
@@ -28,7 +35,7 @@ struct PostsList: View {
                     }
                 }
                 .refreshable {
-                    viewModel.fetchPage() // 새로 고침 시 fetchPage 호출
+                    viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
                 }
             }
             

@@ -19,6 +19,7 @@
 		0D45B7E42CAC146000AA516F /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7E32CAC145700AA516F /* CategoryRepository.swift */; };
 		0D45B7E62CAC1A9C00AA516F /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7E52CAC1A9800AA516F /* ImagePicker.swift */; };
 		0D45B7E82CAC644000AA516F /* URLExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7E72CAC643A00AA516F /* URLExtention.swift */; };
+		0D45B7EA2CACCC1100AA516F /* MyVillageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7E92CACCC0800AA516F /* MyVillageRepository.swift */; };
 		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */; };
 		0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693272CA3F66400A3E3B7 /* ChatViewModel.swift */; };
@@ -92,6 +93,7 @@
 		0D45B7E32CAC145700AA516F /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
 		0D45B7E52CAC1A9800AA516F /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		0D45B7E72CAC643A00AA516F /* URLExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLExtention.swift; sourceTree = "<group>"; };
+		0D45B7E92CACCC0800AA516F /* MyVillageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVillageRepository.swift; sourceTree = "<group>"; };
 		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		0DB693262CA3F66400A3E3B7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 		0DB693192CA3ED2000A3E3B7 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				0D45B7E92CACCC0800AA516F /* MyVillageRepository.swift */,
 				0D45B7E32CAC145700AA516F /* CategoryRepository.swift */,
 				0D45B7DF2CAC051900AA516F /* AddressRepository.swift */,
 				0D45B7DD2CA82F4200AA516F /* PostRepository.swift */,
@@ -560,6 +563,7 @@
 				0D45B7B92CA44CD800AA516F /* WritePostView.swift in Sources */,
 				1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */,
 				1FC52FC52CA2E4AF001A933B /* User.swift in Sources */,
+				0D45B7EA2CACCC1100AA516F /* MyVillageRepository.swift in Sources */,
 				0D45B7E82CAC644000AA516F /* URLExtention.swift in Sources */,
 				0D45B7DC2CA81C7B00AA516F /* PhotoRepository.swift in Sources */,
 				1FC52FAC2CA2DA55001A933B /* MainTabView.swift in Sources */,
