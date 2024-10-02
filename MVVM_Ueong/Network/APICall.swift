@@ -135,9 +135,57 @@ class APICall {
         try await request(endpoint: endpoint, method: "POST", body: body)
     }
     
-    func delete<U: Decodable>(endpoint: String, parameters: [Any] = [], queryParameters: [String: Any] = [:]) async throws -> U {
-        return try await request(endpoint: endpoint, method: "DELETE", parameters: parameters, queryParameters: queryParameters)
+    func delete(endpoint: String, parameters: [Any] = [], queryParameters: [String: Any] = [:]) async throws {
+        // 일반 파라미터 추가 (URL 경로의 파라미터)
+        var endpointWithParams = endpoint
+        for value in parameters {
+            if let encodedValue = "\(value)".addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) {
+                endpointWithParams += "/\(encodedValue)"
+            }
+        }
+
+        // URL 생성
+        var urlComponents = URLComponents(string: "\(baseURL)\(endpointWithParams)")
+
+        // 쿼리 파라미터 추가
+        if !queryParameters.isEmpty {
+            var queryItems: [URLQueryItem] = []
+            for (key, value) in queryParameters {
+                queryItems.append(URLQueryItem(name: key, value: "\(value)"))
+            }
+            urlComponents?.queryItems = queryItems
+        }
+
+        guard let url = urlComponents?.url else {
+            throw URLError(.badURL)
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // 네트워크 요청 수행
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw URLError(.badServerResponse)
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            let responseString = String(data: data, encoding: .utf8) ?? "No response body"
+            print("**** Server Error Response: \(responseString)")
+            throw NSError(domain: "Server error", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: responseString])
+        }
+
+        // JSON 응답을 출력
+        if let jsonResponse = String(data: data, encoding: .utf8) {
+            print("**** Response JSON: \(jsonResponse)")
+        }
     }
+
+
+
+
     
     // POST 메서드 (`multipart/form-data` 사용) - 파일 데이터 전송을 위한 메서드
     func postMultipart(endpoint: String, parameters: [String: String] = [:], fileData: Data, fileName: String, mimeType: String) async throws {

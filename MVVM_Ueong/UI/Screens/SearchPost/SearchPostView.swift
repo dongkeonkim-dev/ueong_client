@@ -11,7 +11,7 @@ struct SearchPost: View {
     @ObservedObject var pViewModel: PostsList.ViewModel
     @Environment(\.presentationMode) var presentationMode
     @FocusState private var isSearchFieldFocused: Bool
-
+    
     var body: some View {
         VStack() {
             // 검색어 입력 필드
@@ -61,16 +61,33 @@ struct SearchPost: View {
             // 나머지 검색 결과 리스트 등
             ScrollView {
                 VStack(spacing: 20) {
-                    ForEach(sViewModel.histories) { history in
-                        Button(action:{
-                            sViewModel.searchTerm = history.searchTerm
-                            pViewModel.searchTerm = history.searchTerm
-                            presentationMode.wrappedValue.dismiss()
-                            pViewModel.fetchPosts()
-                        }){
-                            Text(history.searchTerm)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                    ForEach(sViewModel.histories, id: \.id) { history in
+                        HStack {
+                            Button(action: {
+                                sViewModel.searchTerm = history.searchTerm
+                                pViewModel.searchTerm = history.searchTerm
+                                presentationMode.wrappedValue.dismiss()
+                                pViewModel.fetchPosts()
+                            }) {
+                                Text(history.searchTerm)
+                            }
+                            .frame(alignment: .leading)
+                            
+                            Spacer()
+                            
+                            Button(action: {
+                                Task {
+                                    sViewModel.deleteHistoryBySearchTerm(username: sViewModel.username, searchTerm: history.searchTerm)
+                                    sViewModel.fetchSearchHistory() // 삭제 후 리스트 새로고침
+                                }
+                            }) {
+                                Image(systemName: "multiply")
+                                    .foregroundColor(.gray)
+                            }
+                            .frame(alignment: .trailing)
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 15)
                     }
                 }.padding(20)
             }

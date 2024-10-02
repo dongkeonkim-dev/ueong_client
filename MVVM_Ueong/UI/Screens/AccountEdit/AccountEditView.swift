@@ -106,7 +106,7 @@ struct AccountEditView: View {
                                 .cornerRadius(10)
                         }
                         .padding(.horizontal)
-
+                        
                         Button(action: {
                             presentationMode.wrappedValue.dismiss()
                         }) {
