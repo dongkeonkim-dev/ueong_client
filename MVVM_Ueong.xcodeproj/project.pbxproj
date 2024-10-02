@@ -33,7 +33,8 @@
 		0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693452CA42A8100A3E3B7 /* SalesListView.swift */; };
 		0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */; };
 		1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B22CA972920071A8C8 /* AddPostButton.swift */; };
-		1F53E2B82CA9B9B50071A8C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F53E2B72CA9B9B50071A8C8 /* SocketIO */; };
+		1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2BB2CAD13350071A8C8 /* AppDelegate.swift */; };
+		1F53E2C62CAD40960071A8C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F53E2C52CAD40960071A8C8 /* SocketIO */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
 		1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121C2CA3FDCB00A33802 /* example.swift */; };
@@ -106,6 +107,7 @@
 		0DB693452CA42A8100A3E3B7 /* SalesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListView.swift; sourceTree = "<group>"; };
 		0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListViewModel.swift; sourceTree = "<group>"; };
 		1F53E2B22CA972920071A8C8 /* AddPostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostButton.swift; sourceTree = "<group>"; };
+		1F53E2BB2CAD13350071A8C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
 		1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewModel.swift; sourceTree = "<group>"; };
 		1F8C121C2CA3FDCB00A33802 /* example.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = example.swift; sourceTree = "<group>"; };
@@ -142,7 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F53E2B82CA9B9B50071A8C8 /* SocketIO in Frameworks */,
+				1F53E2C62CAD40960071A8C8 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +252,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		1F53E2BA2CAD131A0071A8C8 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				1F53E2BB2CAD13350071A8C8 /* AppDelegate.swift */,
+			);
+			path = System;
+			sourceTree = "<group>";
+		};
 		1F691BB52CA3CD100076E8A8 /* PostDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -287,6 +297,7 @@
 		1FC52F792CA2CF72001A933B /* MVVM_Ueong */ = {
 			isa = PBXGroup;
 			children = (
+				1F53E2BA2CAD131A0071A8C8 /* System */,
 				0D45B7C82CA573F200AA516F /* Network */,
 				0DB6931C2CA3EF3F00A3E3B7 /* Utils */,
 				0DB693192CA3ED2000A3E3B7 /* Repositories */,
@@ -411,7 +422,7 @@
 			);
 			name = MVVM_Ueong;
 			packageProductDependencies = (
-				1F53E2B72CA9B9B50071A8C8 /* SocketIO */,
+				1F53E2C52CAD40960071A8C8 /* SocketIO */,
 			);
 			productName = MVVM_Ueong;
 			productReference = 1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */;
@@ -486,7 +497,7 @@
 			);
 			mainGroup = 1FC52F6E2CA2CF72001A933B;
 			packageReferences = (
-				1F53E2B52CA9B7CD0071A8C8 /* XCRemoteSwiftPackageReference "socket" */,
+				1F53E2C42CAD40960071A8C8 /* XCRemoteSwiftPackageReference "socket" */,
 			);
 			productRefGroup = 1FC52F6E2CA2CF72001A933B;
 			projectDirPath = "";
@@ -554,6 +565,7 @@
 				0DB693352CA40E4000A3E3B7 /* MyAccountViewModel.swift in Sources */,
 				1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */,
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
+				1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */,
 				0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */,
 				1FD1346E2CA588B000B48F6B /* SelectRegion.swift in Sources */,
 				1FD134662CA5763F00B48F6B /* ColorExtension.swift in Sources */,
@@ -902,7 +914,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1F53E2B52CA9B7CD0071A8C8 /* XCRemoteSwiftPackageReference "socket" */ = {
+		1F53E2C42CAD40960071A8C8 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
 			requirement = {
@@ -913,9 +925,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1F53E2B72CA9B9B50071A8C8 /* SocketIO */ = {
+		1F53E2C52CAD40960071A8C8 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1F53E2B52CA9B7CD0071A8C8 /* XCRemoteSwiftPackageReference "socket" */;
+			package = 1F53E2C42CAD40960071A8C8 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;
 		};
 /* End XCSwiftPackageProductDependency section */
