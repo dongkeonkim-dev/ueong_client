@@ -94,7 +94,9 @@ struct SelectRegion: View {
     
 }
 
-#Preview {
-    @Previewable @State var selectedVillage: MyVillage? = MyVillage()
-    SelectRegion(selection: $selectedVillage, options: [MyVillage()], maxWidth: 130)
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        SelectRegion(selection: .constant(MyVillage()), options: [MyVillage()], maxWidth: 130)
+    }
 }
+

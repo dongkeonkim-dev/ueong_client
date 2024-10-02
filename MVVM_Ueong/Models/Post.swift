@@ -12,7 +12,7 @@ struct Post: Identifiable, Decodable {
     var title: String
     var categoryId: Int
     var price: Double
-    var writerUsername: String
+    var writerUsername: String //작성자ID
     var emdId: Int
     var latitude: Double
     var longitude: Double

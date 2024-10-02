@@ -33,15 +33,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("소켓 연결 오류: \(data)")
         }
         
-//        
-//        socket.on(clientEvent: .disconnect) { data, ack in
-//            print("소켓 연결 끊김")
-//        }
-//        
-//        // 서버로부터의 메시지 수신
-//        socket.on("newMessage") { data, ack in
-//            print("새 메시지 수신: \(data)")
-//        }
+        
+        socket.on(clientEvent: .disconnect) { data, ack in
+            print("소켓 연결 끊김")
+        }
+        
+        // 서버로부터의 메시지 수신
+        socket.on("newMessage") { data, ack in
+            print("새 메시지 수신: \(data)")
+        }
 
 
 
