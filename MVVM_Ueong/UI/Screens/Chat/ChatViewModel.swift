@@ -9,20 +9,16 @@ import Foundation
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
     let username: String
-    let chatterUsername: String
-    let chatterNickname: String
-    var postId: Int
+    let patnerUsername: String
+    let patnerNickname: String
     var relatedPost: Post
-    let messageRepository = MessageRepository()
-    let postRepository = PostRepository()
-    let photoRepository = PhotoRepository()
     
-    init(chatterUsername: String, chatterNickname: String, postId: Int) {
-        self.username = "username1"
-        self.chatterUsername = chatterUsername
-        self.chatterNickname = chatterNickname
-        self.relatedPost = Post()
-        self.postId = postId
+    // 내 유저 아이디와 포스트 아이디를 chats 테이블의 넘겨줘서 이미 채팅방이 존재하는지 확인한다. 이미 대화하고 있는 상품이라면 채팅방을 불러온다.
+    init(username: String, patnerUsername: String, patnerNickname: String, relatedPost: Post) {
+        self.username = "username1" // 추후에 username파라미터로 초기화
+        self.patnerUsername = patnerUsername
+        self.patnerNickname = patnerNickname
+        self.relatedPost = relatedPost
     }
     
     // 비동기 작업을 순차적으로 처리하도록 개선한 메서드
@@ -34,36 +30,12 @@ class ChatViewModel: ObservableObject {
     }
 
     private func fetchMessages() async {
-        do {
-            let messages = try await messageRepository.getMessagesByChatter(username: username, chatter: chatterUsername)
-            DispatchQueue.main.async {
-                self.messages = messages
-            }
-        } catch {
-            print("Error fetching messages: \(error)")
-        }
+        
     }
     
     private func fetchPost() async {
-        do {
-            let post = try await postRepository.getPostById(username: username, postId: postId)
-            DispatchQueue.main.async {
-                self.relatedPost = post
-            }
-            await fetchPhotosForPost(postId: postId) // 게시물 데이터를 가져온 후에 사진 데이터를 가져옵니다.
-        } catch {
-            print("Error fetching post: \(error)")
-        }
+        
     }
 
-    private func fetchPhotosForPost(postId: Int) async {
-        do {
-            let photos = try await photoRepository.getPhotosForPost(postId: postId)
-            DispatchQueue.main.async {
-                self.relatedPost.photos = photos // 게시물 사진 업데이트
-            }
-        } catch {
-            print("Error fetching photos: \(error)")
-        }
-    }
+    
 }

@@ -18,7 +18,6 @@ struct ChatView: View {
             ) {
                 PostRow(post: viewModel.relatedPost)
             }
-            
             // 메시지 목록 스크롤
             MessageListView(viewModel: viewModel)
 
@@ -28,7 +27,7 @@ struct ChatView: View {
                 newMessage = ""
             })
         }
-        .navigationTitle("\(viewModel.chatterNickname)")
+        .navigationTitle("\(viewModel.patnerNickname)")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(){
             viewModel.fetchPage() // Call the async function here
@@ -129,6 +128,6 @@ struct MessageInputView: View {
 
 
 // Preview 구성
-#Preview {
-    ChatView(viewModel: ChatViewModel(chatterUsername:"username2", chatterNickname:"유저2", postId:1))
-}
+//#Preview {
+//    ChatView(viewModel: ChatViewModel(chatterUsername:"username2", chatterNickname:"유저2", postId:1))
+//}
