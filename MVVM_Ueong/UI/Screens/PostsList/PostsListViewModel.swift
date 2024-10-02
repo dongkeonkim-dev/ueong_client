@@ -12,6 +12,7 @@ extension PostsList {
         @Published var myVillages : [MyVillage] = []
         @Published var selection: MyVillage? = nil// 기본값을 사용하여 초기화
         @Published var sortBy: String = "create_at" // 기본 정렬 기준
+        @Published var searchTerm: String = ""
         
         let username: String
         let postRepository = PostRepository()
@@ -35,10 +36,11 @@ extension PostsList {
         // 전체 페이지 데이터를 가져오는 함수
         func fetchPosts(){
             Task{ @MainActor in
+                self.posts.removeAll()
                 self.posts = try await postRepository.searchPosts(
                     username: username,
                     village: selection?.id ?? 0,
-                    searchTerm: "",
+                    searchTerm: searchTerm,
                     sortBy:sortBy)
                 await fetchPhotosForPosts() // 포스트가 로드된 후에 사진을 가져옵니다.
             }

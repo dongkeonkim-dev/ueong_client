@@ -17,7 +17,7 @@ struct PostsList: View {
                     .onChange(of: viewModel.selection) {
                         viewModel.fetchPosts()
                     }
-                    SearchBar()
+                    SearchBar(viewModel: viewModel)
                 }
                 .zIndex(1)
                 

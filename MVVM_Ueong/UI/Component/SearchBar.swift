@@ -2,14 +2,12 @@
 import SwiftUI
 
 struct SearchBar: View {
-
+    @ObservedObject var viewModel: PostsList.ViewModel
     public var body: some View {
+        
         VStack(spacing: 15) {
-            Button(action: {
-           
-                
-            })
-            {
+            
+            NavigationLink(destination:SearchPost(sViewModel: SearchPost.ViewModel(), pViewModel:viewModel)){
                 HStack{
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.blue) // 돋보기 아이콘의 색상을 파란색으로 변경
@@ -23,10 +21,11 @@ struct SearchBar: View {
             .frame(maxWidth: .infinity)
             .background(
                 RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
+                    
             )
             .padding(.horizontal)
         }
     }
 }
 
-#Preview{SearchBar()}
+#Preview{SearchBar(viewModel:PostsList.ViewModel())}

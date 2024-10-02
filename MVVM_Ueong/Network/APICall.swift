@@ -135,6 +135,10 @@ class APICall {
         try await request(endpoint: endpoint, method: "POST", body: body)
     }
     
+    func delete<U: Decodable>(endpoint: String, parameters: [Any] = [], queryParameters: [String: Any] = [:]) async throws -> U {
+        return try await request(endpoint: endpoint, method: "DELETE", parameters: parameters, queryParameters: queryParameters)
+    }
+    
     // POST 메서드 (`multipart/form-data` 사용) - 파일 데이터 전송을 위한 메서드
     func postMultipart(endpoint: String, parameters: [String: String] = [:], fileData: Data, fileName: String, mimeType: String) async throws {
         let boundary = "Boundary-\(UUID().uuidString)"
