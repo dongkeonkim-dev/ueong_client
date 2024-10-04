@@ -1,72 +1,58 @@
 //import SwiftUI
 //
-//
 //struct ChatListView: View {
-//    @ObservedObject var viewModel: ChatListView.ViewModel
+//    @ObservedObject var viewModel: ViewModel
 //    
 //    var body: some View {
-//        // NavigationView 추가
+//        NavigationView { // NavigationView 추가
 //            VStack {
-//                
-//                //----------------------------------------------------------------------------
-//
-//                HStack(){
+//                // Title
+//                HStack {
 //                    Text("채팅")
 //                        .font(.system(size: 25).weight(.bold))
 //                    Spacer()
 //                }
 //                .padding(.horizontal, 20)
 //
-//                //----------------------------------------------------------------------------
-//
-//                HStack(){
-//                    Button(action:{}){
+//                // Button Filters
+//                HStack {
+//                    Button(action: {}) {
 //                        Text("전체")
 //                            .padding(.vertical, 5)
 //                            .padding(.horizontal, 10)
 //                    }
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
-//                    )
+//                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
 //
-//                    Button(action:{}){
+//                    Button(action: {}) {
 //                        Text("판매")
 //                            .padding(.vertical, 5)
 //                            .padding(.horizontal, 10)
 //                    }
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
-//                    )
+//                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
 //
-//                    Button(action:{}){
+//                    Button(action: {}) {
 //                        Text("구매")
 //                            .padding(.vertical, 5)
 //                            .padding(.horizontal, 10)
 //                    }
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
-//                    )
+//                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
 //
-//                    Button(action:{}){
+//                    Button(action: {}) {
 //                        Text("안 읽은 채팅방")
 //                            .padding(.vertical, 5)
 //                            .padding(.horizontal, 10)
 //                    }
-//                    .background(
-//                        RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
-//                    )
+//                    .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
 //
 //                    Spacer()
 //                }
-//
 //                .padding(.top, 5)
 //                .padding(.horizontal, 20)
 //
-//                //----------------------------------------------------------------------------
-//
+//                // Chat List
 //                ScrollView {
-//                    ForEach(viewModel.chats, id: \.id) { chat in
-//                        NavigationLink(destination: ChatView(viewModel: ChatViewModel(chatterUsername: chat.chatterUsername ?? "", chatterNickname:chat.chatterNickname ?? "", postId:chat.relatedPostId))) {
+//                    ForEach(viewModel.chats) { chat in
+//                        NavigationLink(destination: ChatView(viewModel: ChatView.ViewModel(username: "username1", relatedPost: <#T##Post#>))) {
 //                            HStack {
 //                                Image(systemName: "person.circle.fill")
 //                                    .resizable()
@@ -76,7 +62,7 @@
 //
 //                                VStack(alignment: .leading) {
 //                                    HStack {
-//                                        Text(chat.chatterNickname ?? "Unknown User") // chatterNickname을 사용하여 nickname 표시
+//                                        Text(chat.partnerNickname ?? "Unknown User") // partnerNickname을 사용하여 nickname 표시
 //                                            .padding(.bottom, 3)
 //                                        Spacer()
 //                                        if let lastSentTime = chat.lastSentTime {
@@ -101,14 +87,15 @@
 //                            }
 //                            .padding(.top, 30)
 //                        }
-//
 //                    }
 //                }
 //                .padding(.horizontal, 15)
 //            }
+//        }
 //    }
 //}
 //
 //#Preview {
 //    ChatListView(viewModel: ChatListView.ViewModel())
 //}
+//
