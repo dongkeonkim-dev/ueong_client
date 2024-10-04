@@ -100,4 +100,16 @@ struct PostPost :Encodable{
     var longitude: Double
     var locationDetail: String
     var text: String
+    
+    init(){
+        self.title = ""
+        self.categoryId = 1
+        self.price = 0.0
+        self.writerUsername = ""
+        self.emdId = 1
+        self.latitude = 0.0
+        self.longitude = 0.0
+        self.locationDetail = ""
+        self.text = ""
+    }
 }

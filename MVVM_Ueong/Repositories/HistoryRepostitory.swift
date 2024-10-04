@@ -6,9 +6,9 @@
 //
 
 class HistoryRepository {
-    func getHistoryByUsername(username: String) async throws -> [History] {
+    func getHistory(username: String) async throws -> [History] {
         do {
-            let history: [History] = try await APICall.shared.get("history/by-username", parameters: [username])
+            let history: [History] = try await APICall.shared.get("history", parameters: [("username",username)])
             print("Successfully retrieved address: \(history.count) history for emdId: \(username).")
             return history
         } catch {
@@ -17,9 +17,9 @@ class HistoryRepository {
         }
     }
     
-    func deleteHistoryBySearchTerm(username: String, searchTerm: String) async {
+    func deleteHistory(username: String, searchTerm: String) async {
         do {
-            try await APICall.shared.delete(endpoint: "history/delete-by-search-term", parameters: [username, searchTerm]) as Void?
+            try await APICall.shared.delete("history", queryParameters: ["username": username, "searchTerm": searchTerm])
         } catch {
             print("Error deleting history: \(error)")
         }

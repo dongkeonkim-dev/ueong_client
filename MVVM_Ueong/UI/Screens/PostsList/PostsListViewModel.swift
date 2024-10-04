@@ -29,7 +29,7 @@ extension PostsList {
 
         func fetchVillageList(){
             Task{ @MainActor in
-                self.myVillages = try await myVillageRepository.getMyVillagesByUsername(username: username)
+                self.myVillages = try await myVillageRepository.getMyVillages(username: username)
                 self.selection = myVillages[0]
             }
         }

@@ -22,13 +22,13 @@ extension SearchPost {
 
         func fetchSearchHistory(){
             Task{ @MainActor in
-                self.histories = try await historyRepository.getHistoryByUsername(username:username)
+                self.histories = try await historyRepository.getHistory(username:username)
             }
         }
         
         func deleteHistoryBySearchTerm(username:String, searchTerm: String) {
             Task { @MainActor in
-                await historyRepository.deleteHistoryBySearchTerm(username:username, searchTerm: searchTerm)
+                await historyRepository.deleteHistory(username:username, searchTerm: searchTerm)
                 fetchSearchHistory()
             }
         }
