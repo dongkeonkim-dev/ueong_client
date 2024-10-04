@@ -15,6 +15,7 @@ struct PostsList: View {
                         maxWidth: 130
                     )
                     .onChange(of: viewModel.selection) {
+                        print("Region Changed")
                         viewModel.fetchPosts()
                     }
                     SearchBar(viewModel: viewModel)
@@ -35,12 +36,13 @@ struct PostsList: View {
                     }
                 }
                 .refreshable {
+                    print("Refresh PostsList")
                     viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
                 }
             }
             
             // 오른쪽 하단 고정 버튼
-            AddPostButton()
+            AddPostButton(pViewModel: viewModel)
         }
     }
 }

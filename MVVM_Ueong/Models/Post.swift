@@ -90,7 +90,7 @@ struct Post: Identifiable, Decodable {
 }
 
 
-struct PostPost :Encodable{
+struct NewPost :Encodable{
     var title: String
     var categoryId: Int
     var price: Double
@@ -113,3 +113,6 @@ struct PostPost :Encodable{
         self.text = ""
     }
 }
+
+
+

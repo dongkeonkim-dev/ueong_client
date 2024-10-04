@@ -1,13 +1,14 @@
 //
-//  WritePostView.swift
+//  WritePost.swift
 //  MVVM_Ueong
 //
 //  Created by 김동건 on 9/25/24.
 //
 import SwiftUI
 
-struct WritePostView: View {
-    @ObservedObject var viewModel: WritePostView.ViewModel
+struct WritePost: View {
+    @ObservedObject var wViewModel: WritePost.ViewModel
+    @ObservedObject var pViewModel: PostsList.ViewModel
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isPriceFocused: Bool
     @FocusState private var isExplanationFocused: Bool
@@ -36,7 +37,7 @@ struct WritePostView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("제목")
-                        TextField("제목을 입력하세요", text: $viewModel.post.title)
+                        TextField("제목을 입력하세요", text: $wViewModel.post.title)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .overlay(
                                 RoundedRectangle(cornerRadius: 2)
@@ -53,7 +54,7 @@ struct WritePostView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("가격")
-                        TextField("가격을 입력하세요", value: $viewModel.post.price, format: .number)
+                        TextField("가격을 입력하세요", value: $wViewModel.post.price, format: .number)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.numberPad)
                             .overlay(
@@ -71,7 +72,7 @@ struct WritePostView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("자세한 설명")
-                        TextField("게시글 내용을 작성해 주세요\n 신뢰할 수 있는 거래를 위해 자세히 적어주세요", text: $viewModel.post.text)
+                        TextField("게시글 내용을 작성해 주세요\n 신뢰할 수 있는 거래를 위해 자세히 적어주세요", text: $wViewModel.post.text)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(height: 250)
                             .overlay(
@@ -89,7 +90,7 @@ struct WritePostView: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("거래 희망 장소")
-                        TextField("단월동", text: $viewModel.post.locationDetail)
+                        TextField("단월동", text: $wViewModel.post.locationDetail)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .overlay(
                                 RoundedRectangle(cornerRadius: 2)
@@ -105,7 +106,7 @@ struct WritePostView: View {
             .padding(.leading, 20)
             .navigationBarTitle("내 물건 팔기", displayMode: .inline)
             Spacer()
-            AddButton(viewModel:viewModel)
+            AddButton(wViewModel:wViewModel, pViewModel:pViewModel)
                 .padding(.top,20)
                 .padding(.bottom,20)
         }
@@ -113,7 +114,8 @@ struct WritePostView: View {
 }
 
 struct AddButton: View {
-    @ObservedObject var viewModel: WritePostView.ViewModel
+    @ObservedObject var wViewModel: WritePost.ViewModel
+    @ObservedObject var pViewModel: PostsList.ViewModel
     @Environment(\.presentationMode) var presentationMode
 
     public var body: some View {
@@ -122,7 +124,9 @@ struct AddButton: View {
             HStack {
                 Button(action: {
                     Task{
-                        viewModel.postPost()
+                        print("AddButton clicked")
+                        await wViewModel.uploadPost()
+                        await pViewModel.fetchPosts()
                         presentationMode.wrappedValue.dismiss()
                     }
                 }) {
@@ -140,13 +144,13 @@ struct AddButton: View {
             }
         }
         .onAppear(){
-            viewModel.fetchPage()
+            wViewModel.fetchPage()
         }
     }
 }
 
 
 #Preview {
-    WritePostView(viewModel: WritePostView.ViewModel())
+    WritePost(wViewModel: WritePost.ViewModel(), pViewModel: PostsList.ViewModel())
 }
 

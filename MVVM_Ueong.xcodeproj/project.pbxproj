@@ -25,6 +25,8 @@
 		0D45B7F42CAD33C400AA516F /* MyVillage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7F32CAD33BF00AA516F /* MyVillage.swift */; };
 		0D45B7F62CAD33EB00AA516F /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7F52CAD33DC00AA516F /* History.swift */; };
 		0D45B7F82CAD33F800AA516F /* HistoryRepostitory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45B7F72CAD33F000AA516F /* HistoryRepostitory.swift */; };
+		0D89F2792CAFF709004C5AF1 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2782CAFF701004C5AF1 /* Response.swift */; };
+		0D89F27B2CAFFBE7004C5AF1 /* EncodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F27A2CAFFBE0004C5AF1 /* EncodableExtension.swift */; };
 		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */; };
 		0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693272CA3F66400A3E3B7 /* ChatViewModel.swift */; };
@@ -105,6 +107,8 @@
 		0D45B7F32CAD33BF00AA516F /* MyVillage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVillage.swift; sourceTree = "<group>"; };
 		0D45B7F52CAD33DC00AA516F /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		0D45B7F72CAD33F000AA516F /* HistoryRepostitory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepostitory.swift; sourceTree = "<group>"; };
+		0D89F2782CAFF701004C5AF1 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		0D89F27A2CAFFBE0004C5AF1 /* EncodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodableExtension.swift; sourceTree = "<group>"; };
 		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		0DB693262CA3F66400A3E3B7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 		0DB6931C2CA3EF3F00A3E3B7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0D89F27A2CAFFBE0004C5AF1 /* EncodableExtension.swift */,
 				0D45B7E72CAC643A00AA516F /* URLExtention.swift */,
 				0D45B7E52CAC1A9800AA516F /* ImagePicker.swift */,
 				0D45B7D52CA80D1F00AA516F /* Constants.swift */,
@@ -420,6 +425,7 @@
 		1FC52FC12CA2DE5C001A933B /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0D89F2782CAFF701004C5AF1 /* Response.swift */,
 				0D45B7F52CAD33DC00AA516F /* History.swift */,
 				0D45B7F32CAD33BF00AA516F /* MyVillage.swift */,
 				0D45B7CF2CA6C58100AA516F /* Post.swift */,
@@ -596,6 +602,7 @@
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
 				1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */,
 				0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */,
+				0D89F2792CAFF709004C5AF1 /* Response.swift in Sources */,
 				0D45B7F22CAD305800AA516F /* SearchPostViewModel.swift in Sources */,
 				1FD1346E2CA588B000B48F6B /* SelectRegion.swift in Sources */,
 				1FD134662CA5763F00B48F6B /* ColorExtension.swift in Sources */,
@@ -611,6 +618,7 @@
 				0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */,
 				0D45B7E42CAC146000AA516F /* CategoryRepository.swift in Sources */,
 				0D45B7DE2CA82F4500AA516F /* PostRepository.swift in Sources */,
+				0D89F27B2CAFFBE7004C5AF1 /* EncodableExtension.swift in Sources */,
 				0DB6932C2CA3FC2000A3E3B7 /* Message.swift in Sources */,
 				1FC52FBE2CA2DCD3001A933B /* FavoritesListViewModel.swift in Sources */,
 				1FC52FB22CA2DBDC001A933B /* PostsList.swift in Sources */,

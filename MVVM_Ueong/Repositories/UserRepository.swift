@@ -15,25 +15,22 @@ class UserRepository {
         return user
     }
     
-    // 사용자 정보 수정 (파일 업로드 포함)
-//    func editUser(userData: EditedUserData) async throws {
-//        do {
-//            try await APICall.shared.postMultipart( // patch 요청으로 교체
-//                endpoint: "user/edit-user",
-//                parameters: [
-//                    "username": userData.username,
-//                    "email": userData.email,
-//                    "nickname": userData.nickname,
-//                    "password": userData.password
-//                ],
-//                fileData: profilePhoto,
-//                fileName: "profilePhoto.jpg",
-//                mimeType: "image/jpeg"
-//            )
-//            print("User information updated successfully.")
-//        } catch {
-//            print("Error updating user information: \(error)")
-//            throw error
-//        }
-//    }
+     // 사용자 정보 수정 (파일 업로드 포함)
+    func editUser(userData: EditedUser, profileImage: Data?) async throws {
+        do {
+            let parameters = userData.toParams()
+            
+            var imagesToUpload: [(data: Data, fileName: String, mimeType: String)] = []
+            if let profileImage = profileImage {
+                imagesToUpload.append((data: profileImage, fileName: userData.username+".jpg", mimeType: "image/jpeg"))
+            }
+            try await APICall.shared.patch("user", parameters: parameters, files: imagesToUpload)
+            print("User information updated successfully.")
+        } catch {
+            print("Error updating user information: \(error)")
+            throw error
+        }
+    }
 }
+///Users/gimdong-geon/Documents/ueong_client/MVVM_Ueong/Repositories/UserRepository.swift:21:30 Instance member 'toParams' cannot be used on type 'EditedUser'; did you mean to use a value of this type instead?
+

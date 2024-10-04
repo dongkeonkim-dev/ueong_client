@@ -40,25 +40,22 @@ struct User: Decodable {
 }
 
 
-struct EditedUserData: Encodable {
+struct EditedUser: Encodable {
     var username: String
     var password: String
     var confirmPassword: String
     var email: String
     var nickname: String
-    var profilePhoto: Data?
     
     init(username: String = "",
          password: String = "",
          confirmPassword: String = "",
          email: String = "",
-         nickname: String = "",
-         profilePhoto: Data? = nil) {
+         nickname: String = "") {
         self.username = username
         self.password = password
         self.confirmPassword = confirmPassword
         self.email = email
         self.nickname = nickname
-        self.profilePhoto = profilePhoto
     }
 }

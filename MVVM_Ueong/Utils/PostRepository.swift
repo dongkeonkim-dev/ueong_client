@@ -58,10 +58,22 @@ class PostRepository {
     }
     
     // 비동기 함수로 포스트 작성하기
-    func uploadPost(post: NewPost, images: [Data]) async throws -> Response {
+    func uploadPost(post: PostPost, images: [Data]) async throws -> Response {
         let imagesToUpload = images.map { (data: $0, fileName: post.title+".jpg", mimeType: "image/jpeg") }
         let parameters = post.toParams()
         let response = try await APICall.shared.post("post", parameters: parameters, files: imagesToUpload)
         return response
+    }
+}
+
+extension Encodable {
+    func toParams() -> [(String, Any)] {
+        var parameters: [(String, Any)] = []
+        let mirror = Mirror(reflecting: self)
+        
+        for child in mirror.children {
+            parameters.append((child.label ?? "", child.value))
+        }
+        return parameters
     }
 }

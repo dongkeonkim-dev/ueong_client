@@ -23,8 +23,8 @@ struct AccountEditView: View {
 
                     // 프로필 이미지
                     VStack {
-                        if let profilePhotoData = viewModel.editedUserData.profilePhoto,
-                           let uiImage = UIImage(data: profilePhotoData) {
+                        if let profileIamge = viewModel.profileImage,
+                           let uiImage = UIImage(data: profileIamge) {
                             // 새로 선택된 이미지가 있을 때 표시
                             Image(uiImage: uiImage)
                                 .resizable()
@@ -82,16 +82,16 @@ struct AccountEditView: View {
                     .padding()
 
                     // 별명 입력 필드
-                    InputFieldView(title: "별명", text: $viewModel.editedUserData.nickname)
+                    InputFieldView(title: "별명", text: $viewModel.editedUser.nickname)
 
                     // 이메일 입력 필드
-                    InputFieldView(title: "이메일", text: $viewModel.editedUserData.email)
+                    InputFieldView(title: "이메일", text: $viewModel.editedUser.email)
 
                     // 비밀번호 입력 필드
-                    SecureInputFieldView(title: "비밀번호", text: $viewModel.editedUserData.password)
+                    SecureInputFieldView(title: "비밀번호", text: $viewModel.editedUser.password)
 
                     // 비밀번호 확인 필드
-                    SecureInputFieldView(title: "비밀번호 확인", text: $viewModel.editedUserData.confirmPassword)
+                    SecureInputFieldView(title: "비밀번호 확인", text: $viewModel.editedUser.confirmPassword)
 
                     // 완료 및 취소 버튼
                     HStack {
@@ -132,7 +132,7 @@ struct AccountEditView: View {
             }
         }
         .sheet(isPresented: $viewModel.isImagePickerPresented) {
-            ImagePicker(imageData: $viewModel.editedUserData.profilePhoto, sourceType: viewModel.imageSource)
+            ImagePicker(imageData: $viewModel.profileImage, sourceType: viewModel.imageSource)
         }
         Spacer()
     }

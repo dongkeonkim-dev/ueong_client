@@ -28,7 +28,7 @@ extension SearchPost {
         
         func deleteHistoryBySearchTerm(username:String, searchTerm: String) {
             Task { @MainActor in
-                await historyRepository.deleteHistory(username:username, searchTerm: searchTerm)
+                await historyRepository.deleteHistory(username: username, searchTerm: searchTerm)
                 fetchSearchHistory()
             }
         }

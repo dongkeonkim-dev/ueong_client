@@ -17,10 +17,25 @@ class APICall {
             return result
     }
     
-    func post<T: Decodable>(_ endpoint: String,
-                  parameters: [(key: String, value: String)] = [], queryParameters: [String: Any] = [:],
-                            files: [(data: Data, fileName: String, mimeType: String)] = []) async throws -> T? {
-        guard let result : T = try await request(endpoint: endpoint, method: .post, parameters: parameters, files: files) else {
+    func post(_ endpoint: String,
+                  parameters: [(String, Any)] = [],
+                  queryParameters: [String: Any] = [:],
+                  files: [(data: Data, fileName: String, mimeType: String)] = []) async throws -> Response {
+        
+        // 서버 응답을 제네릭 타입으로 반환
+        guard let result: Response = try await request(endpoint: endpoint, method: .post, parameters: parameters, queryParameters: queryParameters, files: files) else {
+            throw URLError(.badServerResponse)
+        }
+        return result
+    }
+    
+    func patch(_ endpoint: String,
+                  parameters: [(String, Any)] = [],
+                  queryParameters: [String: Any] = [:],
+                  files: [(data: Data, fileName: String, mimeType: String)] = []) async throws -> Response {
+        
+        // 서버 응답을 제네릭 타입으로 반환
+        guard let result: Response = try await request(endpoint: endpoint, method: .patch, parameters: parameters, queryParameters: queryParameters, files: files) else {
             throw URLError(.badServerResponse)
         }
         return result
@@ -45,12 +60,13 @@ class APICall {
         var request = URLRequest(url:URL(string:"\(baseURL)")!)
         
         switch method{
-        case .post:
+        case .post, .patch :
             guard let requestURL = URL(string: "\(baseURL.joinPath(endpoint))") else {
                 throw URLError(.badURL)
             }
             request = URLRequest(url: requestURL)
-            request.httpMethod = "POST"
+            
+            request.httpMethod = method == .post ? "POST" : "PATCH"
             
             var bodyData = Data()
             
@@ -88,7 +104,7 @@ class APICall {
                 let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
                 bodyData.append(jsonData)
             }
-            
+            print(bodyData)
             request.httpBody = bodyData
         case .get:
             var paramString = parameters.map { $0.0.joinPath(String(describing: $0.1)) }.reduce("") { $0.joinPath($1) }
@@ -124,10 +140,13 @@ class APICall {
                 throw URLError(.badURL)
             }
             
-            var request = URLRequest(url: url)
+            request = URLRequest(url: url)
             request.httpMethod = "DELETE"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
+        
+        print("HTTP Method:", request.httpMethod ?? "nil", "URL:", request.url?.absoluteString ?? "nil")
+
         
         // 네트워크 요청 수행
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -166,6 +185,7 @@ enum Method {
     case post
     case get
     case delete
+    case patch
 }
 
 extension String {
