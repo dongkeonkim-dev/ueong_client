@@ -36,5 +36,7 @@ extension PostDetail {
                 self.mapCoordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)
             }
         }
+        
+
     }
 }

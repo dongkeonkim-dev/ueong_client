@@ -181,7 +181,6 @@
 //#Preview {
 //    PostDetail(viewModel: PostDetail.ViewModel(postId: 9))
 //}
-
 //
 //  PostDetail.swift
 //  MVVM_Ueong
@@ -196,6 +195,9 @@ import MapKit
 // MARK: - PostDetail
 struct PostDetail: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
+    @State private var chatViewModel: ChatView.ViewModel?
+    @State private var isChatViewActive = false
+
     
     var body: some View {
         VStack {
@@ -266,14 +268,27 @@ struct PostDetail: View {
                     }
                     .disabled(true) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
                     
-                    NavigationLink(destination: ChatView(viewModel: ChatViewModel(username: "username1", patnerUsername: viewModel.post.writerUsername, patnerNickname: viewModel.writer.nickname ,relatedPost: viewModel.post))) {
-                        Text("채팅하기")
-                            .padding(10) // 버튼의 패딩
-                            .background(Color.blue) // 버튼의 배경 색상
-                            .foregroundColor(.white) // 버튼의 텍스트 색상
-                            .cornerRadius(5) // 버튼의 모서리 둥글기
+                    Button(action: {
+                        // ViewModel 초기화
+                        chatViewModel = ChatView.ViewModel(username: "username1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post )
                         
+                        // 채팅방 체크
+                        chatViewModel?.checkChatRoom(username: "username1", postId: viewModel.postId)
+                        
+                        // ChatView로 이동
+                        isChatViewActive = true
+                    }) {
+                        Text("채팅하기")
+                            .padding(10)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(5)
                     }
+                    .background(
+                        NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {
+                            EmptyView()
+                        }
+                    )
 
                     
                 }
@@ -425,70 +440,70 @@ struct TradingLocation: View {
 }
 
 //MARK: - BottomBar
-struct BottomBar: View {
-    var viewModel: PostDetail.ViewModel
-    var body: some View{
-        VStack(spacing: 20) {
-            // 밑줄 추가
-            Rectangle()
-                .fill(Color.gray) // 색상 설정
-                .frame(height: 1) // 선 두께 설정
-            
-            HStack {
-                // 좋아요
-                if false {
-                    Image(systemName: "heart.fill")
-                        .resizable() // 크기를 조절 가능하게 함
-                        .frame(width: 25, height: 25) // 원하는 크기로 조절
-                        .foregroundColor(.red)
-                } else {
-                    Image(systemName: "heart")
-                        .resizable() // 크기를 조절 가능하게 함
-                        .frame(width: 25, height: 25) // 원하는 크기로 조절
-                        .foregroundColor(.red)
-                }
-                
-                // 세로줄 추가
-                Rectangle()
-                    .fill(Color.gray) // 색상 설정
-                    .frame(width: 1, height: 40) // 세로줄의 너비와 높이 설정
-                    .padding(.horizontal, 10)
-                
-                Text("130,000원")
-                    .font(.system(size: 19, weight: .bold))
-                
-                Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
-                
-                // AR모델 확인하기 (현재 모델이 없는 상태)
-                Button(action: {
-                    // AR 버튼 클릭 시 실행할 코드
-                    print("AR")
-                }) {
-                    Text("AR")
-                        .frame(width: 40) // Set explicit width and height
-                        .padding(10) // 버튼의 패딩
-                        .foregroundColor(.white) // 버튼의 텍스트 색상
-                        .cornerRadius(5) // 버튼의 모서리 둥글기
-                        .background(false ? Color.blue : Color.gray)
-                }
-                .disabled(true) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
-                
-                NavigationLink(destination: ChatView(viewModel: ChatViewModel(username: "username1", patnerUsername: viewModel.post.writerUsername, patnerNickname: viewModel.writer.nickname ,relatedPost: viewModel.post))) {
-                    Text("채팅하기")
-                        .padding(10) // 버튼의 패딩
-                        .background(Color.blue) // 버튼의 배경 색상
-                        .foregroundColor(.white) // 버튼의 텍스트 색상
-                        .cornerRadius(5) // 버튼의 모서리 둥글기
-                    
-                }
-
-                
-            }
-            .padding(.horizontal, 30)
-        }
-        .padding(.bottom, 20)
-    }
-}
+//struct BottomBar: View {
+//    var viewModel: PostDetail.ViewModel
+//    var body: some View{
+//        VStack(spacing: 20) {
+//            // 밑줄 추가
+//            Rectangle()
+//                .fill(Color.gray) // 색상 설정
+//                .frame(height: 1) // 선 두께 설정
+//            
+//            HStack {
+//                // 좋아요
+//                if false {
+//                    Image(systemName: "heart.fill")
+//                        .resizable() // 크기를 조절 가능하게 함
+//                        .frame(width: 25, height: 25) // 원하는 크기로 조절
+//                        .foregroundColor(.red)
+//                } else {
+//                    Image(systemName: "heart")
+//                        .resizable() // 크기를 조절 가능하게 함
+//                        .frame(width: 25, height: 25) // 원하는 크기로 조절
+//                        .foregroundColor(.red)
+//                }
+//                
+//                // 세로줄 추가
+//                Rectangle()
+//                    .fill(Color.gray) // 색상 설정
+//                    .frame(width: 1, height: 40) // 세로줄의 너비와 높이 설정
+//                    .padding(.horizontal, 10)
+//                
+//                Text("130,000원")
+//                    .font(.system(size: 19, weight: .bold))
+//                
+//                Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
+//                
+//                // AR모델 확인하기 (현재 모델이 없는 상태)
+//                Button(action: {
+//                    // AR 버튼 클릭 시 실행할 코드
+//                    print("AR")
+//                }) {
+//                    Text("AR")
+//                        .frame(width: 40) // Set explicit width and height
+//                        .padding(10) // 버튼의 패딩
+//                        .foregroundColor(.white) // 버튼의 텍스트 색상
+//                        .cornerRadius(5) // 버튼의 모서리 둥글기
+//                        .background(false ? Color.blue : Color.gray)
+//                }
+//                .disabled(true) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
+//                
+//                NavigationLink(destination: ChatView(viewModel: ChatView.ViewModel(username: "username1", patnerUsername: viewModel.post.writerUsername, patnerNickname: viewModel.writer.nickname ,relatedPost: viewModel.post))) {
+//                    Text("채팅하기")
+//                        .padding(10) // 버튼의 패딩
+//                        .background(Color.blue) // 버튼의 배경 색상
+//                        .foregroundColor(.white) // 버튼의 텍스트 색상
+//                        .cornerRadius(5) // 버튼의 모서리 둥글기
+//                    
+//                }
+//
+//                
+//            }
+//            .padding(.horizontal, 30)
+//        }
+//        .padding(.bottom, 20)
+//    }
+//}
 
 
 #Preview {

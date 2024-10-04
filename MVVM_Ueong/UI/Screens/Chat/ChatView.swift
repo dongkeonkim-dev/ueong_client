@@ -8,36 +8,80 @@ import SwiftUI
 
 // MARK: - 채팅창
 struct ChatView: View {
-    @ObservedObject var viewModel: ChatViewModel
+    @ObservedObject var viewModel: ChatView.ViewModel
     @State private var newMessage: String = ""
 
     var body: some View {
         VStack {
+            
+//-------------------------------------------------------------------------------------------------------------------------
+            //채팅방 상단 상품 정보
             NavigationLink(
                 destination: PostDetail(viewModel: PostDetail.ViewModel(postId: viewModel.relatedPost.id))
             ) {
                 PostRow(post: viewModel.relatedPost)
             }
+            
+//-------------------------------------------------------------------------------------------------------------------------
+
             // 메시지 목록 스크롤
             MessageListView(viewModel: viewModel)
 
+//-------------------------------------------------------------------------------------------------------------------------
+            
             // 메시지 입력 및 전송
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
-                //viewModel.sendMessage(newMessage)
-                newMessage = ""
+             
+                if !newMessage.isEmpty {
+                    viewModel.sendMessage(message: newMessage) // ViewModel의 sendMessage 함수 호출
+                    newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
+                }
+                
             })
+            
+//-------------------------------------------------------------------------------------------------------------------------
+            
         }
-        .navigationTitle("\(viewModel.patnerNickname)")
+        .navigationTitle("\(viewModel.partnerNickname)")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(){
-            viewModel.fetchPage() // Call the async function here
+            
         }
     }
 }
 
-// MARK: - 채팅 목록
+// MARK: - 메시지 입력부 ------------------------------------------------------------------------------------------------------
+struct MessageInputView: View {
+    @Binding var newMessage: String
+    var sendMessageAction: () -> Void
+
+    var body: some View {
+        HStack {
+            TextField("", text: $newMessage)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(minHeight: 30)
+            
+            Button(action: sendMessageAction) {
+                Image(systemName: "paperplane")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.white)
+            }
+            .frame(height: 35)
+            .frame(minWidth: 50)
+            .background(Color.blue)
+            .cornerRadius(10)
+        }
+        .padding()
+    }
+}
+//-------------------------------------------------------------------------------------------------------------------------
+
+
+// MARK: - 채팅 목록 --------------------------------------------------------------------------------------------------------
 struct MessageListView: View {
-    @ObservedObject var viewModel: ChatViewModel
+    @ObservedObject var viewModel: ChatView.ViewModel
 
     var body: some View {
         ScrollViewReader { scrollViewProxy in
@@ -59,10 +103,12 @@ struct MessageListView: View {
         }
     }
 }
+//-------------------------------------------------------------------------------------------------------------------------
 
-// MARK: - 채팅 버블
+
+// MARK: - 채팅 버블 ---------------------------------------------------------------------------------------------------------
 struct ChatBubbleView: View {
-    @ObservedObject var viewModel: ChatViewModel
+    @ObservedObject var viewModel: ChatView.ViewModel
     let message: Message
 
     var body: some View {
@@ -96,34 +142,7 @@ struct ChatBubbleView: View {
         .id(message.id) // ID로 메시지를 추적
     }
 }
-
-
-// MARK: - 메시지 입력부
-struct MessageInputView: View {
-    @Binding var newMessage: String
-    var sendMessageAction: () -> Void
-
-    var body: some View {
-        HStack {
-            TextField("", text: $newMessage)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .frame(minHeight: 30)
-            
-            Button(action: sendMessageAction) {
-                Image(systemName: "paperplane")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.white)
-            }
-            .frame(height: 35)
-            .frame(minWidth: 50)
-            .background(Color.blue)
-            .cornerRadius(10)
-        }
-        .padding()
-    }
-}
+//-------------------------------------------------------------------------------------------------------------------------
 
 
 

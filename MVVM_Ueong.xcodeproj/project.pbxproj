@@ -40,6 +40,7 @@
 		0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */; };
 		0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693452CA42A8100A3E3B7 /* SalesListView.swift */; };
 		0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */; };
+		1F33DC0A2CAF8BBB00A039DA /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F33DC092CAF8BBB00A039DA /* Socket.swift */; };
 		1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B22CA972920071A8C8 /* AddPostButton.swift */; };
 		1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2BB2CAD13350071A8C8 /* AppDelegate.swift */; };
 		1F53E2C92CAD506E0071A8C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F53E2C82CAD506E0071A8C8 /* SocketIO */; };
@@ -122,6 +123,7 @@
 		0DB6933E2CA41B7F00A3E3B7 /* AccountEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountEditViewModel.swift; sourceTree = "<group>"; };
 		0DB693452CA42A8100A3E3B7 /* SalesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListView.swift; sourceTree = "<group>"; };
 		0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesListViewModel.swift; sourceTree = "<group>"; };
+		1F33DC092CAF8BBB00A039DA /* Socket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Socket.swift; sourceTree = "<group>"; };
 		1F53E2B22CA972920071A8C8 /* AddPostButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostButton.swift; sourceTree = "<group>"; };
 		1F53E2BB2CAD13350071A8C8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F691BB62CA3CE500076E8A8 /* PostDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetail.swift; sourceTree = "<group>"; };
@@ -273,6 +275,14 @@
 			path = SalesList;
 			sourceTree = "<group>";
 		};
+		1F33DC082CAF8B5200A039DA /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				1F33DC092CAF8BBB00A039DA /* Socket.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		1F53E2B62CA9B9B50071A8C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,6 +337,7 @@
 			children = (
 				1F53E2BA2CAD131A0071A8C8 /* System */,
 				0D45B7C82CA573F200AA516F /* Network */,
+				1F33DC082CAF8B5200A039DA /* Service */,
 				0DB6931C2CA3EF3F00A3E3B7 /* Utils */,
 				0DB693192CA3ED2000A3E3B7 /* Repositories */,
 				1FC52FC12CA2DE5C001A933B /* Models */,
@@ -590,6 +601,7 @@
 				0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */,
 				0D45B7E62CAC1A9C00AA516F /* ImagePicker.swift in Sources */,
 				0DB6932A2CA3F66400A3E3B7 /* ChatView.swift in Sources */,
+				1F33DC0A2CAF8BBB00A039DA /* Socket.swift in Sources */,
 				1FC52FBC2CA2DCC3001A933B /* ChatListViewModel.swift in Sources */,
 				1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */,
 				1F8C121F2CA4071F00A33802 /* PostRow.swift in Sources */,
