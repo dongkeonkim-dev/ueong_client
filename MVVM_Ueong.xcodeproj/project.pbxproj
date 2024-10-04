@@ -197,8 +197,8 @@
 		0D45B7EC2CAD1B5600AA516F /* SearchPost */ = {
 			isa = PBXGroup;
 			children = (
-				0D45B7F12CAD305100AA516F /* SearchPostViewModel.swift */,
 				0D45B7EF2CAD1B8400AA516F /* SearchPostView.swift */,
+				0D45B7F12CAD305100AA516F /* SearchPostViewModel.swift */,
 			);
 			path = SearchPost;
 			sourceTree = "<group>";

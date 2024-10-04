@@ -105,7 +105,6 @@ struct WritePostView: View {
             .padding(.leading, 20)
             .navigationBarTitle("내 물건 팔기", displayMode: .inline)
             Spacer()
-            
             AddButton(viewModel:viewModel)
                 .padding(.top,20)
                 .padding(.bottom,20)
@@ -115,14 +114,17 @@ struct WritePostView: View {
 
 struct AddButton: View {
     @ObservedObject var viewModel: WritePostView.ViewModel
+    @Environment(\.presentationMode) var presentationMode
 
     public var body: some View {
         VStack {
             Spacer()
             HStack {
                 Button(action: {
-                    // 작성 완료 버튼 액션 - postPost 호출
-                    viewModel.postPost()
+                    Task{
+                        viewModel.postPost()
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }) {
                     Text("작성 완료")
                         .font(.system(size: 20).weight(.bold))
@@ -136,6 +138,9 @@ struct AddButton: View {
                 .padding(.horizontal)
                 .foregroundColor(Color.white)
             }
+        }
+        .onAppear(){
+            viewModel.fetchPage()
         }
     }
 }

@@ -11,38 +11,29 @@ class UserRepository {
     // 비동기 함수로 사용자 이름에 따른 사용자 정보를 가져오기
     func getUserByUsername(username: String) async throws -> User {
         // APICall의 get 메서드를 호출하여 사용자 데이터를 받아옴
-        let user: User = try await APICall.shared.get("user/by-username", parameters: [username])
+        let user: User = try await APICall.shared.get("user", parameters: [("username", username)])
         return user
     }
     
     // 사용자 정보 수정 (파일 업로드 포함)
-    func editUser(userData: EditedUserData) async throws {
-        do {
-            // 파일 데이터가 있는 경우 multipart 요청
-            if let profilePhoto = userData.profilePhoto {
-                try await APICall.shared.postMultipart(
-                    endpoint: "user/edit-user",
-                    parameters: [
-                        "username": userData.username,
-                        "email": userData.email,
-                        "nickname": userData.nickname,
-                        "password": userData.password
-                    ],
-                    fileData: profilePhoto,
-                    fileName: "profilePhoto.jpg",
-                    mimeType: "image/jpeg"
-                )
-            } else {
-                // 파일 데이터가 없으면 일반 POST 요청 사용
-                try await APICall.shared.post(
-                    "user/edit-user",
-                    body: userData
-                )
-            }
-            print("User information updated successfully.")
-        } catch {
-            print("Error updating user information: \(error)")
-            throw error
-        }
-    }
+//    func editUser(userData: EditedUserData) async throws {
+//        do {
+//            try await APICall.shared.postMultipart( // patch 요청으로 교체
+//                endpoint: "user/edit-user",
+//                parameters: [
+//                    "username": userData.username,
+//                    "email": userData.email,
+//                    "nickname": userData.nickname,
+//                    "password": userData.password
+//                ],
+//                fileData: profilePhoto,
+//                fileName: "profilePhoto.jpg",
+//                mimeType: "image/jpeg"
+//            )
+//            print("User information updated successfully.")
+//        } catch {
+//            print("Error updating user information: \(error)")
+//            throw error
+//        }
+//    }
 }

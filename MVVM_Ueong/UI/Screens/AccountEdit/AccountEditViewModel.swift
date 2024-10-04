@@ -52,7 +52,7 @@ extension AccountEditView {
                 }
                 
                 // API 요청을 보내는 코드 (실제 서버로 업로드)
-                try await userRepository.editUser(userData: editedUserData)
+                //try await userRepository.editUser(userData: editedUserData)
                 // 저장 후 현재 뷰를 닫기
                 self.editing = false
             }
