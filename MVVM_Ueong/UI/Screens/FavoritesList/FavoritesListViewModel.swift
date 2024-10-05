@@ -12,6 +12,7 @@ extension FavoritesListView {
         @Published var favoritePosts: [Post] = []
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
+        let favoriteRepository = FavoriteRepository()
         var username: String
 
         init(userId: Int) {
@@ -50,6 +51,26 @@ extension FavoritesListView {
                     }
                 } catch {
                     print("Error fetching photos for post \(postId): \(error)")
+                }
+            }
+        }
+        
+        func toggleFavorite(post: Post) {
+            Task { @MainActor in
+                // posts 배열에서 인덱스를 찾아서 수정합니다.
+                if let index = favoritePosts.firstIndex(where: { $0.id == post.id }) {
+                    favoritePosts[index].isFavorite.toggle()
+                    favoritePosts[index].favoriteCount += favoritePosts[index].isFavorite ? 1 : -1
+                    
+                    do {
+                        if favoritePosts[index].isFavorite {
+                            try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                        } else {
+                            try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                        }
+                    } catch {
+                        print("Error updating favorite status for post \(post.id): \(error)")
+                    }
                 }
             }
         }

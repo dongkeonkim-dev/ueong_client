@@ -1,44 +1,39 @@
-//
-//  WritePostViewModel.swift
-//  MVVM_Ueong
-//
-//  Created by 김동건 on 9/25/24.
-//
-
 import SwiftUI
 
 extension WritePost {
     class ViewModel: ObservableObject {
         let postRepository = PostRepository()
         var username: String
-        @Published var post: NewPost
+        @Published var post = NewPost()
         @Published var isPosting: Bool = false
+        @Published var selectedImages: [UIImage] = [] // 선택된 이미지 배열
 
-        init() {
+        init(village: MyVillage) {
             self.username = "username1"
-            self.post = NewPost()
         }
         
-        func fetchPage(){
-            self.username = "username1"
-            self.post = NewPost()
-            self.post.writerUsername = username
+        func fetchPage() async{
+            Task { @MainActor in
+                self.post = NewPost()
+                self.selectedImages.removeAll()
+                self.post.writerUsername = username
+            }
         }
         
         func uploadPost() async {
             Task { @MainActor in
                 guard !isPosting else { return } // 중복 요청 방지
                 isPosting = true
-                do{
-                    let response : Response =  try await postRepository.uploadPost(post: post, images:[])
+                do {
+                    let imageData = selectedImages.compactMap { $0.jpegData(compressionQuality: 0.8) }
+                    let response: Response = try await postRepository.uploadPost(post: post, images: imageData, models: [])
                     print(response.message)
                     self.isPosting = false
-                }catch{
-                    print("failure uploadPost")
+                } catch {
+                    print("Failure uploading post")
                     self.isPosting = false
                 }
             }
         }
     }
 }
-

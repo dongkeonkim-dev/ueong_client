@@ -9,24 +9,10 @@ import SwiftUI
 
 struct SelectPostOption: View {
     let viewModel : PostsList.ViewModel
-    @State private var isARSelected: Bool = false
+    @State private var isARSelected: Bool = true
     @State private var selectedOption: String = "최신순"
     var body: some View {
         HStack(){
-            Button(action:{
-                viewModel.searchTerm = ""
-                viewModel.sortBy = "createAt"
-                viewModel.fetchPosts()
-            }){
-                Text("전체")
-                    .padding(.vertical, 5)
-                    .padding(.horizontal, 10)
-            }
-            .background(
-                RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
-            )
-            
-            
             Button(action:{
                 isARSelected.toggle()
             }){
@@ -41,6 +27,8 @@ struct SelectPostOption: View {
                     .fill(isARSelected ? Color.blue.opacity(0.6) : Color.gray.opacity(0.3))
                     
             )
+            
+            Spacer()
             
             Button(action: {
                 selectedOption = "최신순"
@@ -89,7 +77,6 @@ struct SelectPostOption: View {
                             .fill(selectedOption == "관심순" ? Color.blue.opacity(0.6) : Color.gray.opacity(0.3))
                     )
             }
-            Spacer()
         }
         .padding(.horizontal, 20)
     }

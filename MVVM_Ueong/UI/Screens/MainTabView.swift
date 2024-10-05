@@ -22,7 +22,7 @@ struct MainTabView: View {
 //                    .edgesIgnoringSafeArea(.all) // 화면의 모든 가장자리까지 색상을 확장
                 
                 TabView {
-                    PostsList(viewModel: PostsList.ViewModel())
+                    PostsList(pViewModel: PostsList.ViewModel(), wViewModel: WritePost.ViewModel(village: MyVillage()))
                         .tabItem {
                             Image(systemName: "house")
                             Text("홈")

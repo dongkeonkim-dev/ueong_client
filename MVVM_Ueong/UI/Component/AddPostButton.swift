@@ -2,22 +2,40 @@ import SwiftUI
 
 struct AddPostButton: View {
     @ObservedObject var pViewModel: PostsList.ViewModel
+    @ObservedObject var wViewModel: WritePost.ViewModel
+    @State private var isNavigating = false // State to control navigation
+
     public var body: some View {
-        VStack {
-            Spacer() // 버튼을 하단으로 이동
-            HStack {
-                Spacer() // 버튼을 오른쪽으로 이동
-                NavigationLink(destination: WritePost(wViewModel: WritePost.ViewModel(), pViewModel:pViewModel)) { // PostCreationView로 이동
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.blue)
-                        .padding()
+        ZStack {
+            // This hidden NavigationLink allows us to navigate programmatically
+            NavigationLink(destination: WritePost(wViewModel: wViewModel, pViewModel: pViewModel), isActive: $isNavigating) {
+                EmptyView()
+            }
+            .hidden() // Hide the navigation link
+
+            VStack {
+                Spacer() // Push everything up
+                HStack {
+                    Spacer() // Push everything to the right
+                    Button(action: {
+                        Task {
+                            await wViewModel.fetchPage() // Fetch data asynchronously
+                            if let selectedId = pViewModel.selection?.id { // Safely unwrap the optional
+                                    wViewModel.post.emdId = selectedId // Now this should work correctly
+                                }
+                            isNavigating = true // Set navigation flag to true after fetching
+                        }
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.blue)
+                            .padding()
+                    }
+                    .padding(.bottom, 20) // Bottom padding
+                    .padding(.trailing, 10) // Right padding
                 }
             }
         }
-        .padding(.bottom, 20) // 하단 여백
-        .padding(.trailing, 10) // 오른쪽 여백
     }
 }
-

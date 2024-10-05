@@ -13,12 +13,12 @@ extension SalesListView {
         @Published var postsSold: [Post] = []
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
+        let favoriteRepository = FavoriteRepository()
         var username: String
 
         init() {
             // 예시 사용자 이름으로 설정
             self.username = "username1"
-            fetchPage()
         }
 
         func fetchPage(){
@@ -50,6 +50,51 @@ extension SalesListView {
                     print("Error fetching photos for post \(posts[index].id): \(error)")
                 }
             }
+        }
+        
+        func toggleFavorite(post: Post, type: FavoriteType){
+            Task { @MainActor in
+                // 타입에 따라 적절한 포스트 배열 선택
+                switch type {
+                case .forSale:
+                    // posts 배열에서 인덱스를 찾아서 수정합니다.
+                    if let index = postsForSale.firstIndex(where: { $0.id == post.id }) {
+                        postsForSale[index].isFavorite.toggle()
+                        postsForSale[index].favoriteCount += postsForSale[index].isFavorite ? 1 : -1
+
+                        do {
+                            if postsForSale[index].isFavorite {
+                                try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                            } else {
+                                try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                            }
+                        } catch {
+                            print("Error updating favorite status for post \(post.id): \(error)")
+                        }
+                    }
+                case .sold:
+                    // posts 배열에서 인덱스를 찾아서 수정합니다.
+                    if let index = postsSold.firstIndex(where: { $0.id == post.id }) {
+                        postsSold[index].isFavorite.toggle()
+                        postsSold[index].favoriteCount += postsSold[index].isFavorite ? 1 : -1
+
+                        do {
+                            if postsSold[index].isFavorite {
+                                try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                            } else {
+                                try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                            }
+                        } catch {
+                            print("Error updating favorite status for post \(post.id): \(error)")
+                        }
+                    }
+                }
+            }
+        }
+
+        enum FavoriteType {
+            case forSale
+            case sold
         }
     }
 }

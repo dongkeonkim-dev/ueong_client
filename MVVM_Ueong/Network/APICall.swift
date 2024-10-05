@@ -12,17 +12,16 @@ class APICall {
     
     func get<T: Decodable>(_ endpoint: String, parameters: [(String, Any)] = [], queryParameters: [String: Any] = [:]) async throws -> T {
         guard let result: T = try await request(endpoint: endpoint, method: .get, parameters: parameters, queryParameters: queryParameters) else {
-                throw URLError(.badServerResponse)
-            }
-            return result
+            throw URLError(.badServerResponse)
+        }
+        return result
     }
     
     func post(_ endpoint: String,
                   parameters: [(String, Any)] = [],
                   queryParameters: [String: Any] = [:],
-                  files: [(data: Data, fileName: String, mimeType: String)] = []) async throws -> Response {
+                  files: [File] = []) async throws -> Response {
         
-        // 서버 응답을 제네릭 타입으로 반환
         guard let result: Response = try await request(endpoint: endpoint, method: .post, parameters: parameters, queryParameters: queryParameters, files: files) else {
             throw URLError(.badServerResponse)
         }
@@ -32,9 +31,8 @@ class APICall {
     func patch(_ endpoint: String,
                   parameters: [(String, Any)] = [],
                   queryParameters: [String: Any] = [:],
-                  files: [(data: Data, fileName: String, mimeType: String)] = []) async throws -> Response {
+                  files: [File] = []) async throws -> Response {
         
-        // 서버 응답을 제네릭 타입으로 반환
         guard let result: Response = try await request(endpoint: endpoint, method: .patch, parameters: parameters, queryParameters: queryParameters, files: files) else {
             throw URLError(.badServerResponse)
         }
@@ -52,63 +50,62 @@ class APICall {
         endpoint: String,
         method: Method,
         parameters: [(String, Any)] = [],
-        // get에서의 순서가 중요하기 때문에 Dict를 받아선 안됨.
         queryParameters: [String: Any] = [:],
-        files: [(data: Data, fileName: String, mimeType: String)] = []
+        files: [File] = []
     ) async throws -> T? {
         
-        var request = URLRequest(url:URL(string:"\(baseURL)")!)
+        var request = URLRequest(url: URL(string: "\(baseURL)")!)
         
-        switch method{
-        case .post, .patch :
+        switch method {
+        case .post, .patch:
             guard let requestURL = URL(string: "\(baseURL.joinPath(endpoint))") else {
                 throw URLError(.badURL)
             }
             request = URLRequest(url: requestURL)
-            
             request.httpMethod = method == .post ? "POST" : "PATCH"
             
             var bodyData = Data()
             
             if !files.isEmpty {
-                // 파일이 있는 경우 multipart/form-data
                 let boundary = "Boundary-\(UUID().uuidString)"
                 request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-                
-                // JSON 데이터를 form-data 형식으로 추가
-                let jsonDict = Dictionary(uniqueKeysWithValues: parameters)
-                let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
-                let jsonString = String(data: jsonData, encoding: .utf8) ?? ""
-                
-                bodyData.append("--\(boundary)\r\n")
-                bodyData.append("Content-Disposition: form-data; name=\"json\"\r\n")
-                bodyData.append("Content-Type: application/json\r\n\r\n")
-                bodyData.append("\(jsonString)\r\n")
-                
+
+                // 파라미터 추가
+                for (key, value) in parameters {
+                    bodyData.append("--\(boundary)\r\n")
+                    bodyData.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n")
+                    bodyData.append("\(value)\r\n")
+                }
+
                 // 파일 데이터 추가
                 for file in files {
                     bodyData.append("--\(boundary)\r\n")
-                    bodyData.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(file.fileName)\"\r\n")
+                    bodyData.append("Content-Disposition: form-data; name=\"\(file.fieldName)\"; filename=\"\(file.fileName)\"\r\n")
                     bodyData.append("Content-Type: \(file.mimeType)\r\n\r\n")
                     bodyData.append(file.data)
                     bodyData.append("\r\n")
                 }
                 bodyData.append("--\(boundary)--\r\n")
-                
+                print(bodyData)
             } else {
-                // 파일이 없는 경우 application/json
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                
-                // JSON 데이터를 추가
                 let jsonDict = Dictionary(uniqueKeysWithValues: parameters)
                 let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
                 bodyData.append(jsonData)
+                print(bodyData)
             }
-            print(bodyData)
             request.httpBody = bodyData
+            
+            let bodyString = String(data: bodyData, encoding: .utf8)
+
+            if let bodyString = bodyString {
+                print("HTTP Body: \(bodyString)")
+            } else {
+                print("HTTP Body is empty or cannot be converted to string")
+            }
+            
         case .get:
             var paramString = parameters.map { $0.0.joinPath(String(describing: $0.1)) }.reduce("") { $0.joinPath($1) }
-            
             var urlComponents = URLComponents(string: "\(baseURL.joinPath(endpoint).joinPath(paramString))")
             
             if !queryParameters.isEmpty {
@@ -122,31 +119,24 @@ class APICall {
             guard let url = urlComponents?.url else {
                 throw URLError(.badURL)
             }
-            
             request = URLRequest(url: url)
             request.httpMethod = "GET"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
         case .delete:
             var urlComponents = URLComponents(string: "\(baseURL.joinPath(endpoint))")
-            
             if !queryParameters.isEmpty {
-                var queryItems: [URLQueryItem] = []
-                for (key, value) in queryParameters {
-                    queryItems.append(URLQueryItem(name: key, value: "\(value)"))
-                }
-                urlComponents?.queryItems = queryItems
+                urlComponents?.queryItems = queryParameters.map { URLQueryItem(name: $0.key, value: "\($0.value)") }
             }
             guard let url = urlComponents?.url else {
                 throw URLError(.badURL)
             }
-            
             request = URLRequest(url: url)
             request.httpMethod = "DELETE"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
         
         print("HTTP Method:", request.httpMethod ?? "nil", "URL:", request.url?.absoluteString ?? "nil")
-
         
         // 네트워크 요청 수행
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -162,7 +152,7 @@ class APICall {
             print("**** Response JSON: \(jsonResponse)")
             do {
                 let decodedData = try JSONDecoder().decode(T.self, from: data)
-                print("**** Decoded Data: \(decodedData)") // 디코딩된 데이터를 출력합니다.
+                print("**** Decoded Data: \(decodedData)")
                 return decodedData
             } catch {
                 print("Error decoding data: \(error)")
@@ -173,6 +163,7 @@ class APICall {
     }
 }
 
+// Helper Extensions and Enums
 extension Data {
     mutating func append(_ string: String) {
         if let data = string.data(using: .utf8) {
@@ -203,4 +194,11 @@ extension String {
 
 struct VoidResult: Decodable {
     var id = UUID()
+}
+
+struct File {
+    var data: Data
+    var fieldName: String
+    var fileName: String
+    var mimeType: String
 }
