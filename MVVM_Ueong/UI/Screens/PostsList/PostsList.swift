@@ -3,37 +3,35 @@ import SwiftUI
 
 
 struct PostsList: View {
-    @ObservedObject var pViewModel: PostsList.ViewModel
-    @ObservedObject var wViewModel: WritePost.ViewModel
-    
+    @StateObject var viewModel = PostsList.ViewModel()
     
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
                 HStack(spacing: -15){
                     SelectRegion(
-                        selection: $pViewModel.selection,
-                        options: pViewModel.myVillages,
+                        selection: $viewModel.selection,
+                        options: viewModel.myVillages,
                         maxWidth: 130
                     )
-                    .onChange(of: pViewModel.selection) {
+                    .onChange(of: viewModel.selection) {
                         print("Region Changed")
-                        pViewModel.fetchPosts()
+                        viewModel.fetchPosts()
                     }
-                    SearchBar(viewModel: pViewModel)
+                    SearchBar(viewModel: viewModel)
                 }
                 .zIndex(1)
                 
-                SelectPostOption(viewModel: pViewModel)
+                SelectPostOption(viewModel: viewModel)
                 
                 ScrollView {
                     VStack(spacing: 13) {
-                        ForEach($pViewModel.posts) { $post in
+                        ForEach($viewModel.posts) { $post in
                             NavigationLink(
                                 destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                             ) {
                                 PostRow(post: $post, toggleFavorite: {_ in
-                                    pViewModel.toggleFavorite(post: post) // toggleFavorite 함수 호출
+                                    viewModel.toggleFavorite(post: post) // toggleFavorite 함수 호출
                                 })
                             }
                         }
@@ -41,17 +39,42 @@ struct PostsList: View {
                 }
                 .refreshable {
                     print("Refresh PostsList")
-                    pViewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
+                    viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
                 }
             }
             
             // 오른쪽 하단 고정 버튼
-            AddPostButton(pViewModel: pViewModel, wViewModel: wViewModel)
+            AddPostButton(viewModel: viewModel)
+        }
+    }
+}
+
+struct AddPostButton: View {
+    @ObservedObject var viewModel: PostsList.ViewModel
+    @State private var isNavigating = false // State to control navigation
+
+    public var body: some View {
+        ZStack {
+            VStack {
+                Spacer() // Push everything up
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: WritePost(pViewModel: viewModel, wViewModel:WritePost.ViewModel(emdId: viewModel.selection?.id ?? 0))) {
+                        Image(systemName: "plus.circle.fill")
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.blue)
+                            .padding()
+                    }
+                    .padding(.bottom, 20) // Bottom padding
+                    .padding(.trailing, 10) // Right padding
+                }
+            }
         }
     }
 }
 
 #Preview {
-    PostsList(pViewModel: PostsList.ViewModel(), wViewModel: WritePost.ViewModel(village: MyVillage()))
+    PostsList()
 }
 

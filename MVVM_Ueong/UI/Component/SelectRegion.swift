@@ -6,9 +6,9 @@ enum DropDownPickerState {
 }
 
 struct SelectRegion: View {
-    @Binding var selection: MyVillage?
+    @Binding var selection: Emd?
     var state: DropDownPickerState = .bottom
-    var options: [MyVillage]
+    var options: [Emd]
     var maxWidth: CGFloat
     
     @State var showDropdown = false
@@ -63,7 +63,7 @@ struct SelectRegion: View {
         .zIndex(zindex)
     }
     
-    func OptionsView(options: [MyVillage], selection: Binding<MyVillage?>, maxWidth: CGFloat) -> some View {
+    func OptionsView(options: [Emd], selection: Binding<Emd?>, maxWidth: CGFloat) -> some View {
         VStack(spacing: 0) {
             ForEach(options) { option in
                 optionRow(option: option)
@@ -71,7 +71,7 @@ struct SelectRegion: View {
         }
     }
     
-    func optionRow(option: MyVillage) -> some View {
+    func optionRow(option: Emd) -> some View {
         HStack {
             Text(option.name)
                 .font(.system(size: 20))
@@ -96,7 +96,7 @@ struct SelectRegion: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        SelectRegion(selection: .constant(MyVillage()), options: [MyVillage()], maxWidth: 130)
+        SelectRegion(selection: .constant(Emd()), options: [Emd()], maxWidth: 130)
     }
 }
 

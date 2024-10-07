@@ -15,7 +15,7 @@ extension FavoritesListView {
         let favoriteRepository = FavoriteRepository()
         var username: String
 
-        init(userId: Int) {
+        init() {
             self.username = "username1"
         }
         

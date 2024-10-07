@@ -95,8 +95,8 @@ struct NewPost :Encodable{
     var price: Double
     var writerUsername: String
     var emdId: Int
-    var latitude: Double
-    var longitude: Double
+    var latitude: Double?
+    var longitude: Double?
     var locationDetail: String
     var text: String
     
@@ -106,8 +106,8 @@ struct NewPost :Encodable{
         self.price = 0.0
         self.writerUsername = ""
         self.emdId = 1
-        self.latitude = 0.0
-        self.longitude = 0.0
+        self.latitude = nil
+        self.longitude = nil
         self.locationDetail = ""
         self.text = ""
     }

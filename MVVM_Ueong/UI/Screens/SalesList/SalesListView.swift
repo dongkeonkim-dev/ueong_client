@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct SalesListView: View {
-    @ObservedObject var viewModel: SalesListView.ViewModel
+    @StateObject var viewModel = SalesListView.ViewModel()
     @State private var selectedTab = 0
 
     var body: some View {

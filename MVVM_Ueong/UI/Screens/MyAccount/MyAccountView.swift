@@ -3,39 +3,37 @@ import PhotosUI
 
 // MARK: - 내 정보
 struct MyAccountView: View {
-    @ObservedObject var viewModel: MyAccountView.ViewModel
+    @StateObject var viewModel = MyAccountView.ViewModel()
 
     var body: some View {
-        NavigationView(){
-            VStack {
-                HStack {
-                    Text("내 정보")
-                        .font(.system(size: 25).weight(.bold))
-                    Spacer()
+        VStack {
+            HStack {
+                Text("내 정보")
+                    .font(.system(size: 25).weight(.bold))
+                Spacer()
+            }
+            .padding(.horizontal, 20)
+            
+            ScrollView {
+                VStack(spacing: 20) {
+                    ProfileHeaderView(user: viewModel.user)
+                    AccountInfoView(user: viewModel.user, logoutAction: {
+                        // viewModel.logout()
+                    })
+                    
+                    AccountActionsView(
+                        editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel()),
+                        salesListDestination: SalesListView(viewModel: SalesListView.ViewModel()), // 임시 텍스트로 대체
+                        deleteAccountAction: {
+                            // 탈퇴 액션
+                        }
+                    )
+                    
                 }
-                .padding(.horizontal, 20)
-                
-                ScrollView {
-                    VStack(spacing: 20) {
-                        ProfileHeaderView(user: viewModel.user)
-                        AccountInfoView(user: viewModel.user, logoutAction: {
-                            // viewModel.logout()
-                        })
-                        
-                        AccountActionsView(
-                            editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel()),
-                            salesListDestination: SalesListView(viewModel: SalesListView.ViewModel()), // 임시 텍스트로 대체
-                            deleteAccountAction: {
-                                // 탈퇴 액션
-                            }
-                        )
-                        
-                    }
-                    .onAppear(){
-                        viewModel.fetchPage()
-                    }
-                    .padding(.leading, 5)
+                .onAppear(){
+                    viewModel.fetchPage()
                 }
+                .padding(.leading, 5)
             }
         }
    }
