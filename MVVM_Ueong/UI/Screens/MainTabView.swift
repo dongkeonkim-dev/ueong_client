@@ -28,12 +28,12 @@ struct MainTabView: View {
                             Text("홈")
                         }
                     
-//                    ChatListView(viewModel: ChatListView.ViewModel())
-//                        .tabItem {
-//                            Image(systemName: "message")
-//                            Text("채팅")
-//                        }
-//                    
+                    ChatListView(viewModel: ChatListView.ViewModel())
+                        .tabItem {
+                            Image(systemName: "message")
+                            Text("채팅")
+                        }
+                    
                     FavoritesListView(viewModel: FavoritesListView.ViewModel(userId: 9))
                         .tabItem {
                             Image(systemName: "heart")

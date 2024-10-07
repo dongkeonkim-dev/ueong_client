@@ -191,36 +191,28 @@
 import SwiftUI
 import MapKit
 
-
 // MARK: - PostDetail
 struct PostDetail: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
     @State private var chatViewModel: ChatView.ViewModel?
+    @StateObject private var chatListViewModel = ChatListView.ViewModel()
+    @State private var chatRoomId: Int?
     @State private var isChatViewActive = false
 
-    
     var body: some View {
         VStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     PostImageSlider(photos: viewModel.post.photos ?? [])
-                    UserInfoView(
-                        writer: viewModel.writer,
-                        siGuDong: viewModel.siGuDong
-                    ) // 사용자 정보 추가
+                    UserInfoView(writer: viewModel.writer, siGuDong: viewModel.siGuDong) // 사용자 정보 추가
                     
                     Rectangle()
                         .fill(Color.gray)
                         .frame(height: 1)
                         .padding(.horizontal, 20)
                     
-                    PostDetailContent(
-                        postTitle: viewModel.post.title,
-                        postText: viewModel.post.text
-                    ) // 포스트 상세 정보 추가
-                    TradingLocation(
-                        viewModel:viewModel
-                    )
+                    PostDetailContent(postTitle: viewModel.post.title, postText: viewModel.post.text) // 포스트 상세 정보 추가
+                    TradingLocation(viewModel: viewModel)
                 }
             }
             VStack(spacing: 20) {
@@ -269,28 +261,38 @@ struct PostDetail: View {
                     .disabled(true) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
                     
                     Button(action: {
-                        // ViewModel 초기화
-                        chatViewModel = ChatView.ViewModel(username: "username1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post )
                         
-                        // 채팅방 체크
-                        chatViewModel?.checkChatRoom(username: "username1", postId: viewModel.postId)
+                        //채팅방 존재 검사
+                        if let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id) {
+                            // 기존 채팅방이 발견된 경우
+                            chatRoomId = checkRoomId
+                            
+                            print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
+                            print("chatRoomId = \(chatRoomId ?? -1)")
+                            
+                            // ChatView로 이동하는 로직을 여기에 추가
+                            chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: "username1", userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
+                            isChatViewActive = true
+                        } else {
+                            // 기존 채팅방이 발견되지 않은 경우
+                            print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
+                            print("chatRoomId = \(chatRoomId ?? -1)")
+                            print("기존 채팅방을 찾을 수 없습니다. 새 채팅방을 생성합니다.")
+                            chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: "username1", userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
+                            isChatViewActive = true
+                        }
                         
-                        // ChatView로 이동
-                        isChatViewActive = true
+                        
                     }) {
-                        Text("채팅하기")
+                        Text("\(isChatViewActive)")
                             .padding(10)
                             .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(5)
                     }
                     .background(
-                        NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {
-                            EmptyView()
-                        }
+                        NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {}
                     )
-
-                    
                 }
                 .padding(.horizontal, 30)
             }
@@ -333,13 +335,13 @@ struct PostImageSlider: View {
 
 // MARK: - UserInfoView
 struct UserInfoView: View {
-    var writer : User
+    var writer: User
     let siGuDong: String
 
     var body: some View {
         HStack {
             if let photoUrl = writer.profilePhotoUrl,
-                let url = URL(string: baseURL.joinPath(photoUrl)) {
+               let url = URL(string: baseURL.joinPath(photoUrl)) {
                 // 서버에서 불러온 기존 이미지를 표시
                 AsyncImage(url: url) { image in
                     image
@@ -360,8 +362,7 @@ struct UserInfoView: View {
                     .padding(.trailing, 10)
                     .foregroundColor(.gray)
             }
-            
-            
+
             VStack(alignment: .leading) {
                 Text(writer.nickname)
                     .font(.system(size: 18, weight: .bold))
@@ -384,20 +385,20 @@ struct PostDetailContent: View {
             Text(postTitle)
                 .font(.system(size: 28, weight: .bold))
                 .fontWeight(.bold)
-            
+
             HStack {
                 Text("카테고리")
                     .foregroundColor(.gray)
-                
+
                 Rectangle()
                     .fill(Color.gray)
                     .frame(width: 1, height: 15)
-                
+
                 Text("13분전")
                     .foregroundColor(.gray)
             }
             .padding(.top, -10)
-            
+
             VStack {
                 Text(postText)
                     .font(.system(size: 20))
@@ -405,13 +406,13 @@ struct PostDetailContent: View {
             .padding(.top, 5)
         }
         .padding(.horizontal)
-        
     }
 }
 
 // MARK: - TradingLocation
 struct TradingLocation: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
+    
     var body: some View {
         VStack {
             Text("거래 희망 장소")
@@ -419,7 +420,6 @@ struct TradingLocation: View {
                 .fontWeight(.bold)
                 .padding(.top, 20)
 
-            
             if let coordinate = viewModel.mapCoordinate {
                 Map(initialPosition: .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
                     Marker(viewModel.post.title, coordinate: coordinate)
@@ -438,6 +438,8 @@ struct TradingLocation: View {
         .padding(.horizontal)
     }
 }
+
+
 
 //MARK: - BottomBar
 //struct BottomBar: View {

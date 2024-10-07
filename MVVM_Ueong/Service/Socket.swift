@@ -5,6 +5,8 @@ import SwiftUI
 extension Notification.Name {
     static let checkChatResponse = Notification.Name("checkChatResponse")
     static let chatListResponse = Notification.Name("chatListResponse") // 추가
+    static let socketConnected = Notification.Name("socketConnected")
+    static let loadExistingMessagesResponse = Notification.Name("loadExistingMessagesResponse")
 }
 
 class SocketManagerService {
@@ -28,6 +30,8 @@ class SocketManagerService {
             print("소켓 연결됨")
             // 소켓 연결 성공 시 메시지 전송
             self.socket.emit("acknowledge", "클라이언트가 연결되었습니다.")
+            NotificationCenter.default.post(name: .socketConnected, object: nil)
+
         }
 
         // 소켓 연결 성공 시 메시지 수신
@@ -67,6 +71,23 @@ class SocketManagerService {
                 print("채팅 리스트 응답 형식 오류: \(data)")
             }
         }
+        
+        // loadExistingMessagesResponse Response 처리 추가
+        socket.on("loadExistingMessagesResponse") { data, ack in
+            if let response = data[0] as? [String: Any],
+               let success = response["success"] as? Bool,
+               let messages = response["messages"] as? [[String: Any]] {
+
+                print("Messages List Response 수신: 성공 여부 - \(success)")
+                
+                // Post notification with the chat list data
+                NotificationCenter.default.post(name: .loadExistingMessagesResponse, object: nil, userInfo: ["success": success, "messages": messages])
+            } else {
+                print("메시지 리스트 응답 형식 오류: \(data)")
+            }
+        }
+        
+        
     }
 
     func connect() {
@@ -85,8 +106,8 @@ class SocketManagerService {
         socket.emit("checkChat", username, postId)
     }
     
-    func loadExistingMessages(username: String, postId: Int) {
-        socket.emit("checkChat", username, postId)
+    func loadExistingMessages(chatId: Int) {
+        socket.emit("loadExistingMessages", chatId)
     }
     
     func createChatRoom(sellerId: String, buyerId: String, postId: Post.ID) {

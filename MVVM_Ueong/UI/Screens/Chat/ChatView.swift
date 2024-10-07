@@ -33,8 +33,8 @@ struct ChatView: View {
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
              
                 if !newMessage.isEmpty {
-                    viewModel.sendMessage(message: newMessage) // ViewModel의 sendMessage 함수 호출
-                    newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
+//                    viewModel.sendMessage(message: newMessage) // ViewModel의 sendMessage 함수 호출
+//                    newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
                 }
                 
             })
@@ -115,26 +115,27 @@ struct ChatBubbleView: View {
         HStack {
             VStack(alignment: .leading) {
                 
-                Text(message.sender == viewModel.username ? "" : message.sender)
+                Text(message.senderUsername == viewModel.username ? "" : message.senderUsername)
                     .font(.caption)
                     .foregroundColor(.gray)
-                Text(message.text)
+                Text(message.messageText)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
-                    .frame(maxWidth: .infinity, alignment: message.sender == viewModel.username ? .trailing : .leading)
-                if let sentTime = message.sentTime {
-                    Text(sentTime, style: .time)
+                    .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
+//                if let sentTime = message.sentTime {
+//                    Text(sentTime, style: .time)
+                Text(message.sentTime)
                         .font(.caption2)
                         .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: message.sender == viewModel.username ? .trailing : .leading)
-                } else {
-                    // sentTime이 nil일 때 처리할 내용을 여기 작성
-                    Text("Unknown Time")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: message.sender == viewModel.username ? .trailing : .leading)
-                }
+                        .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
+//                } else {
+//                    // sentTime이 nil일 때 처리할 내용을 여기 작성
+//                    Text("Unknown Time")
+//                        .font(.caption2)
+//                        .foregroundColor(.gray)
+//                        .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
+//                }
             }
             Spacer()
         }
