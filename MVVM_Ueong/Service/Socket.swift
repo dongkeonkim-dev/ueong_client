@@ -17,7 +17,7 @@ class SocketManagerService {
 
     private init() {
         // Socket.IO 설정
-        manager = SocketManager(socketURL: URL(string: baseURL)!, config: [.log(true), .compress])
+        manager = SocketManager(socketURL: URL(string: baseURL)!, config: [.log(false), .compress])
         socket = manager.defaultSocket
 
         // 소켓 이벤트 리스너 설정

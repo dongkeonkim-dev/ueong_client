@@ -1,17 +1,52 @@
 import SwiftUI
+import MapKit
 
 struct WritePost: View {
-    @ObservedObject var wViewModel: WritePost.ViewModel
     @ObservedObject var pViewModel: PostsList.ViewModel
+    @ObservedObject var wViewModel: WritePost.ViewModel
+    @StateObject var sViewModel: SelectLocation.ViewModel
+    @State private var displayLocationDetail: String = "위치를 선택하세요"
+    
+    init(pViewModel: PostsList.ViewModel
+, wViewModel: WritePost.ViewModel){
+        self.pViewModel = pViewModel
+        self.wViewModel = wViewModel
+        self._sViewModel = StateObject(wrappedValue: SelectLocation.ViewModel(emdId: wViewModel.post.emdId))
+    }
+
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isPriceFocused: Bool
     @FocusState private var isExplanationFocused: Bool
     @State private var showPicker: Bool = false
-
+    
     var body: some View {
         ScrollView {
             VStack {
                 HStack{
+                    Button(action: {
+//                        showPicker.toggle()
+                    }) {
+                        Rectangle() // Rectangle으로 감싸기
+                            .fill(Color.clear) // 배경 색상 투명으로 설정
+                            .frame(width: 70, height: 70)
+                            .cornerRadius(10)
+                            .overlay(
+                                VStack {
+                                    Image(systemName: "arkit")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(.blue)
+                                    Text("\(0)/1") // 선택된 이미지 수 표시
+                                        .font(.caption)
+                                        .foregroundColor(.blue)
+                                }
+                                .frame(width: 70, height: 70, alignment: .top) // 프레임 크기 및 정렬 조정
+                                .padding(.top, 40)
+                            )
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
+                    }
+//                    .fullScreenCover(isPresented: $showPicker) {
+//                        MultiImagePicker(selectedImages: $wViewModel.selectedImages, isPresented: $showPicker)
+//                    }
                     Button(action: {
                         showPicker.toggle()
                     }) {
@@ -146,9 +181,33 @@ struct WritePost: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("거래 희망 장소")
-                        TextField("단월동", text: $wViewModel.post.locationDetail)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .focused($isPriceFocused)
+                            // 위치를 로드하고 화면 전환
+                        if let emdId = pViewModel.selection?.id {
+                            NavigationLink(destination:
+                                SelectLocation(wViewModel: wViewModel,
+                                   sViewModel: sViewModel))//Extra trailing closure passed in call
+                            {
+                                RoundedRectangle(cornerRadius: 5) // 모서리 둥글게
+                                    .fill(Color.white) // 배경색을 흰색으로 설정
+                                    .frame(height: 50) // 높이를 설정
+                                    .overlay(
+                                        Text(displayLocationDetail) // 버튼 텍스트
+                                            .foregroundColor(.black) // 텍스트 색상
+                                            .padding() // 여백 추가
+                                            .onChange(of: wViewModel.post.locationDetail){
+                                                displayLocationDetail = wViewModel.post.locationDetail.isEmpty ? "위치를 선택하세요" : wViewModel.post.locationDetail
+                                            }
+                                            
+                                    )
+                                    .overlay( // 테두리 추가
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                    )
+                            }
+                            .padding(.top, 30) // 상단 여백 추가
+                        }else{
+                            Text("동네 선택 오류")
+                        }
                     }
                     Spacer()
                 }
@@ -157,6 +216,7 @@ struct WritePost: View {
             .padding(.horizontal, 20)
             .navigationBarTitle("내 물건 팔기", displayMode: .inline)
             Spacer()
+            
             AddButton(wViewModel: wViewModel, pViewModel: pViewModel)
                 .padding(.top, 20)
                 .padding(.bottom, 20)
@@ -199,5 +259,5 @@ struct AddButton: View {
 }
 
 #Preview {
-    WritePost(wViewModel: WritePost.ViewModel(village:MyVillage()), pViewModel: PostsList.ViewModel())
+    WritePost(pViewModel: PostsList.ViewModel(), wViewModel: WritePost.ViewModel(emdId:Emd().id))
 }

@@ -9,15 +9,15 @@ import SwiftUI
 extension PostsList {
     class ViewModel: ObservableObject {
         @Published var posts: [Post] = []
-        @Published var myVillages : [MyVillage] = []
-        @Published var selection: MyVillage? = nil// 기본값을 사용하여 초기화
+        @Published var myVillages : [Emd] = []
+        @Published var selection: Emd? = nil// 기본값을 사용하여 초기화
         @Published var sortBy: String = "create_at" // 기본 정렬 기준
         @Published var searchTerm: String = ""
         
         let username: String
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
-        let myVillageRepository = MyVillageRepository()
+        let emdRepository = EmdRepository()
         let favoriteRepository = FavoriteRepository()
 
         init() {
@@ -30,10 +30,11 @@ extension PostsList {
 
         func fetchVillageList(){
             Task{ @MainActor in
-                self.myVillages = try await myVillageRepository.getMyVillages(username: username)
+                self.myVillages = try await emdRepository.getMyVillages(username: username)
                 self.selection = myVillages[0]
             }
         }
+        
         // 전체 페이지 데이터를 가져오는 함수
         func fetchPosts(){
             Task{ @MainActor in
@@ -72,7 +73,7 @@ extension PostsList {
         private func fetchPhotosForPosts() async {
             for post in posts {
                 do {
-                    let photos = try await fetchPhotosForPost(postId: post.id)
+                    let photos = try await photoRepository.getPhotosForPost(postId: post.id)
                     DispatchQueue.main.async {
                         if let index = self.posts.firstIndex(where: { $0.id == post.id }) {
                             self.posts[index].photos = photos // 각 포스트에 대한 photos 업데이트
@@ -82,11 +83,6 @@ extension PostsList {
                     print("Error fetching photos for post \(post.id): \(error)")
                 }
             }
-        }
-
-        // 특정 포스트의 사진 데이터를 가져오는 비동기 함수
-        private func fetchPhotosForPost(postId: Int) async throws -> [Photo] {
-            return try await photoRepository.getPhotosForPost(postId: postId)
         }
     }
 }

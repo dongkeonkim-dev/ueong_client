@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct FavoritesListView: View {
-    @ObservedObject var viewModel: FavoritesListView.ViewModel
+    @StateObject var viewModel = FavoritesListView.ViewModel()
     
     var body: some View {
         VStack{
@@ -36,6 +36,5 @@ struct FavoritesListView: View {
 }
 
 #Preview {
-    FavoritesListView(viewModel: FavoritesListView.ViewModel(userId: 3))
+    FavoritesListView()
 }
-

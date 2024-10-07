@@ -1,22 +1,33 @@
 import SwiftUI
+import CoreLocation
+
+protocol WritePostViewModelDelegate: AnyObject {
+    func didUpdateLocation(latitude: Double, longitude: Double, locationDetail: String)
+}
 
 extension WritePost {
-    class ViewModel: ObservableObject {
+    class ViewModel: ObservableObject, WritePostViewModelDelegate {
+        
         let postRepository = PostRepository()
+        let emdRepository = EmdRepository()
         var username: String
         @Published var post = NewPost()
         @Published var isPosting: Bool = false
         @Published var selectedImages: [UIImage] = [] // 선택된 이미지 배열
+        @Published var isLocationSelected: Bool = false // NavigationLink의 대체 역할을 할 상태 변수
+        
 
-        init(village: MyVillage) {
+        init(emdId: Int){
             self.username = "username1"
+            self.post.emdId = emdId
         }
         
-        func fetchPage() async{
+        func fetchPage() {
             Task { @MainActor in
                 self.post = NewPost()
                 self.selectedImages.removeAll()
                 self.post.writerUsername = username
+                self.post.locationDetail = ""
             }
         }
         
@@ -33,6 +44,15 @@ extension WritePost {
                     print("Failure uploading post")
                     self.isPosting = false
                 }
+            }
+        }
+        
+        func didUpdateLocation(latitude: Double, longitude: Double, locationDetail: String){
+            Task{ @MainActor in
+                self.post.latitude = latitude
+                self.post.longitude = longitude
+                self.post.locationDetail = locationDetail
+                print(post)
             }
         }
     }
