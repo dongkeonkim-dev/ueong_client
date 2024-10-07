@@ -98,8 +98,8 @@ private extension PostRow {
 }
 
 
-#Preview {
-    // 임시로 사용할 Post 객체를 만들고 상태로 관리
-    @State var previewPost = Post()
-    PostRow(post: $previewPost, toggleFavorite: { _ in })
-}
+//#Preview {
+//    // 임시로 사용할 Post 객체를 만들고 상태로 관리
+//    @State var previewPost = Post()
+//    PostRow(post: $previewPost, toggleFavorite: { _ in })
+//}

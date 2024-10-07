@@ -7,6 +7,9 @@ extension Notification.Name {
     static let chatListResponse = Notification.Name("chatListResponse") // 추가
     static let socketConnected = Notification.Name("socketConnected")
     static let loadExistingMessagesResponse = Notification.Name("loadExistingMessagesResponse")
+    static let sendMessageResponse = Notification.Name("sendMessageResponse")
+    static let joinChatRoomResponse = Notification.Name("joinChatRoom")
+
 }
 
 class SocketManagerService {
@@ -17,7 +20,7 @@ class SocketManagerService {
 
     private init() {
         // Socket.IO 설정
-        manager = SocketManager(socketURL: URL(string: baseURL)!, config: [.log(true), .compress])
+        manager = SocketManager(socketURL: URL(string: baseURL)!, config: [.log(false), .compress])
         socket = manager.defaultSocket
 
         // 소켓 이벤트 리스너 설정
@@ -33,6 +36,7 @@ class SocketManagerService {
             NotificationCenter.default.post(name: .socketConnected, object: nil)
 
         }
+                                            
 
         // 소켓 연결 성공 시 메시지 수신
         socket.on("response") { data, ack in
@@ -53,7 +57,7 @@ class SocketManagerService {
         socket.on("checkChatResponse") { data, ack in
             if let response = data[0] as? Bool {
                 print("Chat exists: \(response)")
-                NotificationCenter.default.post(name: .checkChatResponse, object: nil, userInfo: ["exists": response])
+                
             }
         }
 
@@ -87,6 +91,21 @@ class SocketManagerService {
             }
         }
         
+        socket.on("sendMessageResponse") { data, ack in
+            // 수정된 형식에 맞게 응답 데이터 파싱
+            if let response = data[0] as? [String: Any],
+               let success = response["success"] as? Bool,
+               let messages = response["messages"] as? [[String: Any]] {
+
+                print("Messages List Response 수신: 성공 여부 - \(success)")
+
+                // Post notification with the chat list data
+                NotificationCenter.default.post(name: .sendMessageResponse, object: nil, userInfo: ["success": success, "messages": messages])
+            } else {
+                print("메시지 리스트 응답 형식 오류: \(data)")
+            }
+        }
+        
         
     }
 
@@ -98,8 +117,9 @@ class SocketManagerService {
         socket.disconnect()
     }
 
-    func sendMessage(message: String) {
-        socket.emit("sendMessage", message)
+    func sendMessage(chatRoomId: Int, username: String, content: String) {
+        socket.emit("sendMessage", chatRoomId, username, content)
+        print("메시지를 보냈습니다.")
     }
     
     func checkChat(username: String, postId: Int) {
@@ -116,6 +136,10 @@ class SocketManagerService {
     
     func chatList(username: String) {
         socket.emit("chatList", username)
+    }
+    
+    func joinChatRoom(roomIds: [Int]){
+        socket.emit("joinChatRoom", roomIds)
     }
 }
 

@@ -6,7 +6,7 @@
 //
 import Foundation
 
-struct Message: Identifiable, Decodable {
+struct Message: Identifiable, Equatable, Decodable {
     let id: Int
     var senderUsername: String
     var senderNickname: String

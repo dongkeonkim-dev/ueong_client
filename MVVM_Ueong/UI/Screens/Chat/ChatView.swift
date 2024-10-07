@@ -1,11 +1,5 @@
-//
-//  ChatView.swift
-//  MVVM_Ueong
-//
-//  Created by 김동건 on 9/25/24.
-//
-import SwiftUI
 
+import SwiftUI
 // MARK: - 채팅창
 struct ChatView: View {
     @ObservedObject var viewModel: ChatView.ViewModel
@@ -33,8 +27,9 @@ struct ChatView: View {
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
              
                 if !newMessage.isEmpty {
-//                    viewModel.sendMessage(message: newMessage) // ViewModel의 sendMessage 함수 호출
-//                    newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
+                    viewModel.sendMessageOrCreateChat(chatRoomId: viewModel.chatRoomId, username: "username1", partnerUsername: viewModel.partnerUsername, messageContent: newMessage, postId: viewModel.relatedPost.id)
+                    
+                    newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
                 }
                 
             })
@@ -87,22 +82,24 @@ struct MessageListView: View {
         ScrollViewReader { scrollViewProxy in
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(viewModel.messages) { message in
-                        ChatBubbleView(viewModel: viewModel, message:message)
+                    ForEach(viewModel.messages.sorted(by: { $0.id < $1.id })) { message in
+                        ChatBubbleView(viewModel: viewModel, message: message)
                     }
                 }
                 .padding()
             }
-            .onChange(of: viewModel.messages.count) {
+            .onChange(of: viewModel.messages) { _ in
+                // 메시지 배열이 변경될 때마다 스크롤
                 if let lastMessageId = viewModel.messages.last?.id {
-                    withAnimation {
+         
                         scrollViewProxy.scrollTo(lastMessageId, anchor: .bottom)
-                    }
+                    
                 }
             }
         }
     }
 }
+
 //-------------------------------------------------------------------------------------------------------------------------
 
 
@@ -151,3 +148,4 @@ struct ChatBubbleView: View {
 //#Preview {
 //    ChatView(viewModel: ChatViewModel(chatterUsername:"username2", chatterNickname:"유저2", postId:1))
 //}
+

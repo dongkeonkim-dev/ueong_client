@@ -45,9 +45,9 @@
 		0DB693482CA42A8100A3E3B7 /* SalesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693452CA42A8100A3E3B7 /* SalesListView.swift */; };
 		0DB693492CA42A8100A3E3B7 /* SalesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693462CA42A8100A3E3B7 /* SalesListViewModel.swift */; };
 		1F33DC0A2CAF8BBB00A039DA /* Socket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F33DC092CAF8BBB00A039DA /* Socket.swift */; };
+		1F33DC102CB384BD00A039DA /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F33DC0F2CB384BD00A039DA /* SocketIO */; };
 		1F53E2B32CA972920071A8C8 /* AddPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2B22CA972920071A8C8 /* AddPostButton.swift */; };
 		1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F53E2BB2CAD13350071A8C8 /* AppDelegate.swift */; };
-		1F53E2C92CAD506E0071A8C8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F53E2C82CAD506E0071A8C8 /* SocketIO */; };
 		1F691BB72CA3CE500076E8A8 /* PostDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB62CA3CE500076E8A8 /* PostDetail.swift */; };
 		1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F691BB82CA3CE660076E8A8 /* PostDetailViewModel.swift */; };
 		1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8C121C2CA3FDCB00A33802 /* example.swift */; };
@@ -168,7 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F53E2C92CAD506E0071A8C8 /* SocketIO in Frameworks */,
+				1F33DC102CB384BD00A039DA /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +474,7 @@
 			);
 			name = MVVM_Ueong;
 			packageProductDependencies = (
-				1F53E2C82CAD506E0071A8C8 /* SocketIO */,
+				1F33DC0F2CB384BD00A039DA /* SocketIO */,
 			);
 			productName = MVVM_Ueong;
 			productReference = 1FD1345E2CA4209100B48F6B /* MVVM_Ueong.app */;
@@ -991,7 +991,7 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1F53E2C82CAD506E0071A8C8 /* SocketIO */ = {
+		1F33DC0F2CB384BD00A039DA /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 1F53E2C72CAD506E0071A8C8 /* XCRemoteSwiftPackageReference "socket" */;
 			productName = SocketIO;

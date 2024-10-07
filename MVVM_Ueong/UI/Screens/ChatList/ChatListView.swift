@@ -1,10 +1,12 @@
-
 import SwiftUI
+
 struct ChatListView: View {
     @ObservedObject var viewModel: ChatListView.ViewModel
+    @State private var chatViewModel: ChatView.ViewModel?
+    @State private var isChatViewActive = false
 
     var body: some View {
-        NavigationView {
+        
             VStack {
                 // Title
                 HStack {
@@ -13,7 +15,7 @@ struct ChatListView: View {
                     Spacer()
                 }
                 .padding(.horizontal, 20)
-                
+
                 // Button Filters
                 HStack {
                     Button(action: {}) {
@@ -48,10 +50,25 @@ struct ChatListView: View {
                 }
                 .padding(.top, 5)
                 .padding(.horizontal, 20)
-                
+
                 // Chat List
                 List(viewModel.chats) { chat in
-                    Button(action: {}) {
+                    Button(action: {
+                        // 채팅 뷰모델을 비동기적으로 생성
+                        Task {
+                            if let post = await viewModel.fetchPost(by: chat.relatedPostId) {
+                                chatViewModel = ChatView.ViewModel(
+                                    chatRoomId: chat.id,
+                                    username: "username1",
+                                    userNickname: "유저1",
+                                    partnerUsername: chat.partnerUsername,
+                                    partnerNickname: chat.partnerNickname,
+                                    relatedPost: post
+                                )
+                                isChatViewActive = true // 채팅 뷰를 활성화
+                            }
+                        }
+                    }) {
                         HStack {
                             // 상대방 프로필 이미지
                             if let profilePhotoURL = chat.partnerProfilePhotoURL,
@@ -103,13 +120,16 @@ struct ChatListView: View {
                         }
                         .padding(.vertical, 8)
                     }
-                    .buttonStyle(PlainButtonStyle()) // 기본 버튼 스타일 제거
-                  
+                    .background(
+                        NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {
+                            EmptyView()
+                        }
+                        .hidden() // NavigationLink를 숨깁니다.
+                    )
                 }
-                .listStyle(PlainListStyle()) // 리스트 스타일을 평범한 스타일로 변경
-               
+                .listStyle(PlainListStyle())
             }
         }
-    }
+    
 }
 
