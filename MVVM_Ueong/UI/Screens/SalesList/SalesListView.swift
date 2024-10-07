@@ -31,6 +31,12 @@ struct SalesListView: View {
                 }
                 .animation(.easeInOut, value: selectedTab)
             }
+            .onAppear(){
+                viewModel.fetchPage()
+            }
+            .refreshable {
+                viewModel.fetchPage()
+            }
     }
 }
 
@@ -80,11 +86,13 @@ struct ForSalesView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 13) {
-                ForEach(viewModel.postsForSale) { post in
+                ForEach($viewModel.postsForSale) { $post in
                     NavigationLink(
                         destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                     ) {
-                        PostRow(post: post)
+                        PostRow(post: $post, toggleFavorite: {_ in
+                            viewModel.toggleFavorite(post: post, type:.forSale) // toggleFavorite 함수 호출
+                        })
                     }
                     
                 }
@@ -100,13 +108,14 @@ struct SoldView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 13) {
-                ForEach(viewModel.postsSold) { post in
+                ForEach($viewModel.postsSold) { $post in
                     NavigationLink(
                         destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                     ) {
-                        PostRow(post: post)
+                        PostRow(post: $post, toggleFavorite: {_ in
+                            viewModel.toggleFavorite(post: post, type:.sold) // toggleFavorite 함수 호출
+                        })
                     }
-                    
                 }
             }
         }

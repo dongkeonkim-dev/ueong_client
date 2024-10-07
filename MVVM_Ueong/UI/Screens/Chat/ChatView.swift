@@ -19,7 +19,7 @@ struct ChatView: View {
             NavigationLink(
                 destination: PostDetail(viewModel: PostDetail.ViewModel(postId: viewModel.relatedPost.id))
             ) {
-                PostRow(post: viewModel.relatedPost)
+                PostRow(post: $viewModel.relatedPost, toggleFavorite: {_ in})
             }
             
 //-------------------------------------------------------------------------------------------------------------------------

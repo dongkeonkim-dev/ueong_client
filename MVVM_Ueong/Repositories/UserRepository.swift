@@ -20,10 +20,14 @@ class UserRepository {
         do {
             let parameters = userData.toParams()
             
-            var imagesToUpload: [(data: Data, fileName: String, mimeType: String)] = []
+            var imagesToUpload: [File] = []
             if let profileImage = profileImage {
-                imagesToUpload.append((data: profileImage, fileName: userData.username+".jpg", mimeType: "image/jpeg"))
+                // File 구조체를 사용하여 이미지 정보를 저장
+                let file = File(data: profileImage, fieldName: "image", fileName: "\(userData.username).jpg", mimeType: "image/jpeg")
+                imagesToUpload.append(file)
             }
+            
+            // API 호출
             try await APICall.shared.patch("user", parameters: parameters, files: imagesToUpload)
             print("User information updated successfully.")
         } catch {
@@ -31,6 +35,6 @@ class UserRepository {
             throw error
         }
     }
+
 }
-///Users/gimdong-geon/Documents/ueong_client/MVVM_Ueong/Repositories/UserRepository.swift:21:30 Instance member 'toParams' cannot be used on type 'EditedUser'; did you mean to use a value of this type instead?
 

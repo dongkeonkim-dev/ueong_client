@@ -14,17 +14,23 @@ struct FavoritesListView: View {
 
             ScrollView {
                 VStack(spacing: 13) {
-                    ForEach(viewModel.favoritePosts) { post in
+                    ForEach($viewModel.favoritePosts) { $post in
                         NavigationLink(
                             destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                         ) {
-                            PostRow(post: post)
+                            PostRow(post: $post, toggleFavorite: {_ in
+                                viewModel.toggleFavorite(post: post) // toggleFavorite 함수 호출
+                            })
                         }
                     }
                 }
             }
         }.onAppear(){
             viewModel.fetchPage()
+        }
+        .refreshable {
+            print("Refresh PostsList")
+            viewModel.fetchPage() // 새로 고침 시 fetchPage 호출
         }
     }
 }

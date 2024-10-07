@@ -211,28 +211,35 @@ struct PostDetail: View {
                         .frame(height: 1)
                         .padding(.horizontal, 20)
                     
-                    PostDetailContent(postTitle: viewModel.post.title, postText: viewModel.post.text) // 포스트 상세 정보 추가
-                    TradingLocation(viewModel: viewModel)
+                    PostDetailContent(
+                        viewModel: viewModel,
+                        postTitle: viewModel.post.title,
+                        postText: viewModel.post.text
+                    ) // 포스트 상세 정보 추가
+                    TradingLocation(
+                        viewModel:viewModel
+                    )
                 }
             }
-            VStack(spacing: 20) {
+            VStack(spacing: 12) {
                 // 밑줄 추가
                 Rectangle()
                     .fill(Color.gray) // 색상 설정
                     .frame(height: 1) // 선 두께 설정
+                    .offset(y:-8)
                 
                 HStack {
                     // 좋아요
-                    if false {
+                    if viewModel.post.isFavorite {
                         Image(systemName: "heart.fill")
                             .resizable() // 크기를 조절 가능하게 함
                             .frame(width: 25, height: 25) // 원하는 크기로 조절
-                            .foregroundColor(.red)
+                            .foregroundColor(.blue)
                     } else {
                         Image(systemName: "heart")
                             .resizable() // 크기를 조절 가능하게 함
                             .frame(width: 25, height: 25) // 원하는 크기로 조절
-                            .foregroundColor(.red)
+                            .foregroundColor(.blue)
                     }
                     
                     // 세로줄 추가
@@ -241,9 +248,9 @@ struct PostDetail: View {
                         .frame(width: 1, height: 40) // 세로줄의 너비와 높이 설정
                         .padding(.horizontal, 10)
                     
-                    Text("130,000원")
+                    Text(MoneyFormatter.format(amount: viewModel.post.price, currencySymbol: "₩ "))
+                        .foregroundStyle(Color.black)
                         .font(.system(size: 19, weight: .bold))
-                    
                     Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
                     
                     // AR모델 확인하기 (현재 모델이 없는 상태)
@@ -377,6 +384,7 @@ struct UserInfoView: View {
 
 // MARK: - PostDetailContent
 struct PostDetailContent: View {
+    @ObservedObject var viewModel: PostDetail.ViewModel
     var postTitle: String
     var postText: String
 
@@ -393,8 +401,8 @@ struct PostDetailContent: View {
                 Rectangle()
                     .fill(Color.gray)
                     .frame(width: 1, height: 15)
-
-                Text("13분전")
+                
+                Text(timeAgo(viewModel.post.createAt))
                     .foregroundColor(.gray)
             }
             .padding(.top, -10)

@@ -57,8 +57,7 @@ struct Post: Identifiable, Decodable {
         locationDetail = try container.decode(String.self, forKey: .locationDetail)
         // rawCreateAt을 Date로 변환
         let rawCreateAt = try container.decode(String.self, forKey: .rawCreateAt)
-        let dateFormatter = ISO8601DateFormatter()
-        createAt = dateFormatter.date(from: rawCreateAt)
+        createAt = DATETIMEToDate(TIMESTAMP: rawCreateAt)
         
         let favoriteValue = try container.decode(Int.self, forKey: .isFavorite)
         isFavorite = favoriteValue != 0 // 0이면 false, 그 외에는 true
@@ -113,6 +112,3 @@ struct NewPost :Encodable{
         self.text = ""
     }
 }
-
-
-

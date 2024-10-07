@@ -17,7 +17,6 @@ extension SearchPost {
 
         init() {
             self.username = "username1"
-            fetchSearchHistory()
         }
 
         func fetchSearchHistory(){

@@ -58,10 +58,22 @@ class PostRepository {
     }
     
     // 비동기 함수로 포스트 작성하기
-    func uploadPost(post: NewPost, images: [Data]) async throws -> Response {
-        let imagesToUpload = images.map { (data: $0, fileName: post.title+".jpg", mimeType: "image/jpeg") }
+    func uploadPost(post: NewPost, images: [Data] = [], models: [Data] = []) async throws -> Response {
+        // 이미지 데이터를 File 구조체 배열로 변환
+        let imagesToUpload = images.map { imageData in
+            File(data: imageData, fieldName: "image", fileName: "\(post.title).jpg", mimeType: "image/jpeg")
+        }
+        
+        // 모델 파일을 File 구조체 배열로 변환
+        let modelsToUpload = models.map { modelData in
+            File(data: modelData, fieldName: "model", fileName: "\(post.title).3d", mimeType: "model/vnd.collada+xml") // MIME 타입은 필요에 따라 조정
+        }
+        
+        // NewPost를 파라미터 형식으로 변환
         let parameters = post.toParams()
-        let response = try await APICall.shared.post("post", parameters: parameters, files: imagesToUpload)
+        
+        // API 호출
+        let response = try await APICall.shared.post("post", parameters: parameters, files: imagesToUpload + modelsToUpload)
         return response
     }
 }

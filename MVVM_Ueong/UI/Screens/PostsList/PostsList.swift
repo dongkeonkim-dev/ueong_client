@@ -3,51 +3,55 @@ import SwiftUI
 
 
 struct PostsList: View {
-    @ObservedObject var viewModel: PostsList.ViewModel
+    @ObservedObject var pViewModel: PostsList.ViewModel
+    @ObservedObject var wViewModel: WritePost.ViewModel
+    
     
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
                 HStack(spacing: -15){
                     SelectRegion(
-                        selection: $viewModel.selection,
-                        options: viewModel.myVillages,
+                        selection: $pViewModel.selection,
+                        options: pViewModel.myVillages,
                         maxWidth: 130
                     )
-                    .onChange(of: viewModel.selection) {
+                    .onChange(of: pViewModel.selection) {
                         print("Region Changed")
-                        viewModel.fetchPosts()
+                        pViewModel.fetchPosts()
                     }
-                    SearchBar(viewModel: viewModel)
+                    SearchBar(viewModel: pViewModel)
                 }
                 .zIndex(1)
                 
-                SelectPostOption(viewModel: viewModel)
+                SelectPostOption(viewModel: pViewModel)
                 
                 ScrollView {
                     VStack(spacing: 13) {
-                        ForEach(viewModel.posts) { post in
+                        ForEach($pViewModel.posts) { $post in
                             NavigationLink(
                                 destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
                             ) {
-                                PostRow(post: post)
+                                PostRow(post: $post, toggleFavorite: {_ in
+                                    pViewModel.toggleFavorite(post: post) // toggleFavorite 함수 호출
+                                })
                             }
                         }
                     }
                 }
                 .refreshable {
                     print("Refresh PostsList")
-                    viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
+                    pViewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
                 }
             }
             
             // 오른쪽 하단 고정 버튼
-            AddPostButton(pViewModel: viewModel)
+            AddPostButton(pViewModel: pViewModel, wViewModel: wViewModel)
         }
     }
 }
 
 #Preview {
-    PostsList(viewModel: PostsList.ViewModel())
+    PostsList(pViewModel: PostsList.ViewModel(), wViewModel: WritePost.ViewModel(village: MyVillage()))
 }
 

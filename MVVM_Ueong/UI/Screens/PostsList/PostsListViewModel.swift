@@ -18,6 +18,7 @@ extension PostsList {
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
         let myVillageRepository = MyVillageRepository()
+        let favoriteRepository = FavoriteRepository()
 
         init() {
             self.username = "username1"
@@ -43,6 +44,27 @@ extension PostsList {
                     searchTerm: searchTerm,
                     sortBy:sortBy)
                 await fetchPhotosForPosts() // 포스트가 로드된 후에 사진을 가져옵니다.
+            }
+        }
+        
+        //각 post의 좋아요를 관리하는 함수
+        func toggleFavorite(post: Post) {
+            Task { @MainActor in
+                // posts 배열에서 인덱스를 찾아서 수정합니다.
+                if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                    posts[index].isFavorite.toggle()
+                    posts[index].favoriteCount += posts[index].isFavorite ? 1 : -1
+                    
+                    do {
+                        if posts[index].isFavorite {
+                            try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                        } else {
+                            try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                        }
+                    } catch {
+                        print("Error updating favorite status for post \(post.id): \(error)")
+                    }
+                }
             }
         }
 

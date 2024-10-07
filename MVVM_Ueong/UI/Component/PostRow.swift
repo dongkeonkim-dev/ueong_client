@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct PostRow: View {
-    var post: Post
+    @Binding var post: Post
+    var toggleFavorite: (Post) -> Void = {_ in}
     
     var body: some View {
         HStack {
@@ -78,17 +79,17 @@ private extension PostRow {
         HStack(spacing: 0) {
             Text("₩").font(.footnote)
                 .foregroundStyle(Color.black)
-                + Text("\(post.price)").font(.headline)
+            + Text(MoneyFormatter.format(amount: post.price)).font(.headline)
                 .foregroundStyle(Color.black)
             
             Spacer()
             
-            if post.isFavorite {
-                Image(systemName: "heart.fill")
-                    .foregroundColor(Color.blue)
-                    .frame(width: 32, height: 32)
-            } else {
-                Image(systemName: "heart")
+            Text("\(post.favoriteCount)")
+            
+            Button(action: {
+                toggleFavorite(post) // 뷰모델의 토글 메서드 호출
+            }) {
+                Image(systemName: post.isFavorite ? "heart.fill" : "heart")
                     .foregroundColor(Color.blue)
                     .frame(width: 32, height: 32)
             }
@@ -98,5 +99,7 @@ private extension PostRow {
 
 
 #Preview {
-    PostRow(post: Post())
+    // 임시로 사용할 Post 객체를 만들고 상태로 관리
+    @State var previewPost = Post()
+    PostRow(post: $previewPost, toggleFavorite: { _ in })
 }

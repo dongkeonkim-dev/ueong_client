@@ -41,6 +41,7 @@ struct SearchPost: View {
                 .background(
                     RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3))
                 ).padding(.leading,5)
+                
                 Button(action: {
                     pViewModel.searchTerm = sViewModel.searchTerm
                     presentationMode.wrappedValue.dismiss()
@@ -49,8 +50,9 @@ struct SearchPost: View {
                     Text("검색")
                         .foregroundColor(.white)
                         .padding()
+                        .padding(.vertical, -1)
                         .background(Color.blue)
-                        .cornerRadius(8)
+                        .cornerRadius(12)
                 }
                 .padding(.trailing)
                 
