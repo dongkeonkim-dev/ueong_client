@@ -11,6 +11,7 @@ import PhotosUI
 // MARK: - ImagePicker
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var imageData: Data?
+    @Binding var isPresented: Bool
     @Environment(\.presentationMode) var presentationMode
     var sourceType: UIImagePickerController.SourceType
 
@@ -36,9 +37,10 @@ struct ImagePicker: UIViewControllerRepresentable {
 
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
-                parent.imageData = image.jpegData(compressionQuality: 0.8)
+                parent.imageData = image.jpegData(compressionQuality: 1)
             }
-            parent.presentationMode.wrappedValue.dismiss()
+            //parent.presentationMode.wrappedValue.dismiss()
+            self.parent.isPresented = false
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

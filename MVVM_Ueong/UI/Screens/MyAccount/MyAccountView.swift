@@ -22,7 +22,7 @@ struct MyAccountView: View {
                     })
                     
                     AccountActionsView(
-                        editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel()),
+                        editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel(), mViewModel: viewModel),
                         salesListDestination: SalesListView(viewModel: SalesListView.ViewModel()), // 임시 텍스트로 대체
                         deleteAccountAction: {
                             // 탈퇴 액션

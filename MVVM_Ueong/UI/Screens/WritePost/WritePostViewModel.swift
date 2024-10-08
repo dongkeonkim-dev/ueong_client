@@ -10,7 +10,9 @@ extension WritePost {
         
         let postRepository = PostRepository()
         let emdRepository = EmdRepository()
+        var emdId: Int
         var username: String
+        
         @Published var post = NewPost()
         @Published var isPosting: Bool = false
         @Published var selectedImages: [UIImage] = [] // 선택된 이미지 배열
@@ -19,12 +21,15 @@ extension WritePost {
 
         init(emdId: Int){
             self.username = "username1"
-            self.post.emdId = emdId
+            self.emdId = emdId
         }
         
         func fetchPage() {
             Task { @MainActor in
                 self.post = NewPost()
+                print(post)
+                self.post.emdId = emdId
+                print(post)
                 self.selectedImages.removeAll()
                 self.post.writerUsername = username
                 self.post.locationDetail = ""

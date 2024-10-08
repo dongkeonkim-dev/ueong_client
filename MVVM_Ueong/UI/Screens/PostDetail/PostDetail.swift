@@ -395,12 +395,12 @@ struct PostDetailContent: View {
                 .fontWeight(.bold)
 
             HStack {
-                Text("카테고리")
-                    .foregroundColor(.gray)
-
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(width: 1, height: 15)
+//                Text("카테고리")
+//                    .foregroundColor(.gray)
+//
+//                Rectangle()
+//                    .fill(Color.gray)
+//                    .frame(width: 1, height: 15)
                 
                 Text(timeAgo(viewModel.post.createAt))
                     .foregroundColor(.gray)

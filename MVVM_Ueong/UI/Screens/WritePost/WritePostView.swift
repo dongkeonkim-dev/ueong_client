@@ -5,7 +5,6 @@ struct WritePost: View {
     @ObservedObject var pViewModel: PostsList.ViewModel
     @ObservedObject var wViewModel: WritePost.ViewModel
     @StateObject var sViewModel: SelectLocation.ViewModel
-    @State private var displayLocationDetail: String = "위치를 선택하세요"
     
     init(pViewModel: PostsList.ViewModel
 , wViewModel: WritePost.ViewModel){
@@ -182,7 +181,6 @@ struct WritePost: View {
                     VStack(alignment: .leading) {
                         Text("거래 희망 장소")
                             // 위치를 로드하고 화면 전환
-                        if let emdId = pViewModel.selection?.id {
                             NavigationLink(destination:
                                 SelectLocation(wViewModel: wViewModel,
                                    sViewModel: sViewModel))//Extra trailing closure passed in call
@@ -191,12 +189,10 @@ struct WritePost: View {
                                     .fill(Color.white) // 배경색을 흰색으로 설정
                                     .frame(height: 50) // 높이를 설정
                                     .overlay(
-                                        Text(displayLocationDetail) // 버튼 텍스트
+                                        Text(wViewModel.post.locationDetail == "" ? "위치를 선택하세요" : wViewModel.post.locationDetail) // 버튼 텍스트
                                             .foregroundColor(.black) // 텍스트 색상
                                             .padding() // 여백 추가
-                                            .onChange(of: wViewModel.post.locationDetail){
-                                                displayLocationDetail = wViewModel.post.locationDetail.isEmpty ? "위치를 선택하세요" : wViewModel.post.locationDetail
-                                            }
+
                                             
                                     )
                                     .overlay( // 테두리 추가
@@ -204,10 +200,7 @@ struct WritePost: View {
                                             .stroke(Color.gray.opacity(0.2), lineWidth: 1)
                                     )
                             }
-                            .padding(.top, 30) // 상단 여백 추가
-                        }else{
-                            Text("동네 선택 오류")
-                        }
+                            //.padding(.top) // 상단 여백 추가
                     }
                     Spacer()
                 }
