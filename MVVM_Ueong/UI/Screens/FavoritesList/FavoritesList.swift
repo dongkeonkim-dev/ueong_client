@@ -16,7 +16,7 @@ struct FavoritesListView: View {
                 VStack(spacing: 13) {
                     ForEach($viewModel.favoritePosts) { $post in
                         NavigationLink(
-                            destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
+                            destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id), toggleFavorite: {_ in viewModel.toggleFavorite(post: post)})
                         ) {
                             PostRow(post: $post, toggleFavorite: {_ in
                                 viewModel.toggleFavorite(post: post) // toggleFavorite 함수 호출

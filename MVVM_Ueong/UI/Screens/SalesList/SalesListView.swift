@@ -88,7 +88,7 @@ struct ForSalesView: View {
             VStack(spacing: 13) {
                 ForEach($viewModel.postsForSale) { $post in
                     NavigationLink(
-                        destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
+                        destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id), toggleFavorite: {_ in})
                     ) {
                         PostRow(post: $post, toggleFavorite: {_ in
                             viewModel.toggleFavorite(post: post, type:.forSale) // toggleFavorite 함수 호출
@@ -110,7 +110,7 @@ struct SoldView: View {
             VStack(spacing: 13) {
                 ForEach($viewModel.postsSold) { $post in
                     NavigationLink(
-                        destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
+                        destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id), toggleFavorite: {_ in})
                     ) {
                         PostRow(post: $post, toggleFavorite: {_ in
                             viewModel.toggleFavorite(post: post, type:.sold) // toggleFavorite 함수 호출

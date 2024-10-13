@@ -11,7 +11,7 @@ struct ChatView: View {
 //-------------------------------------------------------------------------------------------------------------------------
             //채팅방 상단 상품 정보
             NavigationLink(
-                destination: PostDetail(viewModel: PostDetail.ViewModel(postId: viewModel.relatedPost.id))
+                destination: PostDetail(viewModel: PostDetail.ViewModel(postId: viewModel.relatedPost.id), toggleFavorite: {_ in})
             ) {
                 PostRow(post: $viewModel.relatedPost, toggleFavorite: {_ in})
             }
