@@ -33,6 +33,9 @@
 		0D89F2A52CB38BFE004C5AF1 /* SelectLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2A42CB38BF6004C5AF1 /* SelectLocationViewModel.swift */; };
 		0D89F2AB2CB39194004C5AF1 /* EmdRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2AA2CB3918F004C5AF1 /* EmdRepository.swift */; };
 		0D89F2AD2CB391CB004C5AF1 /* Emd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2AC2CB391C8004C5AF1 /* Emd.swift */; };
+		0D89F2AE2CB43716004C5AF1 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F33DC0F2CB384BD00A039DA /* SocketIO */; };
+		0D89F2B02CBBB517004C5AF1 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2AF2CBBB512004C5AF1 /* PostService.swift */; };
+		0D89F2B42CBBBA54004C5AF1 /* ViewStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2B32CBBBA4D004C5AF1 /* ViewStateService.swift */; };
 		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */; };
 		0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693272CA3F66400A3E3B7 /* ChatViewModel.swift */; };
@@ -119,6 +122,8 @@
 		0D89F2A42CB38BF6004C5AF1 /* SelectLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationViewModel.swift; sourceTree = "<group>"; };
 		0D89F2AA2CB3918F004C5AF1 /* EmdRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmdRepository.swift; sourceTree = "<group>"; };
 		0D89F2AC2CB391C8004C5AF1 /* Emd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emd.swift; sourceTree = "<group>"; };
+		0D89F2AF2CBBB512004C5AF1 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
+		0D89F2B32CBBBA4D004C5AF1 /* ViewStateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStateService.swift; sourceTree = "<group>"; };
 		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		0DB693262CA3F66400A3E3B7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -169,7 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1F33DC102CB384BD00A039DA /* SocketIO in Frameworks */,
+				0D89F2AE2CB43716004C5AF1 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,8 +224,8 @@
 		0D89F2A12CB38BE6004C5AF1 /* SelectLocation */ = {
 			isa = PBXGroup;
 			children = (
-				0D89F2A42CB38BF6004C5AF1 /* SelectLocationViewModel.swift */,
 				0D89F2A22CB38BE9004C5AF1 /* SelectLocationView.swift */,
+				0D89F2A42CB38BF6004C5AF1 /* SelectLocationViewModel.swift */,
 			);
 			path = SelectLocation;
 			sourceTree = "<group>";
@@ -296,6 +301,8 @@
 		1F33DC082CAF8B5200A039DA /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				0D89F2B32CBBBA4D004C5AF1 /* ViewStateService.swift */,
+				0D89F2AF2CBBB512004C5AF1 /* PostService.swift */,
 				1F33DC092CAF8BBB00A039DA /* Socket.swift */,
 			);
 			path = Service;
@@ -634,6 +641,7 @@
 				0DB693352CA40E4000A3E3B7 /* MyAccountViewModel.swift in Sources */,
 				1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */,
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
+				0D89F2B02CBBB517004C5AF1 /* PostService.swift in Sources */,
 				1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */,
 				0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */,
 				0D89F2792CAFF709004C5AF1 /* Response.swift in Sources */,
@@ -650,6 +658,7 @@
 				0D45B7E42CAC146000AA516F /* CategoryRepository.swift in Sources */,
 				0D89F2AB2CB39194004C5AF1 /* EmdRepository.swift in Sources */,
 				0D89F2892CB166F5004C5AF1 /* ImagePicker.swift in Sources */,
+				0D89F2B42CBBBA54004C5AF1 /* ViewStateService.swift in Sources */,
 				0D89F2982CB1989B004C5AF1 /* FavoriteRepository.swift in Sources */,
 				0D45B7DE2CA82F4500AA516F /* PostRepository.swift in Sources */,
 				0D89F27B2CAFFBE7004C5AF1 /* EncodableExtension.swift in Sources */,

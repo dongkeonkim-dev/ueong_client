@@ -31,9 +31,11 @@ struct SelectPostOption: View {
             Spacer()
             
             Button(action: {
-                selectedOption = "최신순"
-                viewModel.sortBy = "createAt"
-                viewModel.fetchPosts()
+                Task{
+                    selectedOption = "최신순"
+                    viewModel.sortBy = "createAt"
+                    await viewModel.fetchPosts()
+                }
             }) {
                 Text("최신순")
                     .padding(.vertical, 5)
@@ -47,9 +49,11 @@ struct SelectPostOption: View {
             }
             
             Button(action: {
-                selectedOption = "가격순"
-                viewModel.sortBy = "price"
-                viewModel.fetchPosts()
+                Task{
+                    selectedOption = "가격순"
+                    viewModel.sortBy = "price"
+                    await viewModel.fetchPosts()
+                }
             }) {
                 Text("가격순")
                     .padding(.vertical, 5)
@@ -63,9 +67,11 @@ struct SelectPostOption: View {
             }
 
             Button(action: {
-                selectedOption = "관심순"
-                viewModel.sortBy = "favoriteCount"
-                viewModel.fetchPosts()
+                Task{
+                    selectedOption = "관심순"
+                    viewModel.sortBy = "favoriteCount"
+                    await viewModel.fetchPosts()
+                }
             }) {
                 Text("관심순")
                     .padding(.vertical, 5)

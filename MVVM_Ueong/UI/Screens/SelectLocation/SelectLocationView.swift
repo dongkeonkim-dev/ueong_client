@@ -3,14 +3,18 @@ import MapKit
 
 struct SelectLocation: View {
     @ObservedObject var wViewModel : WritePost.ViewModel
-    @ObservedObject var sViewModel : SelectLocation.ViewModel
+    @StateObject var sViewModel : SelectLocation.ViewModel
     
     @Environment(\.presentationMode) var presentationMode
     
-    init(wViewModel: WritePost.ViewModel, sViewModel: SelectLocation.ViewModel) {
+    init(wViewModel: WritePost.ViewModel) {
         self.wViewModel = wViewModel
-        self.sViewModel = sViewModel
-        sViewModel.delegate = wViewModel // delegate 설정
+        _sViewModel = StateObject(wrappedValue: SelectLocation.ViewModel(
+            latitude: wViewModel.post.latitude,
+            longitude: wViewModel.post.longitude,
+            locationDetail: wViewModel.post.locationDetail,
+            emdId: wViewModel.post.emdId
+        ))
     }
     
     var body: some View {
@@ -68,7 +72,7 @@ struct SelectLocation: View {
         }
         .onAppear {
             Task {
-                //
+                sViewModel.delegate = wViewModel
             }
         }
     }

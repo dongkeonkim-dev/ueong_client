@@ -43,9 +43,11 @@ struct SearchPost: View {
                 ).padding(.leading,5)
                 
                 Button(action: {
-                    pViewModel.searchTerm = sViewModel.searchTerm
-                    presentationMode.wrappedValue.dismiss()
-                    pViewModel.fetchPosts()
+                    Task{
+                        pViewModel.searchTerm = sViewModel.searchTerm
+                        presentationMode.wrappedValue.dismiss()
+                        await pViewModel.fetchPosts()
+                    }
                 }) {
                     Text("검색")
                         .foregroundColor(.white)
@@ -66,10 +68,12 @@ struct SearchPost: View {
                     ForEach(sViewModel.histories, id: \.id) { history in
                         HStack {
                             Button(action: {
-                                sViewModel.searchTerm = history.searchTerm
-                                pViewModel.searchTerm = history.searchTerm
-                                presentationMode.wrappedValue.dismiss()
-                                pViewModel.fetchPosts()
+                                Task{
+                                    sViewModel.searchTerm = history.searchTerm
+                                    pViewModel.searchTerm = history.searchTerm
+                                    presentationMode.wrappedValue.dismiss()
+                                    await pViewModel.fetchPosts()
+                                }
                             }) {
                                 Text(history.searchTerm)
                             }

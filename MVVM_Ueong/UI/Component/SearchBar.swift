@@ -11,9 +11,11 @@ struct SearchBar: View {
                 
                 ZStack(alignment: .trailing){
                     Button(action:{
-                        if viewModel.searchTerm != "" {
-                            viewModel.searchTerm = ""
-                            viewModel.fetchPosts()
+                        Task{
+                            if viewModel.searchTerm != "" {
+                                viewModel.searchTerm = ""
+                                await viewModel.fetchPosts()
+                            }
                         }
                     }){
                         Image(systemName: "multiply")

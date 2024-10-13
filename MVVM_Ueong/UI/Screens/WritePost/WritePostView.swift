@@ -3,14 +3,11 @@ import MapKit
 
 struct WritePost: View {
     @ObservedObject var pViewModel: PostsList.ViewModel
-    @ObservedObject var wViewModel: WritePost.ViewModel
-    @StateObject var sViewModel: SelectLocation.ViewModel
+    @StateObject var wViewModel: WritePost.ViewModel
     
-    init(pViewModel: PostsList.ViewModel
-, wViewModel: WritePost.ViewModel){
+    init(pViewModel: PostsList.ViewModel){
         self.pViewModel = pViewModel
-        self.wViewModel = wViewModel
-        self._sViewModel = StateObject(wrappedValue: SelectLocation.ViewModel(emdId: wViewModel.post.emdId))
+        self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(emdId: pViewModel.selection?.id ?? 0))
     }
 
     @FocusState private var isTitleFocused: Bool
@@ -181,10 +178,9 @@ struct WritePost: View {
                     VStack(alignment: .leading) {
                         Text("거래 희망 장소")
                             // 위치를 로드하고 화면 전환
-                            NavigationLink(destination:
-                                SelectLocation(wViewModel: wViewModel,
-                                   sViewModel: sViewModel))//Extra trailing closure passed in call
-                            {
+                            NavigationLink(
+                                destination:SelectLocation(wViewModel: wViewModel)
+                           ) {
                                 RoundedRectangle(cornerRadius: 5) // 모서리 둥글게
                                     .fill(Color.white) // 배경색을 흰색으로 설정
                                     .frame(height: 50) // 높이를 설정
@@ -228,11 +224,15 @@ struct AddButton: View {
             Spacer()
             HStack {
                 Button(action: {
-                    Task {
+                    Task { @MainActor in
                         print("AddButton clicked")
-                        await wViewModel.uploadPost()
-                        pViewModel.fetchPosts()
-                        presentationMode.wrappedValue.dismiss()
+                        if let response = await wViewModel.uploadPost() {
+                            print("Post uploaded successfully: \(response.message)")
+                            presentationMode.wrappedValue.dismiss()
+                            await pViewModel.fetchPosts()
+                        } else {
+                            print("Upload failed: No response received or an error occurred.")
+                        }
                     }
                 }) {
                     Text("작성 완료")
@@ -252,5 +252,5 @@ struct AddButton: View {
 }
 
 #Preview {
-    WritePost(pViewModel: PostsList.ViewModel(), wViewModel: WritePost.ViewModel(emdId:Emd().id))
+    WritePost(pViewModel: PostsList.ViewModel())
 }

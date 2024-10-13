@@ -30,7 +30,7 @@ extension PostDetail {
         func fetchPage() {
             Task { @MainActor in
                 self.post = try await postRepository.getPostById(username: username, postId: postId)
-                self.post.photos = try await photoRepository.getPhotosForPost(postId: postId)
+                self.post.photos = try? await photoRepository.getPhotosForPost(postId: postId)
                 self.writer = try await userRepository.getUserByUsername(username:post.writerUsername)
                 self.siGuDong = try await addressRepository.getFullAddress(emdId: post.emdId)
                 self.mapCoordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)

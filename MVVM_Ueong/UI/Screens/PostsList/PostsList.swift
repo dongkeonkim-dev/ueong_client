@@ -15,8 +15,10 @@ struct PostsList: View {
                         maxWidth: 130
                     )
                     .onChange(of: viewModel.selection) {
-                        print("Region Changed")
-                        viewModel.fetchPosts()
+                        Task{
+                            print("Region Changed")
+                            await viewModel.fetchPosts()
+                        }
                     }
                     SearchBar(viewModel: viewModel)
                 }
@@ -38,8 +40,10 @@ struct PostsList: View {
                     }
                 }
                 .refreshable {
-                    print("Refresh PostsList")
-                    viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
+                    Task{ @MainActor in
+                        print("Refresh PostsList")
+                        await viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
+                    }
                 }
             }
             
@@ -59,7 +63,9 @@ struct AddPostButton: View {
                 Spacer() // Push everything up
                 HStack {
                     Spacer()
-                    NavigationLink(destination: WritePost(pViewModel: viewModel, wViewModel:WritePost.ViewModel(emdId: viewModel.selection?.id ?? 0))) {
+                    NavigationLink(
+                        destination: WritePost(pViewModel: viewModel)
+                    ) {
                         Image(systemName: "plus.circle.fill")
                             .resizable()
                             .frame(width: 50, height: 50)
