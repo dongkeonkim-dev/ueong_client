@@ -10,7 +10,6 @@ import MapKit
 
 extension SelectLocation {
     class ViewModel: ObservableObject {
-        @Published var emdId: Int
         @Published var locationDetail: String = ""
         @Published var coordinate: CLLocationCoordinate2D?
         @Published var region: MKCoordinateRegion // 중심 좌표를 나타내는 상태 변수
@@ -20,21 +19,24 @@ extension SelectLocation {
         
         let emdRepository = EmdRepository()
 
-        init(emdId: Int) {
+        init(latitude: Double?, longitude: Double?, locationDetail: String, emdId: Int) {
             self.username = "username1"
-            self.emdId = emdId
             self.region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0, longitude: 0), span:MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002))
             Task{
-                await loadEmdCoordinate()
+                await loadEmdCoordinate(latitude: latitude, longitude: longitude, locationDetail: locationDetail, emdId: emdId)
             }
         }
         
-        func loadEmdCoordinate() async {
+        func loadEmdCoordinate(latitude: Double?, longitude: Double?, locationDetail: String, emdId: Int) async {
             Task{ @MainActor in
-                let emd = try await emdRepository.getEmd(emdId: emdId)
-                if coordinate == nil {
+                // 이미 선택된 장소가 있는 경우
+                if let latitude = latitude, let longitude = longitude,  locationDetail != "" {
+                    self.coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                    self.locationDetail = locationDetail
+                // 선택된 장소가 없는 경우
+                } else {
+                    let emd = try await emdRepository.getEmd(emdId: emdId)
                     self.coordinate = CLLocationCoordinate2D(latitude: emd.latitude, longitude: emd.longitude)
-                    print(coordinate!.latitude, coordinate!.longitude) // Optional(37.58008) Optional(126.9848)
                 }
                 self.region.center = self.coordinate!
                 self.region.span = MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)

@@ -11,6 +11,7 @@ extension WritePost {
         let postRepository = PostRepository()
         let emdRepository = EmdRepository()
         var username: String
+        
         @Published var post = NewPost()
         @Published var isPosting: Bool = false
         @Published var selectedImages: [UIImage] = [] // 선택된 이미지 배열
@@ -19,31 +20,47 @@ extension WritePost {
 
         init(emdId: Int){
             self.username = "username1"
-            self.post.emdId = emdId
+            fetchPage(emdId: emdId)
         }
         
-        func fetchPage() {
+        func fetchPage(emdId: Int) {
             Task { @MainActor in
                 self.post = NewPost()
+                print(post)
+                self.post.emdId = emdId
+                print(post)
                 self.selectedImages.removeAll()
                 self.post.writerUsername = username
                 self.post.locationDetail = ""
             }
         }
         
-        func uploadPost() async {
-            Task { @MainActor in
-                guard !isPosting else { return } // 중복 요청 방지
-                isPosting = true
-                do {
-                    let imageData = selectedImages.compactMap { $0.jpegData(compressionQuality: 0.8) }
-                    let response: Response = try await postRepository.uploadPost(post: post, images: imageData, models: [])
-                    print(response.message)
-                    self.isPosting = false
-                } catch {
-                    print("Failure uploading post")
+        func uploadPost() async -> Response? {
+            guard !isPosting else {
+                print("Already posting, request ignored.")
+                return nil // 중복 요청 방지
+            }
+            await MainActor.run {
+                self.isPosting = false
+            }
+            do {
+                // 이미지 데이터를 JPEG로 압축
+                let imageData = selectedImages.compactMap { $0.jpegData(compressionQuality: 0.8) }
+                
+                // 비동기 호출로 게시물 업로드
+                let response: Response = try await postRepository.uploadPost(post: post, images: imageData, models: [])
+                
+                print("Success: \(response.message)") // 성공 메시지 출력
+                await MainActor.run {
                     self.isPosting = false
                 }
+                return response // 응답 반환
+            } catch {
+                print("Failure uploading post: \(error.localizedDescription)") // 에러 출력
+                await MainActor.run {
+                    self.isPosting = false
+                }
+                return nil // 실패 시 nil 반환
             }
         }
         
@@ -52,7 +69,7 @@ extension WritePost {
                 self.post.latitude = latitude
                 self.post.longitude = longitude
                 self.post.locationDetail = locationDetail
-                print(post)
+                print("end save: ",post)
             }
         }
     }

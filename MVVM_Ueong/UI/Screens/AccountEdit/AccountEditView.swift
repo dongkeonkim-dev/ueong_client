@@ -8,6 +8,7 @@ import SwiftUI
 
 struct AccountEditView: View {
     @ObservedObject var viewModel: AccountEditView.ViewModel
+    @ObservedObject var mViewModel: MyAccountView.ViewModel
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -96,7 +97,11 @@ struct AccountEditView: View {
                     // 완료 및 취소 버튼
                     HStack {
                         Button(action: {
-                            viewModel.saveChanges()
+                            Task{
+                                viewModel.saveChanges()
+                                mViewModel.fetchPage()
+                                presentationMode.wrappedValue.dismiss()
+                            }
                         }) {
                             Text("완료")
                                 .padding()
@@ -126,13 +131,8 @@ struct AccountEditView: View {
         .onAppear(){
             viewModel.fetchPage()
         }
-        .onChange(of: viewModel.editing) { oldValue, newValue in
-            if !viewModel.editing {
-                presentationMode.wrappedValue.dismiss()
-            }
-        }
-        .sheet(isPresented: $viewModel.isImagePickerPresented) {
-            ImagePicker(imageData: $viewModel.profileImage, sourceType: viewModel.imageSource)
+        .fullScreenCover(isPresented: $viewModel.isImagePickerPresented) {
+            ImagePicker(imageData: $viewModel.profileImage, isPresented: $viewModel.isImagePickerPresented, sourceType: viewModel.imageSource)
         }
         Spacer()
     }
@@ -174,5 +174,5 @@ struct SecureInputFieldView: View {
 }
 
 #Preview {
-    AccountEditView(viewModel: AccountEditView.ViewModel())
+    AccountEditView(viewModel: AccountEditView.ViewModel(), mViewModel: MyAccountView.ViewModel())
 }

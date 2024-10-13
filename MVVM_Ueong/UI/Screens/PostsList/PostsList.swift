@@ -15,8 +15,10 @@ struct PostsList: View {
                         maxWidth: 130
                     )
                     .onChange(of: viewModel.selection) {
-//                        print("Region Changed")
-                        viewModel.fetchPosts()
+                        Task{
+                            print("Region Changed")
+                            await viewModel.fetchPosts()
+                        }
                     }
                     SearchBar(viewModel: viewModel)
                 }
@@ -28,18 +30,24 @@ struct PostsList: View {
                     VStack(spacing: 13) {
                         ForEach($viewModel.posts) { $post in
                             NavigationLink(
-                                destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id))
+                                destination: PostDetail(viewModel: PostDetail.ViewModel(postId: post.id),  // 바인딩된 Post 전달
+                                    toggleFavorite: { toggledPost in
+                                        viewModel.toggleFavorite(post: toggledPost) // 좋아요 토글
+                                    }
+                                )
                             ) {
-                                PostRow(post: $post, toggleFavorite: {_ in
-                                    viewModel.toggleFavorite(post: post) // toggleFavorite 함수 호출
-                                })
+                                PostRow(post: $post) { toggledPost in
+                                    viewModel.toggleFavorite(post: toggledPost)
+                                }
                             }
                         }
                     }
                 }
                 .refreshable {
-                    print("Refresh PostsList")
-                    viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
+                    Task{ @MainActor in
+                        print("Refresh PostsList")
+                        await viewModel.fetchPosts() // 새로 고침 시 fetchPage 호출
+                    }
                 }
             }
             
@@ -59,7 +67,9 @@ struct AddPostButton: View {
                 Spacer() // Push everything up
                 HStack {
                     Spacer()
-                    NavigationLink(destination: WritePost(pViewModel: viewModel, wViewModel:WritePost.ViewModel(emdId: viewModel.selection?.id ?? 0))) {
+                    NavigationLink(
+                        destination: WritePost(pViewModel: viewModel)
+                    ) {
                         Image(systemName: "plus.circle.fill")
                             .resizable()
                             .frame(width: 50, height: 50)

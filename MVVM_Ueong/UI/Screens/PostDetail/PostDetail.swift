@@ -198,6 +198,7 @@ struct PostDetail: View {
     @StateObject private var chatListViewModel = ChatListView.ViewModel()
     @State private var chatRoomId: Int?
     @State private var isChatViewActive = false
+    var toggleFavorite: (Post) -> Void
 
     var body: some View {
         VStack {
@@ -229,18 +230,27 @@ struct PostDetail: View {
                     .offset(y:-8)
                 
                 HStack {
-                    // 좋아요
-                    if viewModel.post.isFavorite {
-                        Image(systemName: "heart.fill")
-                            .resizable() // 크기를 조절 가능하게 함
-                            .frame(width: 25, height: 25) // 원하는 크기로 조절
-                            .foregroundColor(.blue)
-                    } else {
-                        Image(systemName: "heart")
-                            .resizable() // 크기를 조절 가능하게 함
-                            .frame(width: 25, height: 25) // 원하는 크기로 조절
+                    Button(action: {
+                        viewModel.toggleFavorite() // 좋아요 상태 토글
+                    }) {
+                        Image(systemName: viewModel.post.isFavorite ? "heart.fill" : "heart")
+                            .resizable()
+                            .frame(width: 25, height: 25)
                             .foregroundColor(.blue)
                     }
+
+//                    // 좋아요
+//                    if viewModel.post.isFavorite {
+//                        Image(systemName: "heart.fill")
+//                            .resizable() // 크기를 조절 가능하게 함
+//                            .frame(width: 25, height: 25) // 원하는 크기로 조절
+//                            .foregroundColor(.blue)
+//                    } else {
+//                        Image(systemName: "heart")
+//                            .resizable() // 크기를 조절 가능하게 함
+//                            .frame(width: 25, height: 25) // 원하는 크기로 조절
+//                            .foregroundColor(.blue)
+//                    }
                     
                     // 세로줄 추가
                     Rectangle()
@@ -389,12 +399,12 @@ struct PostDetailContent: View {
                 .fontWeight(.bold)
 
             HStack {
-                Text("카테고리")
-                    .foregroundColor(.gray)
-
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(width: 1, height: 15)
+//                Text("카테고리")
+//                    .foregroundColor(.gray)
+//
+//                Rectangle()
+//                    .fill(Color.gray)
+//                    .frame(width: 1, height: 15)
                 
                 Text(timeAgo(viewModel.post.createAt))
                     .foregroundColor(.gray)
@@ -511,6 +521,6 @@ struct TradingLocation: View {
 
 
 #Preview {
-    PostDetail(viewModel: PostDetail.ViewModel(postId: 9))
+    PostDetail(viewModel: PostDetail.ViewModel(postId: 9), toggleFavorite: {_ in})
 }
 
