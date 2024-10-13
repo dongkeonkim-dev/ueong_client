@@ -3,7 +3,6 @@ import Foundation
 extension ChatView {
     class ViewModel: ObservableObject {
         @Published var messages: [Message] = []
-        let username: String
         let userNickname: String
         let partnerUsername: String
         let partnerNickname: String
@@ -14,7 +13,6 @@ extension ChatView {
         
         // 초기화 생성자
         init(chatRoomId: Int?, username: String, userNickname: String, partnerUsername: String, partnerNickname: String, relatedPost: Post) {
-            self.username = username
             self.userNickname = userNickname
             self.partnerUsername = partnerUsername
             self.partnerNickname = partnerNickname

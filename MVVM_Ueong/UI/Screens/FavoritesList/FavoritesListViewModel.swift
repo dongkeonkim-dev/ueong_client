@@ -13,10 +13,8 @@ extension FavoritesListView {
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
         let favoriteRepository = FavoriteRepository()
-        var username: String
 
         init() {
-            self.username = "username1"
         }
         
         func fetchPage(){

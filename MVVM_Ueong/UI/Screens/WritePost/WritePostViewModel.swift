@@ -10,7 +10,6 @@ extension WritePost {
         
         let postRepository = PostRepository()
         let emdRepository = EmdRepository()
-        var username: String
         
         @Published var post = NewPost()
         @Published var isPosting: Bool = false
@@ -19,7 +18,6 @@ extension WritePost {
         
 
         init(emdId: Int){
-            self.username = "username1"
             fetchPage(emdId: emdId)
         }
         

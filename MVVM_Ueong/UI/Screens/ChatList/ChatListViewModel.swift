@@ -3,11 +3,9 @@ import SwiftUI
 extension ChatListView {
     class ViewModel: ObservableObject {
         @Published var chats: [Chat] = [] // 채팅 목록을 저장하는 변수
-        var username: String
         var roomsIds: [Int] = [] // 채팅방 ID를 저장하는 변수
 
         init() {
-            self.username = "username1" // 사용자 이름 설정
             chatListUp(username: username)
             
             

@@ -11,6 +11,7 @@ import Foundation
 let baseURL = "http://localhost:3000/"
 let imageURL = "http://localhost:3000/image-files"
 let Model3dURL = "http://localhost:3000/3d-model-files"
+let username = "username1"
 #else
 let baseURL = "https://your-production-url.com/"
 #endif

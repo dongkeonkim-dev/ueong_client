@@ -14,11 +14,8 @@ extension SalesListView {
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
         let favoriteRepository = FavoriteRepository()
-        var username: String
 
         init() {
-            // 예시 사용자 이름으로 설정
-            self.username = "username1"
         }
 
         func fetchPage(){

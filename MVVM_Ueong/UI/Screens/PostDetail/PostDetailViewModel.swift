@@ -14,7 +14,6 @@ extension PostDetail {
         @Published var siGuDong: String = "시구동"
         @Published var writer: User = User()
         
-        var username: String
         var postId: Int
         
         let postRepository = PostRepository()
@@ -24,7 +23,6 @@ extension PostDetail {
         let favoriteRepository = FavoriteRepository()
         
         init(postId: Int) {
-            self.username = "username1"
             self.postId = postId
         }
         

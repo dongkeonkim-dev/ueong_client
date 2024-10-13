@@ -16,11 +16,9 @@ extension AccountEditView {
         @Published var imageSource: UIImagePickerController.SourceType = .photoLibrary
         @Published var editing: Bool = false
         
-        let username: String
         private let userRepository = UserRepository()
         
         init() {
-            self.username = "username1"
         }
         
         func fetchPage(){

@@ -120,20 +120,20 @@ struct ChatBubbleView: View {
         HStack {
             VStack(alignment: .leading) {
                 
-                Text(message.senderUsername == viewModel.username ? "" : message.senderUsername)
+                Text(message.senderUsername == username ? "" : message.senderUsername)
                     .font(.caption)
                     .foregroundColor(.gray)
                 Text(message.messageText)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
-                    .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
+                    .frame(maxWidth: .infinity, alignment: message.senderUsername == username ? .trailing : .leading)
 //                if let sentTime = message.sentTime {
 //                    Text(sentTime, style: .time)
                 Text(message.sentTime)
                         .font(.caption2)
                         .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
+                        .frame(maxWidth: .infinity, alignment: message.senderUsername == username ? .trailing : .leading)
 //                } else {
 //                    // sentTime이 nil일 때 처리할 내용을 여기 작성
 //                    Text("Unknown Time")

@@ -12,11 +12,9 @@ import SwiftUI
 extension MyAccountView {
     class ViewModel: ObservableObject {
         @Published var user: User = User()
-        let username: String
         private let userRepository = UserRepository()
 
         init() {
-            username = "username1"
             fetchPage()
         }
 

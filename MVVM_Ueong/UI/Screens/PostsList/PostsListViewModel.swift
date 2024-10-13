@@ -15,15 +15,12 @@ extension PostsList {
         @Published var searchTerm: String = ""
         @Published var isFetching = false // 네트워크 요청 중인지 여부
 
-        
-        let username: String
         let postRepository = PostRepository()
         let photoRepository = PhotoRepository()
         let emdRepository = EmdRepository()
         let favoriteRepository = FavoriteRepository()
 
         init() {
-            self.username = "username1"
             Task{
                 fetchVillageList()
                 await fetchPosts()
