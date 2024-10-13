@@ -13,7 +13,7 @@ class PostRepository {
     func getMyPosts(username: String) async throws -> [Post] {
         do {
             let posts: [Post] = try await APICall.shared.get("post/myPosts", parameters: [("username",username)])
-            print("Posts retrieved successfully: \(posts.count) my posts found.")
+//            print("Posts retrieved successfully: \(posts.count) my posts found.")
             return posts
         } catch {
             print("Error fetching my posts: \(error)")
@@ -25,10 +25,10 @@ class PostRepository {
     func searchPosts(username: String, village: Int, searchTerm: String, sortBy: String) async throws -> [Post] {
         do {
             let posts: [Post] = try await APICall.shared.get("post/search", parameters: [("username",username)], queryParameters: ["village":village, "searchTerm": searchTerm, "sortBy": sortBy])
-            print("Posts retrieved successfully: \(posts.count) posts found.")
+//            print("Posts retrieved successfully: \(posts.count) posts found.")
             return posts
         } catch {
-            print("Error fetching posts: \(error)")
+//            print("Error fetching posts: \(error)")
             throw error
         }
     }
@@ -37,7 +37,7 @@ class PostRepository {
     func getPostById(username: String, postId: Int) async throws -> Post {
         do {
             let post: Post = try await APICall.shared.get("post/", parameters: [("postId",postId),("username",username)])
-            print("Post retrieved successfully: post found.")
+//            print("Post retrieved successfully: post found.")
             return post
         } catch {
             print("Error fetching a post: \(error)")
@@ -49,7 +49,7 @@ class PostRepository {
     func getFavoriteList(username: String) async throws -> [Post] {
         do {
             let posts: [Post] = try await APICall.shared.get("post/favorite", parameters: [("username",username)])
-            print("Posts retrieved successfully: \(posts.count) favorite posts found.")
+//            print("Posts retrieved successfully: \(posts.count) favorite posts found.")
             return posts
         } catch {
             print("Error fetching favorite posts: \(error)")

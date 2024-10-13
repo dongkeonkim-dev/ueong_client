@@ -96,6 +96,14 @@ struct MessageListView: View {
                     
                 }
             }
+            .onAppear {
+                            // 뷰가 나타날 때 마지막 메시지로 스크롤
+                            if let lastMessageId = viewModel.messages.last?.id {
+                                scrollViewProxy.scrollTo(lastMessageId, anchor: .bottom)
+                            }
+                        }
+            
+            
         }
     }
 }

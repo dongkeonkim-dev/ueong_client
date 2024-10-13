@@ -16,7 +16,7 @@ class AddressRepository {
     func getFullAddress(emdId: Int) async throws -> String {
         do {
             let address: Address = try await APICall.shared.get("address", parameters: [("emdId",emdId)])
-            print("Successfully retrieved address: \(address.Address) for emdId: \(emdId).")
+//            print("Successfully retrieved address: \(address.Address) for emdId: \(emdId).")
             return address.Address
         } catch {
             print("Error fetching address for emdId \(emdId): \(error)")

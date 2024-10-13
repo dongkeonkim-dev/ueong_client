@@ -8,7 +8,7 @@ class EmdRepository {
     func getMyVillages(username: String) async throws -> [Emd] {
         do {
             let myVillages: [Emd] = try await APICall.shared.get("emd/my-village", parameters: [("username", username)])
-            print("Successfully retrieved address: \(myVillages.count) myVillages for emdId: \(username).")
+//            print("Successfully retrieved address: \(myVillages.count) myVillages for emdId: \(username).")
             return myVillages
         } catch {
             print("Error fetching address for emdId \(username): \(error)")

@@ -86,20 +86,20 @@ class APICall {
                     bodyData.append("\r\n")
                 }
                 bodyData.append("--\(boundary)--\r\n")
-                print(bodyData)
+//                print(bodyData)
             } else {
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 let jsonDict = Dictionary(uniqueKeysWithValues: parameters)
                 let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
                 bodyData.append(jsonData)
-                print(bodyData)
+//                print(bodyData)
             }
             request.httpBody = bodyData
             
             let bodyString = String(data: bodyData, encoding: .utf8)
 
             if let bodyString = bodyString {
-                print("HTTP Body: \(bodyString)")
+//                print("HTTP Body: \(bodyString)")
             } else {
                 print("HTTP Body is empty or cannot be converted to string")
             }
@@ -136,23 +136,23 @@ class APICall {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         }
         
-        print("HTTP Method:", request.httpMethod ?? "nil", "URL:", request.url?.absoluteString ?? "nil")
+//        print("HTTP Method:", request.httpMethod ?? "nil", "URL:", request.url?.absoluteString ?? "nil")
         
         // 네트워크 요청 수행
         let (data, response) = try await URLSession.shared.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
             let responseString = String(data: data, encoding: .utf8) ?? "No response body"
-            print("**** Server Error Response: \(responseString)")
+//            print("**** Server Error Response: \(responseString)")
             throw NSError(domain: "Server error", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: [NSLocalizedDescriptionKey: responseString])
         }
         
         // JSON 응답을 출력
         if let jsonResponse = String(data: data, encoding: .utf8) {
-            print("**** Response JSON: \(jsonResponse)")
+//            print("**** Response JSON: \(jsonResponse)")
             do {
                 let decodedData = try JSONDecoder().decode(T.self, from: data)
-                print("**** Decoded Data: \(decodedData)")
+//                print("**** Decoded Data: \(decodedData)")
                 return decodedData
             } catch {
                 print("Error decoding data: \(error)")

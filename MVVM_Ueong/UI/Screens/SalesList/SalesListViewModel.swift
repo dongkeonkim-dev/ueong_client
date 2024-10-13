@@ -37,7 +37,7 @@ extension SalesListView {
                 print("Successfully retrieved \(posts.count) posts.")
                 
             } catch {
-                print("Error fetching posts: \(error)")
+//                print("Error fetching posts: \(error)")
             }
         }
 

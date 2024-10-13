@@ -97,7 +97,8 @@ class SocketManagerService {
                let success = response["success"] as? Bool,
                let messages = response["messages"] as? [[String: Any]] {
 
-                print("Messages List Response 수신: 성공 여부 - \(success)")
+                print("단일 Message Response 수신: 성공 여부 - \(success)")
+                print(messages)
 
                 // Post notification with the chat list data
                 NotificationCenter.default.post(name: .sendMessageResponse, object: nil, userInfo: ["success": success, "messages": messages])
@@ -117,8 +118,9 @@ class SocketManagerService {
         socket.disconnect()
     }
 
-    func sendMessage(chatRoomId: Int, username: String, content: String) {
-        socket.emit("sendMessage", chatRoomId, username, content)
+    func sendMessage(chatRoomId: Int?, username: String, partnerUsername: String, content: String, postId: Int) {
+        let roomIdToSend = chatRoomId ?? -1 // nil일 경우 -1을 사용
+        socket.emit("sendMessage", roomIdToSend, username, partnerUsername, content, postId)
         print("메시지를 보냈습니다.")
     }
     
@@ -130,7 +132,7 @@ class SocketManagerService {
         socket.emit("loadExistingMessages", chatId)
     }
     
-    func createChatRoom(sellerId: String, buyerId: String, postId: Post.ID) {
+    func createChatRoom(sellerId: String, buyerId: String, postId: Int) {
         socket.emit("createNewChatRoom", sellerId, buyerId, postId)
     }
     
@@ -143,7 +145,4 @@ class SocketManagerService {
     }
 }
 
-extension Notification.Name {
-    static let newMessageReceived = Notification.Name("newMessageReceived")
-}
 

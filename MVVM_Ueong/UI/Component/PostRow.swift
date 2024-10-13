@@ -29,7 +29,7 @@ private extension PostRow {
             // 포스트에 사진이 있는지 확인
         if let firstPhoto = post.photos?.first, let url = URL(string: baseURL.joinPath(firstPhoto.url)) {
                 // AsyncImage를 사용하여 이미지 로드
-                print(url)
+//                print(url)
                 return AnyView(
                     AsyncImage(url: url) { image in
                         image

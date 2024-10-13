@@ -9,7 +9,7 @@ class HistoryRepository {
     func getHistory(username: String) async throws -> [History] {
         do {
             let history: [History] = try await APICall.shared.get("history", parameters: [("username",username)])
-            print("Successfully retrieved address: \(history.count) history for emdId: \(username).")
+//            print("Successfully retrieved address: \(history.count) history for emdId: \(username).")
             return history
         } catch {
             print("Error fetching address for emdId \(username): \(error)")

@@ -34,7 +34,7 @@ extension PostDetail {
                 self.writer = try await userRepository.getUserByUsername(username:post.writerUsername)
                 self.siGuDong = try await addressRepository.getFullAddress(emdId: post.emdId)
                 self.mapCoordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)
-                print(post)
+//                print(post)
             }
         }
     }

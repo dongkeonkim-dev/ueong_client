@@ -269,8 +269,8 @@ struct PostDetail: View {
                     
                     Button(action: {
                         
-                        //채팅방 존재 검사
-                        if let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id) {
+                      
+                        let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id)
                             // 기존 채팅방이 발견된 경우
                             chatRoomId = checkRoomId
                             
@@ -279,15 +279,9 @@ struct PostDetail: View {
                             
                             // ChatView로 이동하는 로직을 여기에 추가
                             chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: "username1", userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
+                        
                             isChatViewActive = true
-                        } else {
-                            // 기존 채팅방이 발견되지 않은 경우
-                            print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
-                            print("chatRoomId = \(chatRoomId ?? -1)")
-                            print("기존 채팅방을 찾을 수 없습니다. 새 채팅방을 생성합니다.")
-                            chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: "username1", userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
-                            isChatViewActive = true
-                        }
+                      
                         
                         
                     }) {

@@ -15,7 +15,7 @@ struct PostsList: View {
                         maxWidth: 130
                     )
                     .onChange(of: viewModel.selection) {
-                        print("Region Changed")
+//                        print("Region Changed")
                         viewModel.fetchPosts()
                     }
                     SearchBar(viewModel: viewModel)

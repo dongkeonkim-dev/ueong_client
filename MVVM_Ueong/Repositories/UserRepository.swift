@@ -29,7 +29,7 @@ class UserRepository {
             
             // API 호출
             try await APICall.shared.patch("user", parameters: parameters, files: imagesToUpload)
-            print("User information updated successfully.")
+//            print("User information updated successfully.")
         } catch {
             print("Error updating user information: \(error)")
             throw error
