@@ -22,14 +22,14 @@ extension WritePost {
     @Published var isLocationSelected: Bool = false // NavigationLink의 대체 역할을 할 상태 변수
     @Published var state: createOrEdit = .create
     
-    init(emdId: Int, postId: Int?){
+    init(emdId: Int?, postId: Int?){
       fetchPage(emdId: emdId, postId: postId)
     }
     
-    func fetchPage(emdId: Int, postId: Int?) {
+    func fetchPage(emdId: Int?, postId: Int?) {
       Task { @MainActor in
         
-        if let postId = postId {
+        if let postId = postId{
         // 기존 포스트 편집
           state = .edit
           //post 정보 초기화
@@ -38,8 +38,7 @@ extension WritePost {
           self.post = NewPost(from: existPost)
           //사진 정보 불러오기
           await fetchPhotos(postId: postId, photoIds: nil)
-          
-        }else{
+        }else if let emdId = emdId{
         // 새로운 포스트 생성
           state = .create
           //post 정보 초기화
@@ -64,25 +63,25 @@ extension WritePost {
     }
     
     func uploadPost() async -> Response? {
-      guard !isPosting else {
-        print("Already posting, request ignored.")
-        return nil // 중복 요청 방지
-      }
-      await MainActor.run {
-        self.isPosting = false
-      }
+      guard !isPosting else { return nil }
       do { // 비동기 호출로 게시물 업로드
-        let photoIds = self.selectedPhotos.map{$0.id}
-        let response: Response = try await postRepository
-          .uploadPost(post: post, photoIds: photoIds)
-        await MainActor.run {
-          self.isPosting = false
+        if state == .create{
+          //생성
+          let photoIds = self.selectedPhotos.map{$0.id}
+          let response: Response = try await postRepository
+            .uploadPost(post: post, photoIds: photoIds)
+          await MainActor.run { self.isPosting = false }
+          return response // 응답 반환
+        } else {
+          //편집
+          let photoIds = self.selectedPhotos.map{$0.id}
+          let response: Response = try await postRepository
+            .editPost(post: post, photoIds: photoIds)
+          await MainActor.run { self.isPosting = false }
+          return response // 응답 반환
         }
-        return response // 응답 반환
       } catch {
-        await MainActor.run {
-          self.isPosting = false
-        }
+        await MainActor.run { self.isPosting = false }
         return nil // 실패 시 nil 반환
       }
     }
@@ -119,7 +118,6 @@ extension WritePost {
       let datas = images.compactMap { $0.jpegData(compressionQuality: 0.8) }
       Task {@MainActor in
         selectedPhotos = await uploadImages(imageDatas: datas) ?? []
-        print("selected ----------")
       }
     }
   }

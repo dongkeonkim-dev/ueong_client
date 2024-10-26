@@ -22,8 +22,8 @@ extension PostsList {
     
     init() {
       Task{
+        print("PostList init")
         fetchVillageList()
-        await fetchPosts()
       }
     }
     
@@ -121,7 +121,7 @@ extension PostsList {
         //disvisiblePostRow(postId: Post)
       }
     }
-    
+  
 //    func disvisiblePostRow(post: Post) {
 //      if let index = posts.firstIndex(where: { $0.id == post.id }) {
 //        posts[index].isVisible.toggle()

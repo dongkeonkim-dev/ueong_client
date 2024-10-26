@@ -11,6 +11,7 @@ struct PostRow: View {
   @Binding var post: Post
   var toggleFavorite: (Post) -> Void = { _ in }
   var inactivatePost: (Post) -> Void = { _ in }
+  var refreshPostList: () -> Void = {}
   
   @State private var showOptions = false
   @State private var showDeleteConfirmation = false
@@ -32,7 +33,7 @@ struct PostRow: View {
       
       NavigationLink(
         destination: WritePost(
-          pViewModel:PostsList.ViewModel(),
+          emdId: nil,
           postId: $post.id
         ),
         isActive: $navigateToEdit

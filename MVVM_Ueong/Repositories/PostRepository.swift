@@ -62,6 +62,14 @@ class PostRepository {
     return response
   }
   
+  func editPost(post: NewPost, photoIds: [Int]) async throws -> Response {
+    var parameters = post.toParams()
+    parameters.append(("photo_ids", photoIds));
+    let response : Response = try await APICall.shared
+      .patch("post", parameters: parameters)
+    return response
+  }
+  
   func inactivatePost(postId: Int) async throws -> Response {
     let response : Response = try await APICall.shared
       .patch("post/change-active", parameters: [("post_id", postId), ("is_active", 0)])
