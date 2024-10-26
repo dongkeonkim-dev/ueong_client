@@ -7,15 +7,28 @@
 import Foundation
 
 struct Photo: Identifiable, Decodable {
-    let id: Int
-    let postId: Int
-    let url: String
+  var id: Int
+  var postId: Int?
+  var url: String
+  var uploadAt: Date?
+  
+  enum CodingKeys: String, CodingKey {
+    case id = "photo_id"
+    case postId = "post_id"
+    case url = "photo_path"
+    case rawUploadAt = "upload_at" // JSON의 필드 이름
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
     
-    enum CodingKeys: String, CodingKey {
-        case id = "photo_id"
-        case postId = "post_id"
-        case url = "photo_directory"
-    }
+    id = try container.decode(Int.self, forKey: .id)
+    postId = try container.decode(Int?.self, forKey: .postId)
+    url = try container.decode(String.self, forKey: .url)
+    
+    let rawUploadAt = try container.decode(String.self, forKey: .rawUploadAt)
+    uploadAt = DATETIMEToDate(TIMESTAMP: rawUploadAt)
+  }
 }
 
 

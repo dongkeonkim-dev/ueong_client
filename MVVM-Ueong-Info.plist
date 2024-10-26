@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key></key>
+	<dict>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>앱이 사진 라이브러리에 접근할 수 있도록 허용해주세요.</string>
+	</dict>
+</dict>
+</plist>

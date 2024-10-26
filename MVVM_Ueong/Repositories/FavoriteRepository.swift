@@ -11,12 +11,13 @@ class FavoriteRepository {
 
     // 즐겨찾기 추가
     func addFavorite(postId: Int, username: String) async throws {
-        _ = try await apiCall.post("favorite", parameters: [("postId", postId), ("username", username)])
+      let response: Response = try await apiCall.post("favorite", parameters: [("post_id", postId), ("username", username)]) ///Users/gimdong-geon/Documents/ueong_client/MVVM_Ueong/Repositories/FavoriteRepository.swift:14:29 Generic parameter 'T' could not be inferred
+
     }
     
     // 즐겨찾기 삭제
     func deleteFavorite(postId: Int, username: String) async throws {
-        _ = try await apiCall.delete("favorite", queryParameters: ["postId":postId, "username":username])
+      let response: VoidResult = try await apiCall.delete("favorite", queryParameters: ["post_id":postId, "username":username])
     }
 }
 

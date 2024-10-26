@@ -15,7 +15,7 @@ extension SelectLocation {
         @Published var region: MKCoordinateRegion // 중심 좌표를 나타내는 상태 변수
         weak var delegate: WritePostViewModelDelegate?
         
-        let emdRepository = EmdRepository()
+        let addressRepository = AddressRepository()
 
         init(latitude: Double?, longitude: Double?, locationDetail: String, emdId: Int) {
             self.region = MKCoordinateRegion(center:CLLocationCoordinate2D(latitude: 0, longitude: 0), span:MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002))
@@ -32,7 +32,7 @@ extension SelectLocation {
                     self.locationDetail = locationDetail
                 // 선택된 장소가 없는 경우
                 } else {
-                    let emd = try await emdRepository.getEmd(emdId: emdId)
+                    let emd = try await addressRepository.getEmd(emdId: emdId)
                     self.coordinate = CLLocationCoordinate2D(latitude: emd.latitude, longitude: emd.longitude)
                 }
                 self.region.center = self.coordinate!

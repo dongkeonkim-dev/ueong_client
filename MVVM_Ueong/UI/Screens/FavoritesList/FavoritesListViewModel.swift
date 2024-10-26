@@ -43,7 +43,8 @@ extension FavoritesListView {
             for index in favoritePosts.indices {
                 let postId = favoritePosts[index].id
                 do {
-                    let photos = try await photoRepository.getPhotosForPost(postId: postId)
+                    let photos = try await photoRepository
+                      .getPhotosByPostId(postId: postId)
                     DispatchQueue.main.async {
                         self.favoritePosts[index].photos = photos // 각 포스트에 대한 photos 업데이트
                     }
