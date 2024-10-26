@@ -1,3 +1,6 @@
+
+
+
 import SwiftUI
 import MapKit
 
@@ -27,12 +30,13 @@ struct WritePost: View {
   
   @FocusState private var focusField: FocusField?
   @State private var showPicker: Bool = false
+  @State private var showCaptureView: Bool = false
   
   var body: some View {
     ScrollView {
       VStack {
         HStack {
-          ArkitButton()
+          ArkitButton(showCaptureView: $showCaptureView)
           PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel)
           PhotoIndicator(wViewModel: wViewModel)
         }
@@ -77,15 +81,24 @@ struct WritePost: View {
 
   // MARK: - Arkit Button
 struct ArkitButton: View {
+    
+  @Binding var showCaptureView: Bool
+    
   var body: some View {
     Button(action: {
-        // showPicker.toggle()
+        showCaptureView.toggle() // MainCaptureView를 모달로 띄우기 위한 상태 변경
     }) {
       ButtonShapePicker(
         systemImageName: "arkit",
         count: 0,
         maxCount: 1
       )
+    }
+    .buttonStyle(PlainButtonStyle())
+    .fullScreenCover(isPresented: $showCaptureView) { // MainCaptureView를 모달로 표시
+        MainCaptureView(onDismiss: {
+            showCaptureView = false // 캡처가 끝나면 모달 닫기
+        })
     }
   }
 }

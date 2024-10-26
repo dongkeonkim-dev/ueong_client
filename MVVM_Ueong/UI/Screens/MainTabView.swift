@@ -15,7 +15,7 @@ struct MainTabView: View {
     UITabBar.appearance().tintColor = UIColor.systemBlue         // Selected tab item color
   }
   var body: some View {
-    NavigationView {
+    NavigationStack {
         //            ZStack {
         //                // 탭 뷰의 배경색 설정
         //                Color.white // 원하는 색상으로 변경 가능
