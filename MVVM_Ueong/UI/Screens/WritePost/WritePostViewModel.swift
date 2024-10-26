@@ -21,8 +21,13 @@ extension WritePost {
     @Published var selectedPhotos: [Photo] = [] // 선택된 이미지 배열
     @Published var isLocationSelected: Bool = false // NavigationLink의 대체 역할을 할 상태 변수
     @Published var state: createOrEdit = .create
+    var refreshPostsList: () -> Void = {}
     
-    init(emdId: Int?, postId: Int?){
+    init(
+      emdId: Int?,
+      postId: Int?,
+      refreshPostsList: @escaping () -> Void
+    ){
       fetchPage(emdId: emdId, postId: postId)
     }
     
@@ -71,6 +76,7 @@ extension WritePost {
           let response: Response = try await postRepository
             .uploadPost(post: post, photoIds: photoIds)
           await MainActor.run { self.isPosting = false }
+          self.refreshPostsList()
           return response // 응답 반환
         } else {
           //편집
@@ -78,6 +84,7 @@ extension WritePost {
           let response: Response = try await postRepository
             .editPost(post: post, photoIds: photoIds)
           await MainActor.run { self.isPosting = false }
+          self.refreshPostsList()
           return response // 응답 반환
         }
       } catch {

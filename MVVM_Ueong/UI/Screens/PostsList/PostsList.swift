@@ -47,7 +47,7 @@ struct PostsList: View {
                   inactivatePost: { post in
                     viewModel.inactivatePost(post: post)
                   },
-                  refreshPostList: {
+                  refreshPostsList: {
                     Task{
                       await viewModel.fetchPosts()
                     }
@@ -75,6 +75,7 @@ struct PostsList: View {
 struct AddPostButton: View {
   @ObservedObject var viewModel: PostsList.ViewModel
   @State private var isNavigating = false // State to control navigation
+  var refreshPostsList: () -> Void = {}
   
   public var body: some View {
     ZStack {
@@ -85,7 +86,9 @@ struct AddPostButton: View {
           NavigationLink(
             destination: WritePost(
               emdId : viewModel.selection?.id ?? 0,
-              postId: nil)
+              postId: nil,
+              refreshPostsList: refreshPostsList
+            )
           ) {
             Image(systemName: "plus.circle.fill")
               .resizable()

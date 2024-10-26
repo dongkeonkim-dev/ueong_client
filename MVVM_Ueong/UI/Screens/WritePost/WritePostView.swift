@@ -9,12 +9,17 @@ enum FocusField: Hashable {
 
 struct WritePost: View {
   @StateObject var wViewModel: WritePost.ViewModel
-  var refreshPostList: () -> Void = {}
+  var refreshPostsList: () -> Void = {}
   
-  init(emdId: Int?, postId: Int?) {
+  init(
+    emdId: Int?,
+    postId: Int?,
+    refreshPostsList:  @escaping () -> Void = {}
+  ) {
     self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(
       emdId: emdId,
-      postId: postId
+      postId: postId,
+      refreshPostsList: refreshPostsList
     ))
   }
   
@@ -58,7 +63,10 @@ struct WritePost: View {
       .navigationBarTitle("내 물건 팔기", displayMode: .inline)
       Spacer()
       
-      ConfirmButton(wViewModel: wViewModel, refreshPostList: refreshPostList)
+      ConfirmButton(
+        wViewModel: wViewModel,
+        refreshPostList: refreshPostsList
+      )
         .padding(.top, 20)
         .padding(.bottom, 20)
     }
