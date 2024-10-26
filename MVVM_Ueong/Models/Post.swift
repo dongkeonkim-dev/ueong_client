@@ -89,73 +89,80 @@ struct Post: Identifiable, Decodable {
 }
 
 struct NewPost :Encodable{
-    var title: String
-    var categoryId: Int
-    var price: Double
-    var writerUsername: String
-    var emdId: Int
-    var latitude: Double?
-    var longitude: Double?
-    var locationDetail: String
-    var text: String
-    
-   // 새 포스트
-    init(){
-        self.title = ""
-        self.categoryId = 1
-        self.price = 0.0
-        self.writerUsername = ""
-        self.emdId = 1
-        self.latitude = nil
-        self.longitude = nil
-        self.locationDetail = ""
-        self.text = ""
-    }
+  var id: Int?
+  var title: String
+  var categoryId: Int
+  var price: Double
+  var writerUsername: String
+  var emdId: Int
+  var latitude: Double?
+  var longitude: Double?
+  var locationDetail: String
+  var text: String
+  
+    // 새 포스트
+  init(){
+    self.id = nil
+    self.title = ""
+    self.categoryId = 1
+    self.price = 0.0
+    self.writerUsername = ""
+    self.emdId = 1
+    self.latitude = nil
+    self.longitude = nil
+    self.locationDetail = ""
+    self.text = ""
+  }
   
     //편집시 사용
-    init(from post: Post) {
-      self.emdId = post.emdId
-      self.writerUsername = post.writerUsername
-      self.categoryId = post.categoryId
-      self.price = post.price
-      self.latitude = post.latitude
-      self.longitude = post.longitude
-      self.locationDetail = post.locationDetail
-      self.title = post.title
-      self.text = post.text
+  init(from post: Post) {
+    self.id = post.id
+    self.emdId = post.emdId
+    self.writerUsername = post.writerUsername
+    self.categoryId = post.categoryId
+    self.price = post.price
+    self.latitude = post.latitude
+    self.longitude = post.longitude
+    self.locationDetail = post.locationDetail
+    self.title = post.title
+    self.text = post.text
+  }
+  
+  enum CodingKeys: String, CodingKey {
+    case id = "post_id"
+    case title
+    case categoryId = "category_id"
+    case price
+    case writerUsername = "writer_username"
+    case emdId = "emd_id"
+    case latitude = "desired_trading_location_latitude"
+    case longitude = "desired_trading_location_longitued"
+    case locationDetail = "desired_trading_location_detail"
+    case text
+  }
+  
+  func toParams() -> [(String, Any)] {
+    var params: [(String, Any)] = []
+    
+    if let id = self.id {
+      params.append(("post_id", id))
+    }
+    params.append(("post_title", self.title))
+    params.append(("category_id", self.categoryId))
+    params.append(("price", Int(self.price)))
+    params.append(("writer_username", self.writerUsername))
+    params.append(("emd_id", self.emdId))
+    
+    if let latitude = self.latitude {
+      params.append(("desired_trading_location_latitude", latitude))
+    }
+    if let longitude = self.longitude {
+      params.append(("desired_trading_location_longitude", longitude))
     }
     
-    enum CodingKeys: String, CodingKey {
-        case title
-        case categoryId = "category_id"
-        case price
-        case writerUsername = "writer_username"
-        case emdId = "emd_id"
-        case latitude = "desired_trading_location_latitude"
-        case longitude = "desired_trading_location_longitued"
-        case locationDetail = "desired_trading_location_detail"
-        case text
-    }
+    params.append(("desired_trading_location_detail", self.locationDetail))
+    params.append(("text", self.text))
     
-    func toParams() -> [(String, Any)] {
-        var params: [(String, Any)] = []
-        
-        params.append(("post_title", self.title))
-        params.append(("category_id", self.categoryId))
-        params.append(("price", Int(self.price)))
-        params.append(("writer_username", self.writerUsername))
-        params.append(("emd_id", self.emdId))
-        
-        if let latitude = self.latitude {
-            params.append(("desired_trading_location_latitude", latitude))
-        }
-        if let longitude = self.longitude {
-            params.append(("desired_trading_location_longitude", longitude))
-        }
-        
-        params.append(("desired_trading_location_detail", self.locationDetail))
-        params.append(("text", self.text))
-        
-        return params
-    }
+    return params
+  }
 }

@@ -46,7 +46,13 @@ struct PostsList: View {
                   },
                   inactivatePost: { post in
                     viewModel.inactivatePost(post: post)
-                  })
+                  },
+                  refreshPostList: {
+                    Task{
+                      await viewModel.fetchPosts()
+                    }
+                  }
+                )
               }
               
             }
@@ -77,7 +83,9 @@ struct AddPostButton: View {
         HStack {
           Spacer()
           NavigationLink(
-            destination: WritePost(pViewModel: viewModel, postId: nil)
+            destination: WritePost(
+              emdId : viewModel.selection?.id ?? 0,
+              postId: nil)
           ) {
             Image(systemName: "plus.circle.fill")
               .resizable()

@@ -8,13 +8,12 @@ enum FocusField: Hashable {
 }
 
 struct WritePost: View {
-  @ObservedObject var pViewModel: PostsList.ViewModel
   @StateObject var wViewModel: WritePost.ViewModel
+  var refreshPostList: () -> Void = {}
   
-  init(pViewModel: PostsList.ViewModel, postId: Int?) {
-    self.pViewModel = pViewModel
+  init(emdId: Int?, postId: Int?) {
     self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(
-      emdId: pViewModel.selection?.id ?? 0,
+      emdId: emdId,
       postId: postId
     ))
   }
@@ -59,7 +58,7 @@ struct WritePost: View {
       .navigationBarTitle("내 물건 팔기", displayMode: .inline)
       Spacer()
       
-      ConfirmButton(wViewModel: wViewModel, pViewModel: pViewModel)
+      ConfirmButton(wViewModel: wViewModel, refreshPostList: refreshPostList)
         .padding(.top, 20)
         .padding(.bottom, 20)
     }
@@ -323,7 +322,8 @@ struct LocationSelection: View {
   // MARK: - Confirm Button
 struct ConfirmButton: View {
   @ObservedObject var wViewModel: WritePost.ViewModel
-  @ObservedObject var pViewModel: PostsList.ViewModel
+  var refreshPostList: () -> Void = {}
+  
   @Environment(\.presentationMode) var presentationMode
   
   public var body: some View {
@@ -336,7 +336,8 @@ struct ConfirmButton: View {
             if let response = await wViewModel.uploadPost() {
               print("Post uploaded successfully: upload ID \(response)")
               presentationMode.wrappedValue.dismiss()
-              await pViewModel.fetchPosts()
+              refreshPostList()
+              
             } else {
               print("Upload failed: No response received or an error occurred.")
             }
@@ -359,6 +360,6 @@ struct ConfirmButton: View {
 }
 
 #Preview {
-  WritePost(pViewModel: PostsList.ViewModel(), postId: 1)
+  WritePost(emdId: 1, postId: 1)
 }
 
