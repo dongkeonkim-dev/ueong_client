@@ -71,13 +71,13 @@ struct ProfileHeaderView: View {
                     .tracking(2)
                     .font(.system(size: 26))
                 Spacer()
-                HStack(spacing: -3) {
-                    Image(systemName: "star.fill")
-                    Image(systemName: "star.fill")
-                    Image(systemName: "star.fill")
-                    Image(systemName: "star.fill")
-                    Image(systemName: "star")
-                }
+//                HStack(spacing: -3) {
+//                    Image(systemName: "star.fill")
+//                    Image(systemName: "star.fill")
+//                    Image(systemName: "star.fill")
+//                    Image(systemName: "star.fill")
+//                    Image(systemName: "star")
+//                }
                 .font(.system(size: 12, weight: .bold))
                 .foregroundColor(.blue)
             }

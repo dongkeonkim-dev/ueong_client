@@ -121,10 +121,12 @@ extension ChatListView {
 
             do {
                 // 포스트 가져오기
-                var post = try await postRepository.getPostById(username: username, postId: postId)
+                var post = try await postRepository
+                  .getPostById(username: "username1", postId: postId)
                 
                 // 해당 포스트의 사진 가져오기
-                post.photos = try await photoRepository.getPhotosForPost(postId: postId)
+                post.photos = try await photoRepository
+                  .getPhotosByPostId(postId: postId)
 
                 return post
             } catch {

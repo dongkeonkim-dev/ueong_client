@@ -31,11 +31,13 @@
 		0D89F2982CB1989B004C5AF1 /* FavoriteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2972CB19896004C5AF1 /* FavoriteRepository.swift */; };
 		0D89F2A32CB38BF3004C5AF1 /* SelectLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2A22CB38BE9004C5AF1 /* SelectLocationView.swift */; };
 		0D89F2A52CB38BFE004C5AF1 /* SelectLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2A42CB38BF6004C5AF1 /* SelectLocationViewModel.swift */; };
-		0D89F2AB2CB39194004C5AF1 /* EmdRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2AA2CB3918F004C5AF1 /* EmdRepository.swift */; };
 		0D89F2AD2CB391CB004C5AF1 /* Emd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2AC2CB391C8004C5AF1 /* Emd.swift */; };
 		0D89F2AE2CB43716004C5AF1 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 1F33DC0F2CB384BD00A039DA /* SocketIO */; };
 		0D89F2B02CBBB517004C5AF1 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2AF2CBBB512004C5AF1 /* PostService.swift */; };
 		0D89F2B42CBBBA54004C5AF1 /* ViewStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2B32CBBBA4D004C5AF1 /* ViewStateService.swift */; };
+		0D89F2B72CBD0570004C5AF1 /* AddMyVillageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2B62CBD0567004C5AF1 /* AddMyVillageView.swift */; };
+		0D89F2B92CBD057C004C5AF1 /* AddMyVillageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2B82CBD0576004C5AF1 /* AddMyVillageViewModel.swift */; };
+		0D89F2C92CC28B3B004C5AF1 /* MyVillageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2C82CC28B36004C5AF1 /* MyVillageRepository.swift */; };
 		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */; };
 		0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693272CA3F66400A3E3B7 /* ChatViewModel.swift */; };
@@ -157,10 +159,13 @@
 		0D89F2972CB19896004C5AF1 /* FavoriteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteRepository.swift; sourceTree = "<group>"; };
 		0D89F2A22CB38BE9004C5AF1 /* SelectLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationView.swift; sourceTree = "<group>"; };
 		0D89F2A42CB38BF6004C5AF1 /* SelectLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectLocationViewModel.swift; sourceTree = "<group>"; };
-		0D89F2AA2CB3918F004C5AF1 /* EmdRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmdRepository.swift; sourceTree = "<group>"; };
 		0D89F2AC2CB391C8004C5AF1 /* Emd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emd.swift; sourceTree = "<group>"; };
 		0D89F2AF2CBBB512004C5AF1 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
 		0D89F2B32CBBBA4D004C5AF1 /* ViewStateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStateService.swift; sourceTree = "<group>"; };
+		0D89F2B62CBD0567004C5AF1 /* AddMyVillageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyVillageView.swift; sourceTree = "<group>"; };
+		0D89F2B82CBD0576004C5AF1 /* AddMyVillageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyVillageViewModel.swift; sourceTree = "<group>"; };
+		0D89F2C82CC28B36004C5AF1 /* MyVillageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVillageRepository.swift; sourceTree = "<group>"; };
+		0D89F2CA2CCC78A8004C5AF1 /* MVVM-Ueong-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MVVM-Ueong-Info.plist"; sourceTree = SOURCE_ROOT; };
 		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		0DB693262CA3F66400A3E3B7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -305,10 +310,19 @@
 			path = SelectLocation;
 			sourceTree = "<group>";
 		};
+		0D89F2B52CBD0560004C5AF1 /* AddMyVillage */ = {
+			isa = PBXGroup;
+			children = (
+				0D89F2B62CBD0567004C5AF1 /* AddMyVillageView.swift */,
+				0D89F2B82CBD0576004C5AF1 /* AddMyVillageViewModel.swift */,
+			);
+			path = AddMyVillage;
+			sourceTree = "<group>";
+		};
 		0DB693192CA3ED2000A3E3B7 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				0D89F2AA2CB3918F004C5AF1 /* EmdRepository.swift */,
+				0D89F2C82CC28B36004C5AF1 /* MyVillageRepository.swift */,
 				0D89F2972CB19896004C5AF1 /* FavoriteRepository.swift */,
 				0D45B7F72CAD33F000AA516F /* HistoryRepostitory.swift */,
 				0D45B7E32CAC145700AA516F /* CategoryRepository.swift */,
@@ -487,7 +501,7 @@
 		1FC52F792CA2CF72001A933B /* MVVM_Ueong */ = {
 			isa = PBXGroup;
 			children = (
-				1F33DCF82CBC2C7100A039DA /* MVVM-Ueong-Info.plist */,
+				0D89F2CA2CCC78A8004C5AF1 /* MVVM-Ueong-Info.plist */,
 				1F53E2BA2CAD131A0071A8C8 /* System */,
 				0D45B7C82CA573F200AA516F /* Network */,
 				1F33DC082CAF8B5200A039DA /* Service */,
@@ -544,6 +558,7 @@
 		1FC52FAA2CA2CFE4001A933B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				0D89F2B52CBD0560004C5AF1 /* AddMyVillage */,
 				0D89F2A12CB38BE6004C5AF1 /* SelectLocation */,
 				0D45B7EC2CAD1B5600AA516F /* SearchPost */,
 				1FC52F7C2CA2CF72001A933B /* ContentView.swift */,
@@ -771,6 +786,7 @@
 				1FABE3F22CC5E412008FCFD6 /* OnboardingButtonView+LocalizedString.swift in Sources */,
 				0D45B7D62CA80D2300AA516F /* Constants.swift in Sources */,
 				0D89F2852CB1613F004C5AF1 /* TimeFormatter.swift in Sources */,
+				0D89F2C92CC28B3B004C5AF1 /* MyVillageRepository.swift in Sources */,
 				0DB693392CA4123300A3E3B7 /* UserRepository.swift in Sources */,
 				0D45B7F02CAD1B8400AA516F /* SearchPostView.swift in Sources */,
 				0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */,
@@ -779,7 +795,7 @@
 				1F33DC0A2CAF8BBB00A039DA /* Socket.swift in Sources */,
 				1FC52FBC2CA2DCC3001A933B /* ChatListViewModel.swift in Sources */,
 				1F8C121F2CA4071F00A33802 /* PostRow.swift in Sources */,
-				1FABE3FA2CC5E412008FCFD6 /* ShotFileInfo.swift in Sources */,
+				0D89F2B92CBD057C004C5AF1 /* AddMyVillageViewModel.swift in Sources */,
 				0D45B7CA2CA5745500AA516F /* APICall.swift in Sources */,
 				1FC52FC72CA2E660001A933B /* Chat.swift in Sources */,
 				1FABE3EC2CC5E412008FCFD6 /* FeedbackView.swift in Sources */,
@@ -790,6 +806,7 @@
 				0DB693352CA40E4000A3E3B7 /* MyAccountViewModel.swift in Sources */,
 				1FC52F7B2CA2CF72001A933B /* MVVM_UeongApp.swift in Sources */,
 				1FC52FB62CA2DBF9001A933B /* FavoritesList.swift in Sources */,
+				0D89F2B72CBD0570004C5AF1 /* AddMyVillageView.swift in Sources */,
 				0D89F2B02CBBB517004C5AF1 /* PostService.swift in Sources */,
 				1FABE3E22CC5E412008FCFD6 /* AppDataModel+Orbit.swift in Sources */,
 				1F53E2BC2CAD13360071A8C8 /* AppDelegate.swift in Sources */,
@@ -812,9 +829,6 @@
 				0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */,
 				1FABE3EB2CC5E412008FCFD6 /* FeedbackMessages.swift in Sources */,
 				0D45B7E42CAC146000AA516F /* CategoryRepository.swift in Sources */,
-				1FABE3FB2CC5E412008FCFD6 /* TimedMessageList.swift in Sources */,
-				0D89F2AB2CB39194004C5AF1 /* EmdRepository.swift in Sources */,
-				1FABE3E92CC5E412008FCFD6 /* CapturePrimaryView.swift in Sources */,
 				0D89F2892CB166F5004C5AF1 /* ImagePicker.swift in Sources */,
 				0D89F2B42CBBBA54004C5AF1 /* ViewStateService.swift in Sources */,
 				1FABE3F52CC5E412008FCFD6 /* OnboardingTutorialView+LocalizedString.swift in Sources */,
