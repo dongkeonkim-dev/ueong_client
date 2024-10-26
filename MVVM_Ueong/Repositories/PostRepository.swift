@@ -59,6 +59,7 @@ class PostRepository {
     parameters.append(("photo_ids", photoIds));
     let response : Response = try await APICall.shared
       .post("post", parameters: parameters)
+    print("PostRepository: 포스트 업로드 성공")
     return response
   }
   
@@ -67,6 +68,7 @@ class PostRepository {
     parameters.append(("photo_ids", photoIds));
     let response : Response = try await APICall.shared
       .patch("post", parameters: parameters)
+    print("PostRepository: 포스트 편집 성공")
     return response
   }
   

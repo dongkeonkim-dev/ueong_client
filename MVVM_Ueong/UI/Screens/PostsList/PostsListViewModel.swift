@@ -52,7 +52,6 @@ extension PostsList {
       }
       
       do {
-        await MainActor.run { self.posts.removeAll() } // 초기화
         let fetchedPosts = try await postRepository.searchPosts(
           username: username,
           village: selection?.id ?? 0,
@@ -64,6 +63,7 @@ extension PostsList {
           self.posts = fetchedPosts
         }
         await fetchPhotosForPosts() // 포스트별 사진 로드
+        print("complete fetch PostsList")
       } catch {
         print("Error fetching posts: \(error.localizedDescription)")
       }

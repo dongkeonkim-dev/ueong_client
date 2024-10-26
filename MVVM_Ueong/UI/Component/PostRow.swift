@@ -9,9 +9,9 @@ import SwiftUI
 
 struct PostRow: View {
   @Binding var post: Post
-  var togglePostsListFavorite: (Post) -> Void = { _ in }
-  var inactivatePost: (Post) -> Void = { _ in }
-  var refreshPostsList: () -> Void = {}
+  var togglePostsListFavorite: (Post) -> Void
+  var inactivatePost: (Post) -> Void
+  var refreshPostsList: () -> Void
   
   @State private var showOptions = false
   @State private var showDeleteConfirmation = false

@@ -38,7 +38,7 @@ struct PostsList: View {
                 inactivatePost: { post in
                   viewModel.inactivatePost(post: post)
                 },
-                refreshPostsList: {
+                refreshPostsList:{
                   Task{
                     await viewModel.fetchPosts()
                   }
@@ -56,15 +56,23 @@ struct PostsList: View {
       }
       
         // 오른쪽 하단 고정 버튼
-      AddPostButton(viewModel: viewModel)
+      WriteNewPostButton(
+        viewModel: viewModel,
+        refreshPostsList:
+        {
+          Task{
+            await viewModel.fetchPosts
+          }
+        }
+      )
     }
   }
 }
 
-struct AddPostButton: View {
+struct WriteNewPostButton: View {
   @ObservedObject var viewModel: PostsList.ViewModel
   @State private var isNavigating = false // State to control navigation
-  var refreshPostsList: () -> Void = {}
+  var refreshPostsList: () -> Void
   
   public var body: some View {
     ZStack {

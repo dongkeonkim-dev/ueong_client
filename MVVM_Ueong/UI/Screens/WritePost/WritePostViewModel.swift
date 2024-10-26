@@ -21,7 +21,7 @@ extension WritePost {
     @Published var selectedPhotos: [Photo] = [] // 선택된 이미지 배열
     @Published var isLocationSelected: Bool = false // NavigationLink의 대체 역할을 할 상태 변수
     @Published var state: createOrEdit = .create
-    var refreshPostsList: () -> Void = {}
+    var refreshPostsList: () -> Void
     
     init(
       emdId: Int?,
@@ -67,33 +67,26 @@ extension WritePost {
       }
     }
     
+    @MainActor
     func uploadPost() async -> Response? {
       guard !isPosting else { return nil }
-      do { // 비동기 호출로 게시물 업로드
-        if state == .create{
-          //생성
-          let photoIds = self.selectedPhotos.map{$0.id}
-          let response: Response = try await postRepository
-            .uploadPost(post: post, photoIds: photoIds)
-          await MainActor.run {
-            self.isPosting = false
-            self.refreshPostsList()
-          }
-          return response // 응답 반환
+      isPosting = true
+      defer {
+        isPosting = false
+      }
+      do {
+        let photoIds = self.selectedPhotos.map { $0.id }
+        let response: Response
+        if state == .create {
+          response = try await postRepository.uploadPost(post: post, photoIds: photoIds)
         } else {
-          //편집
-          let photoIds = self.selectedPhotos.map{$0.id}
-          let response: Response = try await postRepository
-            .editPost(post: post, photoIds: photoIds)
-          await MainActor.run {
-            self.isPosting = false
-            self.refreshPostsList()
-          }
-          return response // 응답 반환
+          response = try await postRepository.editPost(post: post, photoIds: photoIds)
         }
+        //await self.refreshPostsList()
+        return response
       } catch {
-        await MainActor.run { self.isPosting = false }
-        return nil // 실패 시 nil 반환
+        print("Error uploading post: \(error.localizedDescription)")
+        return nil
       }
     }
     
@@ -129,7 +122,8 @@ extension WritePost {
     func addSelectedImages(_ images: [UIImage]) async {
       let datas = images.compactMap { $0.jpegData(compressionQuality: 0.8) }
       Task {@MainActor in
-        selectedPhotos = await uploadImages(imageDatas: datas) ?? []
+        let uploadPhotos = await uploadImages(imageDatas: datas) ?? []
+        selectedPhotos.append(contentsOf: uploadPhotos)
       }
     }
   }

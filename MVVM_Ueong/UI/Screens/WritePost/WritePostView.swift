@@ -33,7 +33,11 @@ struct WritePost: View {
       VStack {
         HStack {
           ArkitButton()
-          PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel)
+          PhotoPickerButton(
+            showPicker: $showPicker,
+            wViewModel: wViewModel,
+            maxCount: 10
+          )
           PhotoIndicator(wViewModel: wViewModel)
         }
         .padding(.bottom, 10)
@@ -67,10 +71,11 @@ struct WritePost: View {
       
       ConfirmButton(
         wViewModel: wViewModel,
-        refreshPostList: refreshPostsList
+        refreshPostsList:refreshPostsList
       )
-        .padding(.top, 20)
-        .padding(.bottom, 20)
+      .padding(.top, 20)
+      .padding(.bottom, 20)
+      .disabled(wViewModel.isPosting)
     }
   }
 }
@@ -94,15 +99,18 @@ struct ArkitButton: View {
 struct PhotoPickerButton: View {
   @Binding var showPicker: Bool
   @ObservedObject var wViewModel: WritePost.ViewModel
+  var maxCount: Int
   
   var body: some View {
     Button(action: {
-      showPicker.toggle()
+      if(wViewModel.selectedPhotos.count < 10){
+        showPicker.toggle()
+      }
     }) {
       ButtonShapePicker(
         systemImageName: "photo",
         count: wViewModel.selectedPhotos.count,
-        maxCount: 10
+        maxCount: maxCount
       )
     }
     .fullScreenCover(isPresented: $showPicker) {
@@ -112,6 +120,8 @@ struct PhotoPickerButton: View {
             await wViewModel.addSelectedImages(images)
           }
         },
+        count: wViewModel.selectedPhotos.count,
+        maxCount: maxCount,
         isPresented: $showPicker
       )
     }
@@ -332,7 +342,7 @@ struct LocationSelection: View {
   // MARK: - Confirm Button
 struct ConfirmButton: View {
   @ObservedObject var wViewModel: WritePost.ViewModel
-  var refreshPostList: () -> Void = {}
+  var refreshPostsList: () -> Void
   
   @Environment(\.presentationMode) var presentationMode
   
@@ -345,9 +355,9 @@ struct ConfirmButton: View {
             print("ConfirmButton clicked")
             if let response = await wViewModel.uploadPost() {
               print("Post uploaded successfully: upload ID \(response)")
-              presentationMode.wrappedValue.dismiss()
-              refreshPostList()
-              
+              refreshPostsList()
+              try? await Task.sleep(nanoseconds: 2_000_000_000)
+              //presentationMode.wrappedValue.dismiss()
             } else {
               print("Upload failed: No response received or an error occurred.")
             }

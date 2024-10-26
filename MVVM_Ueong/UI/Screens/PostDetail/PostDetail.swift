@@ -333,7 +333,7 @@ struct PostImageSlider: View {
   
   var body: some View {
     if photos.isEmpty {
-      EmptyView()
+      Spacer()
     } else {
       TabView {
         ForEach(photos) { photo in
