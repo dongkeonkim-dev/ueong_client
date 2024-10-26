@@ -194,10 +194,14 @@ import MapKit
 // MARK: - PostDetail
 struct PostDetail: View {
     @ObservedObject var viewModel: PostDetail.ViewModel
-    @State private var chatViewModel: ChatView.ViewModel?
     @StateObject private var chatListViewModel = ChatListView.ViewModel()
+    @State private var chatViewModel: ChatView.ViewModel?
     @State private var chatRoomId: Int?
     @State private var isChatViewActive = false
+    
+    @State private var showAlert = false // 알림 창을 제어하는 상태 변수
+    @State private var alertMessage = "" // 알림 창에 표시할 메시지
+    
     var toggleFavorite: (Post) -> Void
 
     var body: some View {
@@ -274,28 +278,44 @@ struct PostDetail: View {
                             .foregroundColor(.white) // 버튼의 텍스트 색상
                             .cornerRadius(5) // 버튼의 모서리 둥글기
                             .background(false ? Color.blue : Color.gray)
+                        
+                        
                     }
-                    .disabled(true) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
+                    .disabled(false) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
                     
                     Button(action: {
                         
-                      
-                        let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id)
-                            // 기존 채팅방이 발견된 경우
-                            chatRoomId = checkRoomId
+                        if viewModel.writer.username == username {
+                            // 조건이 참이면 경고 메시지 설정하고 알림창 띄우기
+                             
+                        }else{
                             
-                            print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
-                            print("chatRoomId = \(chatRoomId ?? -1)")
+                            chatListViewModel.loadChat {
+                                
+                                
+                                
+                                let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id)
+                                // 기존 채팅방이 발견된 경우
+                                
+                                chatRoomId = checkRoomId
+                                print(chatListViewModel.chats)
+                                
+                                print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
+                                print("chatRoomId = \(chatRoomId ?? -1)")
+                                
+                                
+                                // ChatView로 이동하는 로직을 여기에 추가
+                                chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: username, userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
+                                
+                            }
                             
-                            // ChatView로 이동하는 로직을 여기에 추가
-                            chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: "username1", userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
-                        
+                            
                             isChatViewActive = true
-                      
+                        }
                         
                         
                     }) {
-                        Text("\(isChatViewActive)")
+                        Text("채팅하기")
                             .padding(10)
                             .background(Color.blue)
                             .foregroundColor(.white)

@@ -94,9 +94,5 @@ struct SelectRegion: View {
     
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        SelectRegion(selection: .constant(Emd()), options: [Emd()], maxWidth: 130)
-    }
-}
+
 

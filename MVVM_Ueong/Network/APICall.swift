@@ -150,10 +150,10 @@
             
             // JSON 응답을 출력
             if let jsonResponse = String(data: data, encoding: .utf8) {
-                print("**** Response JSON: \(jsonResponse)")
+//                print("**** Response JSON: \(jsonResponse)")
                 do {
                     let decodedData = try JSONDecoder().decode(T.self, from: data)
-                    print("**** Decoded Data: \(decodedData)")
+//                    print("**** Decoded Data: \(decodedData)")
                     return decodedData
                 } catch {
                     print("Error decoding data: \(error)")

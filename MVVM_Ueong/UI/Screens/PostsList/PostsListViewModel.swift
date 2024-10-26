@@ -21,10 +21,12 @@ extension PostsList {
         let favoriteRepository = FavoriteRepository()
 
         init() {
+            print("PostsListViewModel 생성")
             Task{
                 fetchVillageList()
                 await fetchPosts()
             }
+            
         }
 
         func fetchVillageList(){
@@ -143,5 +145,11 @@ extension PostsList {
 //                }
 //            }
 //        }
+        
+        
+        
+
     }
 }
+
+

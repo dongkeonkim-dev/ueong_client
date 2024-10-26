@@ -3,6 +3,7 @@ import SwiftUI
 // MARK: - 채팅창
 struct ChatView: View {
     @ObservedObject var viewModel: ChatView.ViewModel
+    
     @State private var newMessage: String = ""
 
     var body: some View {
@@ -27,7 +28,7 @@ struct ChatView: View {
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
              
                 if !newMessage.isEmpty {
-                    viewModel.sendMessageOrCreateChat(chatRoomId: viewModel.chatRoomId, username: "username1", partnerUsername: viewModel.partnerUsername, messageContent: newMessage, postId: viewModel.relatedPost.id)
+                    viewModel.sendMessageOrCreateChat(chatRoomId: viewModel.chatRoomId, username: username, partnerUsername: viewModel.partnerUsername, messageContent: newMessage, postId: viewModel.relatedPost.id)
                     
                     newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
                 }

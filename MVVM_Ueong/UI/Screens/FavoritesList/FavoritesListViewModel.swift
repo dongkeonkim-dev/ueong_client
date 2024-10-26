@@ -15,6 +15,7 @@ extension FavoritesListView {
         let favoriteRepository = FavoriteRepository()
 
         init() {
+            print("FavoritesListViewModel 생성")
         }
         
         func fetchPage(){

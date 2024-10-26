@@ -23,6 +23,7 @@ extension PostDetail {
         let favoriteRepository = FavoriteRepository()
         
         init(postId: Int) {
+ 
             self.postId = postId
         }
         
@@ -34,6 +35,7 @@ extension PostDetail {
                 self.siGuDong = try await addressRepository.getFullAddress(emdId: post.emdId)
                 self.mapCoordinate = CLLocationCoordinate2D(latitude: post.latitude, longitude: post.longitude)
 //                print(post)
+                print("fetchPage API")
             }
         }
         
@@ -53,6 +55,7 @@ extension PostDetail {
                         print("Error updating favorite status for post \(post.id): \(error)")
                     }
                 }
+            print("toggleFavorite API")
             }
         }
     }

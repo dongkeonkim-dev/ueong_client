@@ -5,7 +5,7 @@ struct WritePost: View {
     @ObservedObject var pViewModel: PostsList.ViewModel
     @StateObject var wViewModel: WritePost.ViewModel
     
-    init(pViewModel: PostsList.ViewModel){
+    init(pViewModel: PostsList.ViewModel) {
         self.pViewModel = pViewModel
         self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(emdId: pViewModel.selection?.id ?? 0))
     }
@@ -14,16 +14,17 @@ struct WritePost: View {
     @FocusState private var isPriceFocused: Bool
     @FocusState private var isExplanationFocused: Bool
     @State private var showPicker: Bool = false
+    @State private var showCaptureView: Bool = false // MainCaptureView를 위한 상태 추가
     
     var body: some View {
         ScrollView {
             VStack {
-                HStack{
+                HStack {
                     Button(action: {
-//                        showPicker.toggle()
+                        showCaptureView.toggle() // MainCaptureView를 모달로 띄우기 위한 상태 변경
                     }) {
-                        Rectangle() // Rectangle으로 감싸기
-                            .fill(Color.clear) // 배경 색상 투명으로 설정
+                        Rectangle()
+                            .fill(Color.clear)
                             .frame(width: 70, height: 70)
                             .cornerRadius(10)
                             .overlay(
@@ -31,23 +32,27 @@ struct WritePost: View {
                                     Image(systemName: "arkit")
                                         .font(.system(size: 20))
                                         .foregroundColor(.blue)
-                                    Text("\(0)/1") // 선택된 이미지 수 표시
+                                    Text("\(0)/1")
                                         .font(.caption)
                                         .foregroundColor(.blue)
                                 }
-                                .frame(width: 70, height: 70, alignment: .top) // 프레임 크기 및 정렬 조정
+                                .frame(width: 70, height: 70, alignment: .top)
                                 .padding(.top, 40)
                             )
-                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
+                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
                     }
-//                    .fullScreenCover(isPresented: $showPicker) {
-//                        MultiImagePicker(selectedImages: $wViewModel.selectedImages, isPresented: $showPicker)
-//                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .fullScreenCover(isPresented: $showCaptureView) { // MainCaptureView를 모달로 표시
+                        MainCaptureView(onDismiss: {
+                            showCaptureView = false // 캡처가 끝나면 모달 닫기
+                        })
+                    }
+
                     Button(action: {
                         showPicker.toggle()
                     }) {
-                        Rectangle() // Rectangle으로 감싸기
-                            .fill(Color.clear) // 배경 색상 투명으로 설정
+                        Rectangle()
+                            .fill(Color.clear)
                             .frame(width: 70, height: 70)
                             .cornerRadius(10)
                             .overlay(
@@ -55,11 +60,11 @@ struct WritePost: View {
                                     Image(systemName: "photo")
                                         .font(.system(size: 20))
                                         .foregroundColor(.blue)
-                                    Text("\(wViewModel.selectedImages.count)/10") // 선택된 이미지 수 표시
+                                    Text("\(wViewModel.selectedImages.count)/10")
                                         .font(.caption)
                                         .foregroundColor(.blue)
                                 }
-                                .frame(width: 70, height: 70, alignment: .top) // 프레임 크기 및 정렬 조정
+                                .frame(width: 70, height: 70, alignment: .top)
                                 .padding(.top, 40)
                             )
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.blue, lineWidth: 2))
@@ -67,6 +72,8 @@ struct WritePost: View {
                     .fullScreenCover(isPresented: $showPicker) {
                         MultiImagePicker(selectedImages: $wViewModel.selectedImages, isPresented: $showPicker)
                     }
+
+                    // 선택된 이미지 보여주기
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack {
                             ForEach(wViewModel.selectedImages, id: \.self) { image in
@@ -81,20 +88,20 @@ struct WritePost: View {
                                     // X 버튼 추가
                                     Button(action: {
                                         if let index = wViewModel.selectedImages.firstIndex(of: image) {
-                                            wViewModel.selectedImages.remove(at: index) // 이미지 제거
+                                            wViewModel.selectedImages.remove(at: index)
                                         }
                                     }) {
                                         Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(.white) // 아이콘 색상
-                                            .font(.system(size: 18)) // 아이콘 크기
-                                            .background(Color.black) // 배경색을 검은색으로 설정
-                                            .clipShape(Circle()) // 원형으로 자르기
+                                            .foregroundColor(.white)
+                                            .font(.system(size: 18))
+                                            .background(Color.black)
+                                            .clipShape(Circle())
                                             .overlay(
                                                 Circle()
-                                                    .stroke(Color.black, lineWidth: 1) // 검은 테두리 추가
+                                                    .stroke(Color.black, lineWidth: 1)
                                             )
-                                            .frame(width:18, height: 18) // 버튼의 전체 크기 조정
-                                            .offset(x: 4, y: -4) // 버튼 위치 조정
+                                            .frame(width: 18, height: 18)
+                                            .offset(x: 4, y: -4)
                                     }
                                 }.frame(minHeight: 85)
                             }
@@ -120,38 +127,32 @@ struct WritePost: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("가격")
-                        HStack{
-                            Text("₩") // 원화 기호
-                                .font(.system(size: 20)) // 폰트 크기 설정
-                                .padding(.leading, 3) // 원화 기호와 숫자 간의 간격
+                        HStack {
+                            Text("₩")
+                                .font(.system(size: 20))
+                                .padding(.leading, 3)
                             
                             TextField("가격을 입력하세요.", text: Binding(
                                 get: {
-                                    // 가격이 0일 경우 빈 문자열 반환
                                     if wViewModel.post.price == 0 {
                                         return ""
                                     }
-                                    // 3자리마다 쉼표를 추가
                                     let formatter = NumberFormatter()
                                     formatter.numberStyle = .decimal
                                     return formatter.string(from: NSNumber(value: wViewModel.post.price)) ?? ""
                                 },
                                 set: {
-                                    // 입력값이 빈 문자열일 경우 0으로 설정
-                                    let cleanValue = $0.replacingOccurrences(of: ",", with: "") // 쉼표 제거
-                                    if let value = Double(cleanValue) { // Double로 변환
-                                        wViewModel.post.price = value // 저장
+                                    let cleanValue = $0.replacingOccurrences(of: ",", with: "")
+                                    if let value = Double(cleanValue) {
+                                        wViewModel.post.price = value
                                     } else if cleanValue.isEmpty {
-                                        wViewModel.post.price = 0.0 // 비어있는 경우 0으로 설정 (Double)
+                                        wViewModel.post.price = 0.0
                                     }
                                 }
                             ))
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .focused($isPriceFocused)
                         }
-                        
-                            
-                        
                     }
                     Spacer()
                 }
@@ -165,8 +166,8 @@ struct WritePost: View {
                             .frame(height: 150)
                             .focused($isExplanationFocused)
                             .overlay(
-                                RoundedRectangle(cornerRadius: 5) // 모서리 둥글게
-                                    .stroke(Color.gray.opacity(0.16), lineWidth: 1) // 회색 테두리 추가
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color.gray.opacity(0.16), lineWidth: 1)
                             )
                     }
                     Spacer()
@@ -177,26 +178,20 @@ struct WritePost: View {
                 HStack {
                     VStack(alignment: .leading) {
                         Text("거래 희망 장소")
-                            // 위치를 로드하고 화면 전환
-                            NavigationLink(
-                                destination:SelectLocation(wViewModel: wViewModel)
-                           ) {
-                                RoundedRectangle(cornerRadius: 5) // 모서리 둥글게
-                                    .fill(Color.white) // 배경색을 흰색으로 설정
-                                    .frame(height: 50) // 높이를 설정
-                                    .overlay(
-                                        Text(wViewModel.post.locationDetail == "" ? "위치를 선택하세요" : wViewModel.post.locationDetail) // 버튼 텍스트
-                                            .foregroundColor(.black) // 텍스트 색상
-                                            .padding() // 여백 추가
-
-                                            
-                                    )
-                                    .overlay( // 테두리 추가
-                                        RoundedRectangle(cornerRadius: 5)
-                                            .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                                    )
-                            }
-                            //.padding(.top) // 상단 여백 추가
+                        NavigationLink(destination: SelectLocation(wViewModel: wViewModel)) {
+                            RoundedRectangle(cornerRadius: 5)
+                                .fill(Color.white)
+                                .frame(height: 50)
+                                .overlay(
+                                    Text(wViewModel.post.locationDetail.isEmpty ? "위치를 선택하세요" : wViewModel.post.locationDetail)
+                                        .foregroundColor(.black)
+                                        .padding()
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 5)
+                                        .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                                )
+                        }
                     }
                     Spacer()
                 }
@@ -212,7 +207,6 @@ struct WritePost: View {
         }
     }
 }
-
 
 struct AddButton: View {
     @ObservedObject var wViewModel: WritePost.ViewModel
@@ -254,3 +248,4 @@ struct AddButton: View {
 #Preview {
     WritePost(pViewModel: PostsList.ViewModel())
 }
+

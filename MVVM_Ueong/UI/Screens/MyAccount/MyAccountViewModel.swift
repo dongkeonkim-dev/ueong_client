@@ -15,6 +15,7 @@ extension MyAccountView {
         private let userRepository = UserRepository()
 
         init() {
+            print("MyAccountViewModel 생성")
             fetchPage()
         }
 

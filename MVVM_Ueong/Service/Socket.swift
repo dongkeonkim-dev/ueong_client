@@ -33,6 +33,7 @@ class SocketManagerService {
             print("소켓 연결됨")
             // 소켓 연결 성공 시 메시지 전송
             self.socket.emit("acknowledge", "클라이언트가 연결되었습니다.")
+            self.socket.emit("registerUser", username)  // 여기에 username을 전달
             NotificationCenter.default.post(name: .socketConnected, object: nil)
 
         }
@@ -67,7 +68,7 @@ class SocketManagerService {
                let success = response["success"] as? Bool,
                let chats = response["chats"] as? [[String: Any]] {
 
-                print("Chat List Response 수신: 성공 여부 - \(success)")
+//                print("Chat List Response 수신: 성공 여부 - \(success)")
                 
                 // Post notification with the chat list data
                 NotificationCenter.default.post(name: .chatListResponse, object: nil, userInfo: ["success": success, "chats": chats])
@@ -82,7 +83,7 @@ class SocketManagerService {
                let success = response["success"] as? Bool,
                let messages = response["messages"] as? [[String: Any]] {
 
-                print("Messages List Response 수신: 성공 여부 - \(success)")
+//                print("Messages List Response 수신: 성공 여부 - \(success)")
                 
                 // Post notification with the chat list data
                 NotificationCenter.default.post(name: .loadExistingMessagesResponse, object: nil, userInfo: ["success": success, "messages": messages])
@@ -143,6 +144,8 @@ class SocketManagerService {
     func joinChatRoom(roomIds: [Int]){
         socket.emit("joinChatRoom", roomIds)
     }
+    
+    
 }
 
 
