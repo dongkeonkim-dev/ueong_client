@@ -32,7 +32,7 @@ class AddressRepository {
     }
     
     func searchAddress(searchTerm: String) async throws -> [Address] {
-        let addressList: [Address] = try await APICall.shared.get("address/search", queryParameters: ["search_term": searchTerm])
+        let addressList: [Address] = try await APICall.shared.get("address/search", queryParameters: ["searchTerm": searchTerm])
         return addressList
     }
     

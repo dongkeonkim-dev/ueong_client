@@ -28,6 +28,7 @@ extension WritePost {
       postId: Int?,
       refreshPostsList: @escaping () -> Void
     ){
+      self.refreshPostsList = refreshPostsList
       fetchPage(emdId: emdId, postId: postId)
     }
     
@@ -37,6 +38,7 @@ extension WritePost {
         if let postId = postId{
         // 기존 포스트 편집
           state = .edit
+          print("edit")
           //post 정보 초기화
           let existPost: Post = try await postRepository
             .getPostById(username: username, postId: postId)
@@ -46,6 +48,7 @@ extension WritePost {
         }else if let emdId = emdId{
         // 새로운 포스트 생성
           state = .create
+          print("create")
           //post 정보 초기화
           self.post.emdId = emdId
           self.post.writerUsername = username
@@ -59,10 +62,7 @@ extension WritePost {
       guard let postId = postId else{return}
       Task { @MainActor in
         let photos = try await photoRepository.getPhotosByPostId(postId: postId)
-        print("photos: ", photos)
         selectedPhotos = photos
-        print("selectedPhotos: ", selectedPhotos)
-        print("Fetched photo URLs: \(selectedPhotos)")
         
       }
     }

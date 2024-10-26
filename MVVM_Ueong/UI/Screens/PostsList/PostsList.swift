@@ -85,7 +85,7 @@ struct AddPostButton: View {
           Spacer()
           NavigationLink(
             destination: WritePost(
-              emdId : viewModel.selection?.id ?? 0,
+              emdId : viewModel.selection?.id,
               postId: nil,
               refreshPostsList: refreshPostsList
             )

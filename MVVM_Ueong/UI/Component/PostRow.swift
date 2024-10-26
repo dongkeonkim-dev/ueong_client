@@ -21,9 +21,15 @@ struct PostRow: View {
   
   var body: some View {
     ZStack{
+      LongPressGestureView(minimumDuration: 0.5) {
+        if post.writerUsername == username {
+          showOptions = true
+        }
+      }
       HStack {
         productImage
         productDescription
+        
       }
       .frame(height: 150)
       .background(Color.primary.colorInvert())
@@ -42,15 +48,10 @@ struct PostRow: View {
         EmptyView()
       }
       .hidden()
+      
+      
     }
-    .gesture(
-      LongPressGesture(minimumDuration: 0.5)
-        .onEnded { _ in
-          if(post.writerUsername == username){
-            showOptions = true
-          }
-        }
-    )
+    
     .actionSheet(isPresented: $showOptions) {
       ActionSheet(
         title: Text("옵션 선택"),
@@ -154,7 +155,36 @@ private extension PostRow {
   }
 }
 
-
+struct LongPressGestureView: UIViewRepresentable {
+  var minimumDuration: CFTimeInterval
+  var action: () -> Void
+  
+  func makeUIView(context: Context) -> UIView {
+    let view = UIView()
+    let longPress = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress))
+    longPress.minimumPressDuration = minimumDuration
+    view.addGestureRecognizer(longPress)
+    return view
+  }
+  
+  func updateUIView(_ uiView: UIView, context: Context) {}
+  
+  func makeCoordinator() -> Coordinator {
+    Coordinator(action: action)
+  }
+  
+  class Coordinator: NSObject {
+    var action: () -> Void
+    
+    init(action: @escaping () -> Void) {
+      self.action = action
+    }
+    
+    @objc func handleLongPress() {
+      action()
+    }
+  }
+}
 //#Preview {
 //    // 임시로 사용할 Post 객체를 만들고 상태로 관리
 //    @State var previewPost = Post()
