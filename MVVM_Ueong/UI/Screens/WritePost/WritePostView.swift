@@ -14,7 +14,7 @@ struct WritePost: View {
   init(
     emdId: Int?,
     postId: Int?,
-    refreshPostsList: () -> Void = refreshPostsList
+    refreshPostsList: @escaping () -> Void
     //Cannot use instance member 'refreshPostsList' as a default parameter
   ) {
     self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(
@@ -22,6 +22,7 @@ struct WritePost: View {
       postId: postId,
       refreshPostsList: refreshPostsList
     ))
+    self.refreshPostsList = refreshPostsList
   }
   
   @FocusState private var focusField: FocusField?
@@ -369,6 +370,6 @@ struct ConfirmButton: View {
 }
 
 #Preview {
-  WritePost(emdId: 1, postId: 1)
+  WritePost(emdId: 1, postId: 1, refreshPostsList: {})
 }
 
