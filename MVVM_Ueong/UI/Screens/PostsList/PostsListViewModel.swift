@@ -39,6 +39,7 @@ extension PostsList {
         print("Already fetching, request ignored.")
         return
       }
+      print("fetching PostsList")
       
       Task{ @MainActor in
         isFetching = true // 네트워크 작업 시작 표시
@@ -62,7 +63,6 @@ extension PostsList {
         await MainActor.run {
           self.posts = fetchedPosts
         }
-        
         await fetchPhotosForPosts() // 포스트별 사진 로드
       } catch {
         print("Error fetching posts: \(error.localizedDescription)")

@@ -75,16 +75,20 @@ extension WritePost {
           let photoIds = self.selectedPhotos.map{$0.id}
           let response: Response = try await postRepository
             .uploadPost(post: post, photoIds: photoIds)
-          await MainActor.run { self.isPosting = false }
-          self.refreshPostsList()
+          await MainActor.run {
+            self.isPosting = false
+            self.refreshPostsList()
+          }
           return response // 응답 반환
         } else {
           //편집
           let photoIds = self.selectedPhotos.map{$0.id}
           let response: Response = try await postRepository
             .editPost(post: post, photoIds: photoIds)
-          await MainActor.run { self.isPosting = false }
-          self.refreshPostsList()
+          await MainActor.run {
+            self.isPosting = false
+            self.refreshPostsList()
+          }
           return response // 응답 반환
         }
       } catch {

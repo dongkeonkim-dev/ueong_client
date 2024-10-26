@@ -9,12 +9,13 @@ enum FocusField: Hashable {
 
 struct WritePost: View {
   @StateObject var wViewModel: WritePost.ViewModel
-  var refreshPostsList: () -> Void = {}
+  var refreshPostsList: () -> Void
   
   init(
     emdId: Int?,
     postId: Int?,
-    refreshPostsList:  @escaping () -> Void = {}
+    refreshPostsList: () -> Void = refreshPostsList
+    //Cannot use instance member 'refreshPostsList' as a default parameter
   ) {
     self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(
       emdId: emdId,
