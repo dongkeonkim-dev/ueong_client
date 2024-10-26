@@ -13,11 +13,13 @@ enum Response: Decodable {
   case create(CreateResponse)
   case createMulti(CreateMultiResponse)
   case update(UpdateResponse)
+  case message(MessageResponse)
   
   enum CodingKeys: String, CodingKey {
     case createId
     case createIds
     case affectedRows
+    case message
   }
   
   init(from decoder: Decoder) throws {
@@ -44,6 +46,12 @@ enum Response: Decodable {
       return
     }
     
+    if let message = try? container.decode(String.self, forKey: .message) {
+      let response = MessageResponse(message: message)
+      self = .message(response)
+      return
+    }
+    
     throw DecodingError.typeMismatch(Response.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode Response"))
   }
 }
@@ -58,4 +66,8 @@ struct CreateMultiResponse {
 
 struct UpdateResponse {
   let affectedRows: Int
+}
+
+struct MessageResponse {
+  let message: String
 }

@@ -30,31 +30,20 @@ struct PostsList: View {
         ScrollView {
           VStack(spacing: 13) {
             ForEach($viewModel.posts) { $post in
-              NavigationLink(
-                destination:
-                  PostDetail(
-                    viewModel: PostDetail.ViewModel(postId: post.id),
-                    toggleFavorite: { toggledPost in
-                      viewModel.toggleFavorite(post: toggledPost) // 좋아요 토글
-                    }
-                  )
-              ) {
-                PostRow(
-                  post: $post,
-                  toggleFavorite: { post in
-                    viewModel.toggleFavorite(post: post)
-                  },
-                  inactivatePost: { post in
-                    viewModel.inactivatePost(post: post)
-                  },
-                  refreshPostsList: {
-                    Task{
-                      await viewModel.fetchPosts()
-                    }
+              PostRow(
+                post: $post,
+                togglePostsListFavorite: { post in
+                  viewModel.togglePostsListFavorite(post: post)
+                },
+                inactivatePost: { post in
+                  viewModel.inactivatePost(post: post)
+                },
+                refreshPostsList: {
+                  Task{
+                    await viewModel.fetchPosts()
                   }
-                )
-              }
-              
+                }
+              )
             }
           }
         }

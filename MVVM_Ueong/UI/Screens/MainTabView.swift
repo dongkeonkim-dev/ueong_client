@@ -47,6 +47,8 @@ struct MainTabView: View {
           }
           //                }
       }
+      .environment(\.horizontalSizeClass, .compact)
     }
+    .navigationViewStyle(StackNavigationViewStyle())
   }
 }

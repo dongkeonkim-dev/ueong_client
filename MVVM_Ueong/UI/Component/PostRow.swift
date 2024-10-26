@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PostRow: View {
   @Binding var post: Post
-  var toggleFavorite: (Post) -> Void = { _ in }
+  var togglePostsListFavorite: (Post) -> Void = { _ in }
   var inactivatePost: (Post) -> Void = { _ in }
   var refreshPostsList: () -> Void = {}
   
@@ -20,61 +20,66 @@ struct PostRow: View {
   
   
   var body: some View {
-    ZStack{
-      LongPressGestureView(minimumDuration: 0.5) {
-        if post.writerUsername == username {
-          showOptions = true
+    if post.isActive {
+      ZStack{
+        NavigationLink(
+          destination:
+            PostDetail(
+              postId: post.id,
+              togglePostsListFavorite: togglePostsListFavorite // 좋아요 토글
+            )
+        ) {
+          HStack {
+            productImage
+            productDescription
+            NavigationLink(
+              destination: WritePost(
+                emdId: nil,
+                postId: $post.id,
+                refreshPostsList: refreshPostsList
+              ),
+              isActive: $navigateToEdit
+            ) {
+              EmptyView()
+            }
+            .hidden()
+          }
         }
+        .contextMenu {
+          if post.writerUsername == username {
+            Button(action: {
+              navigateToEdit = true
+            }) {
+              Text("글 수정")
+              Image(systemName: "pencil")
+            }
+            
+            Button(role: .destructive) {
+              showDeleteConfirmation = true
+            } label: {
+              Text("삭제")
+              Image(systemName: "trash")
+            }
+          }
+        }
+        .frame(height: 150)
+        .background(Color.primary.colorInvert())
+        .cornerRadius(6)
+        .shadow(color: Color.primary.opacity(0.2), radius: 1, x: 2, y: 2)
+        .padding(.horizontal, 8)
       }
-      HStack {
-        productImage
-        productDescription
-        
-      }
-      .frame(height: 150)
-      .background(Color.primary.colorInvert())
-      .cornerRadius(6)
-      .shadow(color: Color.primary.opacity(0.2), radius: 1, x: 2, y: 2)
-      .padding(.horizontal, 8)
-      
-      NavigationLink(
-        destination: WritePost(
-          emdId: nil,
-          postId: $post.id,
-          refreshPostsList: refreshPostsList
-        ),
-        isActive: $navigateToEdit
-      ) {
-        EmptyView()
-      }
-      .hidden()
-      
-      
-    }
-    
-    .actionSheet(isPresented: $showOptions) {
-      ActionSheet(
-        title: Text("옵션 선택"),
-        buttons: [
-          .default(Text("글 수정")) {
-            navigateToEdit = true
+      .alert(isPresented: $showDeleteConfirmation) {
+        Alert(
+          title: Text("삭제 확인"),
+          message: Text("정말 이 게시물을 삭제하시겠습니까?"),
+          primaryButton: .destructive(Text("삭제")) {
+            inactivatePost(post)
           },
-          .destructive(Text("삭제")) {
-            showDeleteConfirmation = true
-          },
-          .cancel(Text("취소"))
-        ]
-      )
-    }
-    .alert(isPresented: $showDeleteConfirmation) {
-      Alert(
-        title: Text("삭제 확인"),
-        message: Text("정말 이 게시물을 삭제하시겠습니까?"),
-        primaryButton: .destructive(Text("삭제")) {
-          inactivatePost(post)
-        },
-        secondaryButton: .cancel()
-      )
+          secondaryButton: .cancel()
+        )
+      }
+    } else {
+      EmptyView()
     }
   }
 }
@@ -145,7 +150,7 @@ private extension PostRow {
       Text("\(post.favoriteCount)")
       
       Button(action: {
-        toggleFavorite(post) // 뷰모델의 토글 메서드 호출
+        togglePostsListFavorite(post) // 뷰모델의 토글 메서드 호출
       }) {
         Image(systemName: post.isFavorite ? "heart.fill" : "heart")
           .foregroundColor(Color.blue)
@@ -155,36 +160,6 @@ private extension PostRow {
   }
 }
 
-struct LongPressGestureView: UIViewRepresentable {
-  var minimumDuration: CFTimeInterval
-  var action: () -> Void
-  
-  func makeUIView(context: Context) -> UIView {
-    let view = UIView()
-    let longPress = UILongPressGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleLongPress))
-    longPress.minimumPressDuration = minimumDuration
-    view.addGestureRecognizer(longPress)
-    return view
-  }
-  
-  func updateUIView(_ uiView: UIView, context: Context) {}
-  
-  func makeCoordinator() -> Coordinator {
-    Coordinator(action: action)
-  }
-  
-  class Coordinator: NSObject {
-    var action: () -> Void
-    
-    init(action: @escaping () -> Void) {
-      self.action = action
-    }
-    
-    @objc func handleLongPress() {
-      action()
-    }
-  }
-}
 //#Preview {
 //    // 임시로 사용할 Post 객체를 만들고 상태로 관리
 //    @State var previewPost = Post()

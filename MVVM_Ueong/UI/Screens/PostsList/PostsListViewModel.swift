@@ -95,7 +95,7 @@ extension PostsList {
       }
     }
       //각 post의 좋아요를 관리하는 함수
-    func toggleFavorite(post: Post) {
+    func togglePostsListFavorite(post: Post) {
       Task { @MainActor in
           // posts 배열에서 인덱스를 찾아서 수정합니다.
         if let index = posts.firstIndex(where: { $0.id == post.id }) {
@@ -104,9 +104,9 @@ extension PostsList {
           
           do {
             if posts[index].isFavorite {
-              try await favoriteRepository.addFavorite(postId: post.id, username: username)
+              _ = try await favoriteRepository.addFavorite(postId: post.id, username: username)
             } else {
-              try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+              _ = try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
             }
           } catch {
             print("Error updating favorite status for post \(post.id): \(error)")
@@ -117,8 +117,10 @@ extension PostsList {
     
     func inactivatePost(post: Post) {
       Task { @MainActor in
-        try await postRepository.inactivatePost(postId: post.id)
-        //disvisiblePostRow(postId: Post)
+        _ = try await postRepository.inactivatePost(postId: post.id)
+        if let index = posts.firstIndex(where: { $0.id == post.id }) {
+          posts[index].isActive.toggle()
+        }
       }
     }
   

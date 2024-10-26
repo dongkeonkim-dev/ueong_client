@@ -69,16 +69,16 @@ class APICall {
   func delete(
     _ endpoint: String,
     queryParameters: [String: Any] = [:]
-  ) async throws -> VoidResult {
+  ) async throws -> Response {
     guard
-      let _: VoidResult = try await
+      let response: Response = try await
         request(
           endpoint: endpoint,
           method: .delete,
           queryParameters: queryParameters
         )
     else { throw URLError(.badServerResponse) }
-    return VoidResult()
+    return response
   }
   
   func request<T: Decodable>(
@@ -230,9 +230,9 @@ extension String {
   }
 }
 
-struct VoidResult: Decodable {
-  var id = UUID()
-}
+//struct VoidResult: Decodable {
+//  var id = UUID()
+//}
 
 struct File {
   var data: Data

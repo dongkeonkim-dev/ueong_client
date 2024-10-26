@@ -193,354 +193,270 @@ import MapKit
 
 // MARK: - PostDetail
 struct PostDetail: View {
-    @ObservedObject var viewModel: PostDetail.ViewModel
-    @StateObject private var chatListViewModel = ChatListView.ViewModel()
-    @State private var chatViewModel: ChatView.ViewModel?
-    @State private var chatRoomId: Int?
-    @State private var isChatViewActive = false
-    
-    @State private var showAlert = false // 알림 창을 제어하는 상태 변수
-    @State private var alertMessage = "" // 알림 창에 표시할 메시지
-    
-    var toggleFavorite: (Post) -> Void
-
-    var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    PostImageSlider(photos: viewModel.post.photos ?? [])
-                    UserInfoView(writer: viewModel.writer, siGuDong: viewModel.siGuDong) // 사용자 정보 추가
-                    
-                    Rectangle()
-                        .fill(Color.gray)
-                        .frame(height: 1)
-                        .padding(.horizontal, 20)
-                    
-                    PostDetailContent(
-                        viewModel: viewModel,
-                        postTitle: viewModel.post.title,
-                        postText: viewModel.post.text
-                    ) // 포스트 상세 정보 추가
-                    TradingLocation(
-                        viewModel:viewModel
-                    )
-                }
-            }
-            VStack(spacing: 12) {
-                // 밑줄 추가
-                Rectangle()
-                    .fill(Color.gray) // 색상 설정
-                    .frame(height: 1) // 선 두께 설정
-                    .offset(y:-8)
+  @StateObject var viewModel: PostDetail.ViewModel
+  @StateObject private var chatListViewModel = ChatListView.ViewModel()
+  @State private var chatViewModel: ChatView.ViewModel?
+  @State private var chatRoomId: Int?
+  @State private var isChatViewActive = false
+  
+  @State private var showAlert = false // 알림 창을 제어하는 상태 변수
+  @State private var alertMessage = "" // 알림 창에 표시할 메시지
+  
+  var togglePostsListFavorite: (Post) -> Void
+  
+  init(postId: Int,
+       togglePostsListFavorite: @escaping (Post) -> Void) {
+    _viewModel = StateObject(wrappedValue: PostDetail.ViewModel(postId: postId))
+    self.togglePostsListFavorite = togglePostsListFavorite
+  }
+  
+  var body: some View {
+    VStack {
+      ScrollView {
+        VStack(alignment: .leading, spacing: 20) {
+          PostImageSlider(photos: viewModel.post.photos ?? [])
+          UserInfoView(writer: viewModel.writer, siGuDong: viewModel.siGuDong) // 사용자 정보 추가
+          
+          Rectangle()
+            .fill(Color.gray)
+            .frame(height: 1)
+            .padding(.horizontal, 20)
+          
+          PostDetailContent(
+            viewModel: viewModel,
+            postTitle: viewModel.post.title,
+            postText: viewModel.post.text
+          ) // 포스트 상세 정보 추가
+          TradingLocation(
+            viewModel:viewModel
+          )
+        }
+      }
+      VStack(spacing: 12) {
+          // 밑줄 추가
+        Rectangle()
+          .fill(Color.gray) // 색상 설정
+          .frame(height: 1) // 선 두께 설정
+          .offset(y:-8)
+        
+        HStack {
+          Button(action: {
+            viewModel.togglePostDetailFavorite()
+            togglePostsListFavorite(viewModel.post)
+            
+          }) {
+            Image(systemName: viewModel.post.isFavorite ? "heart.fill" : "heart")
+              .resizable()
+              .frame(width: 25, height: 25)
+              .foregroundColor(.blue)
+          }
+            // 세로줄 추가
+          Rectangle()
+            .fill(Color.gray) // 색상 설정
+            .frame(width: 1, height: 40) // 세로줄의 너비와 높이 설정
+            .padding(.horizontal, 10)
+          
+          Text(MoneyFormatter.format(amount: viewModel.post.price, currencySymbol: "₩ "))
+            .foregroundStyle(Color.black)
+            .font(.system(size: 19, weight: .bold))
+          Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
+          
+            // AR모델 확인하기 (현재 모델이 없는 상태)
+          Button(action: {
+              // AR 버튼 클릭 시 실행할 코드
+            print("AR")
+          }) {
+            Text("AR")
+              .frame(width: 40) // Set explicit width and height
+              .padding(10) // 버튼의 패딩
+              .foregroundColor(.white) // 버튼의 텍스트 색상
+              .cornerRadius(5) // 버튼의 모서리 둥글기
+              .background(false ? Color.blue : Color.gray)
+            
+            
+          }
+          .disabled(false) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
+          
+          Button(action: {
+            
+            if viewModel.writer.username == username {
+                // 조건이 참이면 경고 메시지 설정하고 알림창 띄우기
+              
+            }else{
+              
+              chatListViewModel.loadChat {
                 
-                HStack {
-                    Button(action: {
-                        viewModel.toggleFavorite() // 좋아요 상태 토글
-                    }) {
-                        Image(systemName: viewModel.post.isFavorite ? "heart.fill" : "heart")
-                            .resizable()
-                            .frame(width: 25, height: 25)
-                            .foregroundColor(.blue)
-                    }
-
-//                    // 좋아요
-//                    if viewModel.post.isFavorite {
-//                        Image(systemName: "heart.fill")
-//                            .resizable() // 크기를 조절 가능하게 함
-//                            .frame(width: 25, height: 25) // 원하는 크기로 조절
-//                            .foregroundColor(.blue)
-//                    } else {
-//                        Image(systemName: "heart")
-//                            .resizable() // 크기를 조절 가능하게 함
-//                            .frame(width: 25, height: 25) // 원하는 크기로 조절
-//                            .foregroundColor(.blue)
-//                    }
-                    
-                    // 세로줄 추가
-                    Rectangle()
-                        .fill(Color.gray) // 색상 설정
-                        .frame(width: 1, height: 40) // 세로줄의 너비와 높이 설정
-                        .padding(.horizontal, 10)
-                    
-                    Text(MoneyFormatter.format(amount: viewModel.post.price, currencySymbol: "₩ "))
-                        .foregroundStyle(Color.black)
-                        .font(.system(size: 19, weight: .bold))
-                    Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
-                    
-                    // AR모델 확인하기 (현재 모델이 없는 상태)
-                    Button(action: {
-                        // AR 버튼 클릭 시 실행할 코드
-                        print("AR")
-                    }) {
-                        Text("AR")
-                            .frame(width: 40) // Set explicit width and height
-                            .padding(10) // 버튼의 패딩
-                            .foregroundColor(.white) // 버튼의 텍스트 색상
-                            .cornerRadius(5) // 버튼의 모서리 둥글기
-                            .background(false ? Color.blue : Color.gray)
-                        
-                        
-                    }
-                    .disabled(false) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
-                    
-                    Button(action: {
-                        
-                        if viewModel.writer.username == username {
-                            // 조건이 참이면 경고 메시지 설정하고 알림창 띄우기
-                             
-                        }else{
-                            
-                            chatListViewModel.loadChat {
-                                
-                                
-                                
-                                let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id)
-                                // 기존 채팅방이 발견된 경우
-                                
-                                chatRoomId = checkRoomId
-                                print(chatListViewModel.chats)
-                                
-                                print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
-                                print("chatRoomId = \(chatRoomId ?? -1)")
-                                
-                                
-                                // ChatView로 이동하는 로직을 여기에 추가
-                                chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: username, userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
-                                
-                            }
-                            
-                            
-                            isChatViewActive = true
-                        }
-                        
-                        
-                    }) {
-                        Text("채팅하기")
-                            .padding(10)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(5)
-                    }
-                    .background(
-                        NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {}
-                    )
-                }
-                .padding(.horizontal, 30)
+                
+                
+                let checkRoomId = chatListViewModel.checkChatRoom(partnerUsername: viewModel.post.writerUsername, postId: viewModel.post.id)
+                  // 기존 채팅방이 발견된 경우
+                
+                chatRoomId = checkRoomId
+                print(chatListViewModel.chats)
+                
+                print("partnerUsername = \(viewModel.post.writerUsername), postId = \(viewModel.post.id)")
+                print("chatRoomId = \(chatRoomId ?? -1)")
+                
+                
+                  // ChatView로 이동하는 로직을 여기에 추가
+                chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: username, userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
+                
+              }
+              
+              
+              isChatViewActive = true
             }
-            .padding(.bottom, 20)
+            
+            
+          }) {
+            Text("채팅하기")
+              .padding(10)
+              .background(Color.blue)
+              .foregroundColor(.white)
+              .cornerRadius(5)
+          }
+          .background(
+            NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {}
+          )
         }
-        .padding(.bottom, 20)
-        .onAppear {
-            viewModel.fetchPage()
-        }
+        .padding(.horizontal, 30)
+      }
+      .padding(.bottom, 20)
     }
+    .padding(.bottom, 20)
+  }
 }
 
 // MARK: - PostImageSlider
 struct PostImageSlider: View {
-    var photos: [Photo]
-
-    var body: some View {
-        if photos.isEmpty {
-            EmptyView()
-        } else {
-            TabView {
-                ForEach(photos) { photo in
-                    AsyncImage(url: URL(string: baseURL.joinPath(photo.url))) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: UIScreen.main.bounds.width)
-                            .clipped()
-                    } placeholder: {
-                        ProgressView()
-                            .frame(width: UIScreen.main.bounds.width)
-                    }
-                }
-            }
-            .tabViewStyle(PageTabViewStyle())
-            .frame(height: 350)
+  var photos: [Photo]
+  
+  var body: some View {
+    if photos.isEmpty {
+      EmptyView()
+    } else {
+      TabView {
+        ForEach(photos) { photo in
+          AsyncImage(url: URL(string: baseURL.joinPath(photo.url))) { image in
+            image
+              .resizable()
+              .aspectRatio(contentMode: .fill)
+              .frame(width: UIScreen.main.bounds.width)
+              .clipped()
+          } placeholder: {
+            ProgressView()
+              .frame(width: UIScreen.main.bounds.width)
+          }
         }
+      }
+      .tabViewStyle(PageTabViewStyle())
+      .frame(height: 350)
     }
+  }
 }
 
 // MARK: - UserInfoView
 struct UserInfoView: View {
-    var writer: User
-    let siGuDong: String
-
-    var body: some View {
-        HStack {
-            if let photoUrl = writer.profilePhotoUrl,
-               let url = URL(string: baseURL.joinPath(photoUrl)) {
-                // 서버에서 불러온 기존 이미지를 표시
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .frame(width: 60, height: 60)
-                        .clipShape(Circle())
-                        .padding(.trailing, 10)
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 325, height: 325)
-                }
-            } else {
-                // 기본 이미지
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 60, height: 60)
-                    .clipShape(Circle())
-                    .padding(.trailing, 10)
-                    .foregroundColor(.gray)
-            }
-
-            VStack(alignment: .leading) {
-                Text(writer.nickname)
-                    .font(.system(size: 18, weight: .bold))
-                Spacer().frame(height: 5)
-                Text(siGuDong)
-                    .font(.system(size: 14))
-            }
+  var writer: User
+  let siGuDong: String
+  
+  var body: some View {
+    HStack {
+      if let photoUrl = writer.profilePhotoUrl,
+         let url = URL(string: baseURL.joinPath(photoUrl)) {
+          // 서버에서 불러온 기존 이미지를 표시
+        AsyncImage(url: url) { image in
+          image
+            .resizable()
+            .frame(width: 60, height: 60)
+            .clipShape(Circle())
+            .padding(.trailing, 10)
+        } placeholder: {
+          ProgressView()
+            .frame(width: 325, height: 325)
         }
-        .padding(.horizontal)
+      } else {
+          // 기본 이미지
+        Image(systemName: "person.circle.fill")
+          .resizable()
+          .frame(width: 60, height: 60)
+          .clipShape(Circle())
+          .padding(.trailing, 10)
+          .foregroundColor(.gray)
+      }
+      
+      VStack(alignment: .leading) {
+        Text(writer.nickname)
+          .font(.system(size: 18, weight: .bold))
+        Spacer().frame(height: 5)
+        Text(siGuDong)
+          .font(.system(size: 14))
+      }
     }
+    .padding(.horizontal)
+  }
 }
 
 // MARK: - PostDetailContent
 struct PostDetailContent: View {
-    @ObservedObject var viewModel: PostDetail.ViewModel
-    var postTitle: String
-    var postText: String
-
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(postTitle)
-                .font(.system(size: 28, weight: .bold))
-                .fontWeight(.bold)
-
-            HStack {
-//                Text("카테고리")
-//                    .foregroundColor(.gray)
-//
-//                Rectangle()
-//                    .fill(Color.gray)
-//                    .frame(width: 1, height: 15)
-                
-                Text(timeAgo(viewModel.post.createAt))
-                    .foregroundColor(.gray)
-            }
-            .padding(.top, -10)
-
-            VStack {
-                Text(postText)
-                    .font(.system(size: 20))
-            }
-            .padding(.top, 5)
-        }
-        .padding(.horizontal)
+  @ObservedObject var viewModel: PostDetail.ViewModel
+  var postTitle: String
+  var postText: String
+  
+  var body: some View {
+    VStack(alignment: .leading) {
+      Text(postTitle)
+        .font(.system(size: 28, weight: .bold))
+        .fontWeight(.bold)
+      
+      HStack {
+        
+        Text(timeAgo(viewModel.post.createAt))
+          .foregroundColor(.gray)
+      }
+      .padding(.top, -10)
+      
+      VStack {
+        Text(postText)
+          .font(.system(size: 20))
+      }
+      .padding(.top, 5)
     }
+    .padding(.horizontal)
+  }
 }
 
 // MARK: - TradingLocation
 struct TradingLocation: View {
-    @ObservedObject var viewModel: PostDetail.ViewModel
-    
-    var body: some View {
-        VStack {
-            Text("거래 희망 장소")
-                .font(.system(size: 23, weight: .bold))
-                .fontWeight(.bold)
-                .padding(.top, 20)
-
-            if let coordinate = viewModel.mapCoordinate {
-                Map(initialPosition: .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
-                    Marker(viewModel.post.title, coordinate: coordinate)
-                        .tint(.blue)
-                }
-                .frame(height: 200)
-                .cornerRadius(10)
-                .padding(.bottom, 20)
-            } else {
-                ProgressView("지도 정보를 불러오는 중입니다...")
-                    .frame(height: 200)
-                    .cornerRadius(10)
-                    .padding(.bottom, 20)
-            }
+  @ObservedObject var viewModel: PostDetail.ViewModel
+  
+  var body: some View {
+    VStack {
+      Text("거래 희망 장소")
+        .font(.system(size: 23, weight: .bold))
+        .fontWeight(.bold)
+        .padding(.top, 20)
+      
+      if let coordinate = viewModel.mapCoordinate {
+        Map(initialPosition: .region(MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.002, longitudeDelta: 0.002)))) {
+          Marker(viewModel.post.title, coordinate: coordinate)
+            .tint(.blue)
         }
-        .padding(.horizontal)
+        .frame(height: 200)
+        .cornerRadius(10)
+        .padding(.bottom, 20)
+      } else {
+        ProgressView("지도 정보를 불러오는 중입니다...")
+          .frame(height: 200)
+          .cornerRadius(10)
+          .padding(.bottom, 20)
+      }
     }
+    .padding(.horizontal)
+  }
 }
 
-
-
-//MARK: - BottomBar
-//struct BottomBar: View {
-//    var viewModel: PostDetail.ViewModel
-//    var body: some View{
-//        VStack(spacing: 20) {
-//            // 밑줄 추가
-//            Rectangle()
-//                .fill(Color.gray) // 색상 설정
-//                .frame(height: 1) // 선 두께 설정
-//            
-//            HStack {
-//                // 좋아요
-//                if false {
-//                    Image(systemName: "heart.fill")
-//                        .resizable() // 크기를 조절 가능하게 함
-//                        .frame(width: 25, height: 25) // 원하는 크기로 조절
-//                        .foregroundColor(.red)
-//                } else {
-//                    Image(systemName: "heart")
-//                        .resizable() // 크기를 조절 가능하게 함
-//                        .frame(width: 25, height: 25) // 원하는 크기로 조절
-//                        .foregroundColor(.red)
-//                }
-//                
-//                // 세로줄 추가
-//                Rectangle()
-//                    .fill(Color.gray) // 색상 설정
-//                    .frame(width: 1, height: 40) // 세로줄의 너비와 높이 설정
-//                    .padding(.horizontal, 10)
-//                
-//                Text("130,000원")
-//                    .font(.system(size: 19, weight: .bold))
-//                
-//                Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
-//                
-//                // AR모델 확인하기 (현재 모델이 없는 상태)
-//                Button(action: {
-//                    // AR 버튼 클릭 시 실행할 코드
-//                    print("AR")
-//                }) {
-//                    Text("AR")
-//                        .frame(width: 40) // Set explicit width and height
-//                        .padding(10) // 버튼의 패딩
-//                        .foregroundColor(.white) // 버튼의 텍스트 색상
-//                        .cornerRadius(5) // 버튼의 모서리 둥글기
-//                        .background(false ? Color.blue : Color.gray)
-//                }
-//                .disabled(true) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
-//                
-//                NavigationLink(destination: ChatView(viewModel: ChatView.ViewModel(username: "username1", patnerUsername: viewModel.post.writerUsername, patnerNickname: viewModel.writer.nickname ,relatedPost: viewModel.post))) {
-//                    Text("채팅하기")
-//                        .padding(10) // 버튼의 패딩
-//                        .background(Color.blue) // 버튼의 배경 색상
-//                        .foregroundColor(.white) // 버튼의 텍스트 색상
-//                        .cornerRadius(5) // 버튼의 모서리 둥글기
-//                    
-//                }
-//
-//                
-//            }
-//            .padding(.horizontal, 30)
-//        }
-//        .padding(.bottom, 20)
-//    }
-//}
-
-
 #Preview {
-    PostDetail(viewModel: PostDetail.ViewModel(postId: 9), toggleFavorite: {_ in})
+    PostDetail(postId: 9, togglePostsListFavorite: {_ in})
 }
 

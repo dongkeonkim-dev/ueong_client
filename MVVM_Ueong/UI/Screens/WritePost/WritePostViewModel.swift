@@ -98,12 +98,13 @@ extension WritePost {
     }
     
     func deleteImage(photoId: Int) async {
-      do{
-        try await photoRepository.deletePhoto(photoId: photoId)
-      } catch {
-        
+      await MainActor.run {
+        if let index = selectedPhotos.firstIndex(where: { $0.id == photoId }) {
+          selectedPhotos.remove(at: index)
+        }
       }
     }
+    
     
     func uploadImages(imageDatas: [Data]) async -> [Photo]? {
       do {
