@@ -36,12 +36,12 @@
 		0D89F2B72CBD0570004C5AF1 /* AddMyVillageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2B62CBD0567004C5AF1 /* AddMyVillageView.swift */; };
 		0D89F2B92CBD057C004C5AF1 /* AddMyVillageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2B82CBD0576004C5AF1 /* AddMyVillageViewModel.swift */; };
 		0D89F2C92CC28B3B004C5AF1 /* MyVillageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2C82CC28B36004C5AF1 /* MyVillageRepository.swift */; };
-		0D89F2DE2CCDB47E004C5AF1 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2DD2CCDB478004C5AF1 /* KeyChainHelper.swift */; };
 		0D89F2E02CCDB614004C5AF1 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2DF2CCDB611004C5AF1 /* AppState.swift */; };
 		0D89F2E22CCDB6C6004C5AF1 /* AuthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2E12CCDB6C4004C5AF1 /* AuthRepository.swift */; };
-		0D89F2EA2CCDD8FE004C5AF1 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2E92CCDD8F7004C5AF1 /* TokenManager.swift */; };
 		0D89F2F22CCDFBA1004C5AF1 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2F12CCDFB98004C5AF1 /* AuthenticationView.swift */; };
 		0D89F2F42CCDFD9F004C5AF1 /* Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D89F2F32CCDFD9D004C5AF1 /* Auth.swift */; };
+		0D914C592CCFB62B0076282C /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D914C582CCFB6270076282C /* TokenManager.swift */; };
+		0D914C5B2CCFB6410076282C /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D914C5A2CCFB63D0076282C /* KeyChainHelper.swift */; };
 		0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */; };
 		0DB693202CA3F51900A3E3B7 /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */; };
 		0DB693292CA3F66400A3E3B7 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB693272CA3F66400A3E3B7 /* ChatViewModel.swift */; };
@@ -173,12 +173,12 @@
 		0D89F2B82CBD0576004C5AF1 /* AddMyVillageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMyVillageViewModel.swift; sourceTree = "<group>"; };
 		0D89F2C82CC28B36004C5AF1 /* MyVillageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyVillageRepository.swift; sourceTree = "<group>"; };
 		0D89F2CA2CCC78A8004C5AF1 /* MVVM-Ueong-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "MVVM-Ueong-Info.plist"; sourceTree = SOURCE_ROOT; };
-		0D89F2DD2CCDB478004C5AF1 /* KeyChainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainHelper.swift; sourceTree = "<group>"; };
 		0D89F2DF2CCDB611004C5AF1 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		0D89F2E12CCDB6C4004C5AF1 /* AuthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRepository.swift; sourceTree = "<group>"; };
-		0D89F2E92CCDD8F7004C5AF1 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 		0D89F2F12CCDFB98004C5AF1 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		0D89F2F32CCDFD9D004C5AF1 /* Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Auth.swift; sourceTree = "<group>"; };
+		0D914C582CCFB6270076282C /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		0D914C5A2CCFB63D0076282C /* KeyChainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainHelper.swift; sourceTree = "<group>"; };
 		0DB6931A2CA3ED4C00A3E3B7 /* ChatRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRepository.swift; sourceTree = "<group>"; };
 		0DB6931F2CA3F51900A3E3B7 /* ChatListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
 		0DB693262CA3F66400A3E3B7 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
@@ -360,9 +360,9 @@
 		0DB6931C2CA3EF3F00A3E3B7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				0D914C5A2CCFB63D0076282C /* KeyChainHelper.swift */,
+				0D914C582CCFB6270076282C /* TokenManager.swift */,
 				0DE7650D2CCE13B300B78F1F /* UserDefaultsManager.swift */,
-				0D89F2E92CCDD8F7004C5AF1 /* TokenManager.swift */,
-				0D89F2DD2CCDB478004C5AF1 /* KeyChainHelper.swift */,
 				0D89F2912CB16876004C5AF1 /* URLExtension.swift */,
 				0D89F28A2CB1680F004C5AF1 /* ColorExtension.swift */,
 				0D89F2842CB16139004C5AF1 /* TimeFormatter.swift */,
@@ -809,6 +809,7 @@
 				0D89F2A32CB38BF3004C5AF1 /* SelectLocationView.swift in Sources */,
 				0D89F2922CB16880004C5AF1 /* URLExtension.swift in Sources */,
 				1F8C121D2CA3FDCB00A33802 /* example.swift in Sources */,
+				0D914C5B2CCFB6410076282C /* KeyChainHelper.swift in Sources */,
 				0D89F2E02CCDB614004C5AF1 /* AppState.swift in Sources */,
 				1FC52F842CA2CF73001A933B /* Persistence.swift in Sources */,
 				0D89F2A52CB38BFE004C5AF1 /* SelectLocationViewModel.swift in Sources */,
@@ -871,7 +872,6 @@
 				1FC52FAC2CA2DA55001A933B /* MainTabView.swift in Sources */,
 				1F691BB92CA3CE660076E8A8 /* PostDetailViewModel.swift in Sources */,
 				0DB6933F2CA41B8400A3E3B7 /* AccountEditViewModel.swift in Sources */,
-				0D45B7E42CAC146000AA516F /* CategoryRepository.swift in Sources */,
 				1F444F9C2CCDA02200824F43 /* UntilProcessingCompleteFilter.swift in Sources */,
 				0D89F2892CB166F5004C5AF1 /* ImagePicker.swift in Sources */,
 				0D89F2B42CBBBA54004C5AF1 /* ViewStateService.swift in Sources */,
@@ -884,6 +884,7 @@
 				1FC52FB22CA2DBDC001A933B /* PostsList.swift in Sources */,
 				1F444F9A2CCDA02200824F43 /* TimedMessageList.swift in Sources */,
 				1FD134722CA5980D00B48F6B /* SelectPostOption.swift in Sources */,
+				0D914C592CCFB62B0076282C /* TokenManager.swift in Sources */,
 				1F444F972CCDA02200824F43 /* ProgressBarView.swift in Sources */,
 				0DB6931B2CA3ED5800A3E3B7 /* ChatRepository.swift in Sources */,
 				1F444FA02CCF818D00824F43 /* AR.swift in Sources */,
