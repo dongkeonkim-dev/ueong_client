@@ -20,6 +20,10 @@ struct CreatedPhotosResponse: Decodable {
   let createdPhotos: [Photo]
 }
 
+struct CreatedARResponse: Decodable {
+    let createdAR: AR
+}
+
 enum Response: Decodable {
   case create(CreateResponse)
   case createMulti(CreateMultiResponse)

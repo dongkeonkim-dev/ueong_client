@@ -2,7 +2,11 @@
 
 
 import SwiftUI
-import MapKit
+import UIKit
+import ARKit
+import RealityKit
+import QuickLook // QuickLook 프레임워크 임포트
+
 
 enum FocusField: Hashable {
   case title
@@ -40,11 +44,35 @@ struct WritePost: View {
   var body: some View {
     ScrollView {
       VStack {
-        headerButtons
-        titleInput
-        priceInput
-        descriptionInput
-        locationSelection
+        HStack {
+          ArkitButton(showCaptureView: $showCaptureView, wViewModel: wViewModel)
+          PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel)
+          PhotoIndicator(wViewModel: wViewModel)
+        }
+        .padding(.bottom, 10)
+        .padding(.top, 20)
+        
+          // 제목 입력
+        TitleInputField(
+          focusField: $focusField,
+          title: $wViewModel.post.title)
+          
+        
+          // 가격 입력
+        PriceInputField(
+          focusField: $focusField,
+          price: $wViewModel.post.price)
+          .padding(.top, 30)
+        
+          // 설명 입력
+        DescriptionInputField(
+          focusField: $focusField,
+          text: $wViewModel.post.text)
+          .padding(.top, 30)
+        
+          // 거래 희망 장소
+        LocationSelection(wViewModel: wViewModel)
+          .padding(.top, 30)
       }
       .padding(.horizontal, 20)
       .navigationBarTitle("내 물건 팔기", displayMode: .inline)
@@ -128,29 +156,59 @@ struct WritePost: View {
   }
 }
 
-  // MARK: - Arkit Button
+// 기존 ArkitButton에 파일 선택 버튼 추가
+// MARK: - Arkit Button
 struct ArkitButton: View {
-    
-  @Binding var showCaptureView: Bool
-    
-  var body: some View {
-    Button(action: {
-        showCaptureView.toggle() // MainCaptureView를 모달로 띄우기 위한 상태 변경
-    }) {
-      ButtonShapePicker(
-        systemImageName: "arkit",
-        count: 0,
-        maxCount: 1
-      )
+    @Binding var showCaptureView: Bool
+    @State private var showModelOptions = false
+    @State private var showDocumentPicker = false // State variable to trigger document picker
+    @ObservedObject var wViewModel: WritePost.ViewModel // Observing the ViewModel
+
+    var body: some View {
+        VStack {
+            Button(action: {
+                showModelOptions.toggle()
+            }) {
+                ButtonShapePicker(
+                    systemImageName: "arkit",
+                    count: wViewModel.selectedARFile == nil ? 0 : 1, // Update count based on selection
+                    maxCount: 1
+                )
+            }
+            .buttonStyle(PlainButtonStyle())
+            .confirmationDialog("모델 선택하기", isPresented: $showModelOptions) {
+                Button("모델 생성하기") {
+                    showCaptureView = true
+                }
+                Button("모델 선택하기") {
+                    showDocumentPicker = true // Trigger the document picker for "Select Model"
+                }
+                Button("취소", role: .cancel) {
+                    showModelOptions = false
+                }
+            } message: {
+            
+            }
+            .fullScreenCover(isPresented: $showCaptureView) {
+                MainCaptureView(onDismiss: {
+                    showCaptureView = false
+                })
+            }
+            .sheet(isPresented: $showDocumentPicker) {
+                CustomDocumentPickerView { url in
+                    // Update selected AR file
+                    Task{
+                        await wViewModel.addSelectedARFile(url) // Store the selected file URL
+                    }
+                    showDocumentPicker = false // Close the document picker
+                }
+            }
+
+        }
     }
-    .buttonStyle(PlainButtonStyle())
-    .fullScreenCover(isPresented: $showCaptureView) { // MainCaptureView를 모달로 표시
-//        MainCaptureView(onDismiss: {
-//            showCaptureView = false // 캡처가 끝나면 모달 닫기
-//        })
-    }
-  }
 }
+
+
 
   // MARK: - Photo Picker Button
 struct PhotoPickerButton: View {
@@ -391,8 +449,128 @@ struct LocationSelection: View {
   }
 }
 
+  // MARK: - Confirm Button
+struct ConfirmButton: View {
+  @ObservedObject var wViewModel: WritePost.ViewModel
+  var refreshPostList: () -> Void = {}
+  
+  @Environment(\.presentationMode) var presentationMode
+  
+  public var body: some View {
+    VStack {
+      Spacer()
+      HStack {
+        Button(action: {
+          Task { @MainActor in
+            print("ConfirmButton clicked")
+            if let response = await wViewModel.uploadPost() {
+              print("Post uploaded successfully: upload ID \(response)")
+              presentationMode.wrappedValue.dismiss()
+              refreshPostList()
+              
+            } else {
+              print("Upload failed: No response received or an error occurred.")
+            }
+          }
+        }) {
+          Text("작성 완료")
+            .font(.system(size: 20).weight(.bold))
+            .frame(maxWidth: .infinity)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(
+          RoundedRectangle(cornerRadius: 12).fill(Color.blue)
+        )
+        .padding(.horizontal)
+        .foregroundColor(Color.white)
+      }
+    }
+  }
+}
+//---------------------------------------------------------------------------------------------
+
+struct CustomDocumentPickerView: UIViewControllerRepresentable {
+    @Environment(\.presentationMode) var presentationMode
+    var onFilePicked: (URL) -> Void
+
+    func makeUIViewController(context: Context) -> CustomDocumentPickerViewController {
+        let viewController = CustomDocumentPickerViewController()
+        viewController.onFilePicked = { url in
+            onFilePicked(url)
+            presentationMode.wrappedValue.dismiss()
+        }
+        return viewController
+    }
+
+    func updateUIViewController(_ uiViewController: CustomDocumentPickerViewController, context: Context) {}
+}
+
+class CustomDocumentPickerViewController: UIViewController {
+    var onFilePicked: ((URL) -> Void)?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // 배경 색상
+        view.backgroundColor = .white
+        
+        // UIDocumentPickerViewController 설정
+        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.usdz], asCopy: true)
+        documentPicker.delegate = self
+        documentPicker.modalPresentationStyle = .fullScreen // 전체 화면 모드 설정
+
+        // 화면의 절반 크기로 문서 선택기 표시
+        addChild(documentPicker)
+        view.addSubview(documentPicker.view)
+
+        // Autolayout으로 문서 선택기의 크기 및 위치 설정
+        documentPicker.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            documentPicker.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            documentPicker.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            documentPicker.view.topAnchor.constraint(equalTo: view.topAnchor),
+            documentPicker.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1) // 화면의 절반 차지
+        ])
+        documentPicker.didMove(toParent: self)
+    }
+}
+
+// MARK: - UIDocumentPickerDelegate
+extension CustomDocumentPickerViewController: UIDocumentPickerDelegate {
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        if let url = urls.first {
+            onFilePicked?(url)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+
+    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
+        dismiss(animated: true, completion: nil)
+    }
+}
 
 #Preview {
   WritePost(emdId: 1, postId: 1, addPostRow: {_ in}, refreshPostsList: {})
 }
 
+
+
+// Display selected AR file if available
+//            if let selectedARFile = wViewModel.selectedARFile {
+//                HStack {
+//                    Text("선택한 AR 파일:")
+//                    Text(selectedARFile.lastPathComponent) // Show the file name
+//                        .foregroundColor(.blue)
+//                        .lineLimit(1)
+//                        .truncationMode(.tail)
+//
+//                    Button(action: {
+//                        wViewModel.selectedARFile = nil // Clear selection
+//                    }) {
+//                        Image(systemName: "xmark.circle.fill")
+//                            .foregroundColor(.red)
+//                    }
+//                }
+//                .padding(.top, 5)
+//            }

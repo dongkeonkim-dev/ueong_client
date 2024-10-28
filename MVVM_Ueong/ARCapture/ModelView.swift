@@ -17,7 +17,11 @@ struct ModelView: View {
     let endCaptureCallback: () -> Void
 
     var body: some View {
+        
         ARQuickLookController(modelFile: modelFile, endCaptureCallback: endCaptureCallback)
+    
+        
+      
     }
 }
 
