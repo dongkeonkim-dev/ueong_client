@@ -31,14 +31,13 @@ class SignupViewModel: ObservableObject {
     errorMessage = nil
     
     do {
-      let signupResponse = try await authRepository.signup(username: username, password: password, email: email, nickname: nickname)
-      self.signupSuccess = true
-    } catch let error as AuthError {
-      self.errorMessage = error.localizedDescription
-    } catch {
-      self.errorMessage = "회원가입에 실패했습니다: \(error.localizedDescription)"
+      let tokenResponse = try await authRepository.signup(username: username, password: password, email: email, nickname: nickname)
+      let success = UserDefaultsManager.shared.setUsername(username)
+      TokenManager.shared.saveAccessToken(tokenResponse.accessToken, for: username)
+      isLoading = false
+      signupSuccess = true
+    }catch{
+      isLoading = false
     }
-    
-    isLoading = false
   }
 }

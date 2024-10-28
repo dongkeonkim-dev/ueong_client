@@ -80,6 +80,7 @@ struct SignupView: View {
       .onChange(of: viewModel.signupSuccess) { success in
         if success {
           appState.isLoggedIn = true
+          print(appState.isLoggedIn)
           presentationMode.wrappedValue.dismiss()
         }
       }

@@ -46,7 +46,7 @@ struct AddMyVillage: View {
                 Task {
                     await viewModel.addMyVillage() // 동네 추가
                     presentationMode.wrappedValue.dismiss() // 모달 닫기
-                    pViewModel.fetchVillageList()
+                    await pViewModel.fetchVillageList()
                 }
             }
             .disabled(viewModel.selectedAddress == nil) // 선택된 주소가 없으면 비활성화

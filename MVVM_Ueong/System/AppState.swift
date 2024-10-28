@@ -19,6 +19,10 @@ final class AppState: ObservableObject {
     initializeAppState()
   }
   
+  func setLoggedIn(_ loggedIn: Bool) {
+    self.isLoggedIn = loggedIn
+  }
+  
   private func initializeAppState() {
     print("initializeAppState: 사용자 이름 가져오기 시도")
     
@@ -62,4 +66,7 @@ final class AppState: ObservableObject {
       print("handleValidationError: 토큰 검증 실패 - error: \(error.localizedDescription)")
     }
   }
+}
+extension Notification.Name {
+  static let didChangeLoginState = Notification.Name("didChangeLoginState")
 }

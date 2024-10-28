@@ -7,11 +7,7 @@
 
 import Foundation
 
-struct SignupResponse: Decodable {
-  let isSuccess: Bool
-}
-
-struct LoginResponse: Decodable {
+struct TokenResponse: Decodable {
   let accessToken: String
 }
 

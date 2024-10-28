@@ -22,17 +22,18 @@ extension PostsList {
     
     init() {
       Task{
-        print("PostList init")
-        fetchVillageList()
+        await fetchVillageList()
+        await fetchPosts()
+        
       }
     }
     
-    func fetchVillageList(){
+    func fetchVillageList() async{
       Task{ @MainActor in
         self.myVillages = try await myVillageRepository.getMyVillages()
+        print("myVillages 불러오기: \(myVillages)")
         guard myVillages.count > 0 else {
           self.selection = Emd(for: .noVillage)
-          
           return
         }
         self.selection = myVillages[0]
