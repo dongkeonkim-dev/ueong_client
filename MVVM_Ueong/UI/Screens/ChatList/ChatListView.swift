@@ -58,7 +58,7 @@ struct ChatListView: View {
                         if let post = await viewModel.fetchPost(by: chat.relatedPostId) {
                             chatViewModel = ChatView.ViewModel(
                                 chatRoomId: chat.id,
-                                username: username,
+                                username: UserDefaultsManager.shared.getUsername() ?? mockedUsername,
                                 userNickname: "유저1",
                                 partnerUsername: chat.partnerUsername,
                                 partnerNickname: chat.partnerNickname,

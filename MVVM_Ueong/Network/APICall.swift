@@ -7,8 +7,8 @@
 
 class APICall {
   static let shared = APICall()
-  
-  private init() {}
+  let userDefaultsManager = UserDefaultsManager.shared
+  let tokenManager = TokenManager.shared
   
   func get<T: Decodable>(
     _ endpoint: String,
@@ -100,6 +100,12 @@ class APICall {
         request = URLRequest(url: requestURL)
         request.httpMethod = method == 
           .post ? "POST" : "PATCH"
+        do {
+          try addHeaders(to: &request)
+        } catch {
+          print("헤더 추가 중 에러 발생: \(error)")
+          throw error
+        }
         
         var bodyData = Data()
         
@@ -159,6 +165,12 @@ class APICall {
         }
         request = URLRequest(url: url)
         request.httpMethod = "GET"
+        do {
+          try addHeaders(to: &request)
+        } catch {
+          print("헤더 추가 중 에러 발생: \(error)")
+          throw error
+        }
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
       case .delete:
@@ -171,6 +183,12 @@ class APICall {
         }
         request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        do {
+          try addHeaders(to: &request)
+        } catch {
+          print("헤더 추가 중 에러 발생: \(error)")
+          throw error
+        }
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
     
@@ -198,6 +216,25 @@ class APICall {
       }
     }
     return nil
+  }
+  
+  func addHeaders(to request: inout URLRequest) throws {
+    guard let username = userDefaultsManager.getUsername() else {
+      print("사용자 이름을 가져올 수 없습니다.")
+      throw URLError(.userAuthenticationRequired)
+    }
+    
+    guard let token = tokenManager.getAccessToken(for: username) else {
+      print("토큰을 가져올 수 없습니다.")
+      return
+    }
+    
+    print("addHeaders: ", token)
+    request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.accessTokenHeader)
+    
+    if let headers = request.allHTTPHeaderFields {
+      print("**** HTTP Headers: \(headers)")
+    }
   }
 }
 
@@ -230,10 +267,6 @@ extension String {
   }
 }
 
-//struct VoidResult: Decodable {
-//  var id = UUID()
-//}
-
 struct File {
   var data: Data
   var fieldName: String
@@ -256,3 +289,131 @@ protocol AnyOptional {
 extension Optional: AnyOptional {
   var optionalValue: Any? { return self }
 }
+
+//
+//import Foundation
+//
+//class APICall {
+//  static let shared = APICall()
+//  private let appState: AppState
+//  
+//  private init(appState: AppState = AppState()) {
+//    self.appState = appState
+//  }
+//  
+//  func get<T: Decodable>(
+//    _ endpoint: String,
+//    parameters: [(String, Any)] = [],
+//    queryParameters: [String: Any] = [:]
+//  ) async throws -> T {
+//    guard let url = constructURL(endpoint: endpoint, queryParameters: queryParameters) else {
+//      throw URLError(.badURL)
+//    }
+//    
+//    var request = URLRequest(url: url)
+//    request.httpMethod = "GET"
+//    addHeaders(to: &request)
+//    
+//      // 추가 파라미터 처리 로직이 필요하면 여기에 작성
+//    
+//    let (data, response) = try await URLSession.shared.data(for: request)
+//    return try decodeResponse(data: data, response: response)
+//  }
+//  
+//  func post<T: Decodable>(
+//    _ endpoint: String,
+//    parameters: [(String, Any)] = [],
+//    queryParameters: [String: Any] = [:],
+//    files: [File] = []
+//  ) async throws -> T {
+//    guard let url = constructURL(endpoint: endpoint, queryParameters: queryParameters) else {
+//      throw URLError(.badURL)
+//    }
+//    
+//    var request = URLRequest(url: url)
+//    request.httpMethod = "POST"
+//    addHeaders(to: &request)
+//    
+//    if !files.isEmpty {
+//      let boundary = UUID().uuidString
+//      request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+//      request.httpBody = try createMultipartBody(parameters: parameters, files: files, boundary: boundary)
+//    } else {
+//      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//      request.httpBody = try JSONSerialization.data(withJSONObject: dictFromParameters(parameters), options: [])
+//    }
+//    
+//    let (data, response) = try await URLSession.shared.data(for: request)
+//    return try decodeResponse(data: data, response: response)
+//  }
+//  
+//    // PATCH, DELETE 등 다른 HTTP 메서드도 유사하게 구현
+//  
+//    /// URL을 구성하는 헬퍼 메서드
+//  private func constructURL(endpoint: String, queryParameters: [String: Any]) -> URL? {
+//    var urlString = baseURL.joinPath(endpoint)
+//    if !queryParameters.isEmpty {
+//      let query = queryParameters.map { "\($0.key)=\($0.value)" }.joined(separator: "&")
+//      urlString += "?\(query)"
+//    }
+//    return URL(string: urlString)
+//  }
+//  
+//    /// 요청 헤더를 추가하는 헬퍼 메서드
+//  private func addHeaders(to request: inout URLRequest) {
+//    if let token = appState.userToken {
+//      request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+//    }
+//    if !appState.username.isEmpty {
+//      request.setValue(appState.username, forHTTPHeaderField: "Username")
+//    }
+//  }
+//  
+//    /// 응답을 디코딩하는 헬퍼 메서드
+//  private func decodeResponse<T: Decodable>(data: Data, response: URLResponse) throws -> T {
+//    guard let httpResponse = response as? HTTPURLResponse,
+//          (200...299).contains(httpResponse.statusCode) else {
+//      let responseString = String(data: data, encoding: .utf8) ?? "No response body"
+//      throw NSError(domain: "Server error", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: [NSLocalizedDescriptionKey: responseString])
+//    }
+//    
+//    do {
+//      let decodedData = try JSONDecoder().decode(T.self, from: data)
+//      return decodedData
+//    } catch {
+//      throw error
+//    }
+//  }
+//  
+//    /// 파라미터를 딕셔너리로 변환하는 헬퍼 메서드
+//  private func dictFromParameters(_ parameters: [(String, Any)]) -> [String: Any] {
+//    var dict: [String: Any] = [:]
+//    for (key, value) in parameters {
+//      dict[key] = value
+//    }
+//    return dict
+//  }
+//  
+//    /// 멀티파트 바디를 생성하는 헬퍼 메서드
+//  private func createMultipartBody(parameters: [(String, Any)], files: [File], boundary: String) throws -> Data {
+//    var body = Data()
+//    
+//    for (key, value) in parameters {
+//      body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//      body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+//      body.append("\(value)\r\n".data(using: .utf8)!)
+//    }
+//    
+//    for file in files {
+//      body.append("--\(boundary)\r\n".data(using: .utf8)!)
+//      body.append("Content-Disposition: form-data; name=\"\(file.fieldName)\"; filename=\"\(file.fileName)\"\r\n".data(using: .utf8)!)
+//      body.append("Content-Type: \(file.mimeType)\r\n\r\n".data(using: .utf8)!)
+//      body.append(file.data)
+//      body.append("\r\n".data(using: .utf8)!)
+//    }
+//    
+//    body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+//    
+//    return body
+//  }
+//}

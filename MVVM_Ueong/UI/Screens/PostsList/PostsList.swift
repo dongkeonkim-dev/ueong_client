@@ -3,6 +3,7 @@ import SwiftUI
 
 
 struct PostsList: View {
+  @EnvironmentObject var appState : AppState
   @StateObject var viewModel = PostsList.ViewModel()
   
   var body: some View {
@@ -46,6 +47,11 @@ struct PostsList: View {
               )
             }
           }
+          .onChange(of: viewModel.posts.count) {
+            Task{
+              await viewModel.fetchPhotosForPosts()
+            }
+          }
         }
         .refreshable {
           Task{ @MainActor in
@@ -57,6 +63,11 @@ struct PostsList: View {
       
         // 오른쪽 하단 고정 버튼
       AddPostButton(viewModel: viewModel)
+    }
+    .onChange(of: appState.isLoggedIn) { isLoggedIn in
+      if isLoggedIn {
+        viewModel.fetchVillageList()
+      }
     }
   }
 }
@@ -76,6 +87,7 @@ struct AddPostButton: View {
             destination: WritePost(
               emdId : viewModel.selection?.id,
               postId: nil,
+              addPostRow: viewModel.addPostRow,
               refreshPostsList: refreshPostsList
             )
           ) {

@@ -2,33 +2,38 @@ import SwiftUI
 
 @main
 struct MVVM_UeongApp: App {
-    
-    static let subsystem: String = "org.sfomuseum.photogrammetry.guidedcapture"
-    
+  
+  static let subsystem: String = "org.sfomuseum.photogrammetry.guidedcapture"
     // AppDelegate 연결
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
-
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     // State variable to track socket connection
-    @State private var isSocketConnected = false
-
-    var body: some Scene {
-        WindowGroup {
-//            // Show the splash screen or the main content based on socket connection status
-//            if isSocketConnected {
-                ContentView()
-//            } else {
-//                SplashScreen()
-//                    .onReceive(NotificationCenter.default.publisher(for: .socketConnected)) { _ in
-//                        // 소켓 연결 후 2초 대기
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                            isSocketConnected = true
-//                        }
-//                    }
-//            }
-        }
+  @State private var isSocketConnected = false
+  
+  @StateObject var appState = AppState()
+  
+  var body: some Scene {
+    WindowGroup {
+      ContentView()
+        .environmentObject(appState)
     }
+  }
 }
+//  var body: some Scene {
+//    WindowGroup {
+        //Show the splash screen or the main content based on socket connection status
+        //if isSocketConnected {
+//      ContentView()
+//        .environmentObject(appState)
+        //} else {
+        //    SplashScreen()
+        //       .onReceive(NotificationCenter.default.publisher(for: .socketConnected)) { _ in
+        //          // 소켓 연결 후 2초 대기
+        //            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        //              isSocketConnected = true
+        //            }
+        //          }
+        //       }
+
 
 // Splash Screen View
 struct SplashScreen: View {

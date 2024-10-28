@@ -27,7 +27,7 @@ extension SalesListView {
         }
         func fetchMyPosts() async {
             do {
-                let posts = try await postRepository.getMyPosts(username: username)
+                let posts = try await postRepository.getMyPosts()
                 myPosts = posts
                 postsForSale = posts.filter { $0.status == "거래대기" }
                 postsSold = posts.filter { $0.status == "거래완료" }
@@ -62,9 +62,9 @@ extension SalesListView {
 
                         do {
                             if postsForSale[index].isFavorite {
-                                try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                                try await favoriteRepository.addFavorite(postId: post.id)
                             } else {
-                                try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                                try await favoriteRepository.deleteFavorite(postId: post.id)
                             }
                         } catch {
                             print("Error updating favorite status for post \(post.id): \(error)")
@@ -78,9 +78,9 @@ extension SalesListView {
 
                         do {
                             if postsSold[index].isFavorite {
-                                try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                                try await favoriteRepository.addFavorite(postId: post.id)
                             } else {
-                                try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                                try await favoriteRepository.deleteFavorite(postId: post.id)
                             }
                         } catch {
                             print("Error updating favorite status for post \(post.id): \(error)")

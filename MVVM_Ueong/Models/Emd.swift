@@ -17,10 +17,25 @@ struct Emd: Decodable, Equatable, Identifiable {
         case longitude = "emd_longitude"
     }
     
-    init(){
+  init(for usage: Usage){
+    switch usage {
+        
+      case .mockedUp:
         self.id = 1
         self.name = "selectMockUp"
         self.latitude = 37.5665
         self.longitude = 126.978
+        
+      case .noVillage:
+        self.id = 0
+        self.name = "내 동네"
+        self.latitude = 37.5665
+        self.longitude = 126.978
     }
+  }
+  
+  enum Usage{
+    case mockedUp
+    case noVillage
+  }
 }

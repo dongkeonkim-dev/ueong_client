@@ -7,11 +7,21 @@
 
 import Foundation
 
+struct Constants {
+  static let serviceName = "ueong"
+  static let accessTokenHeader = "Authorization"
+  
+  struct Keychain {
+    static let accessToken = "com.\(Constants.serviceName).accessToken"
+    static let refreshToken = "com.\(Constants.serviceName).refreshToken"
+  }
+}
+
 #if DEBUG
 let baseURL = "http://localhost:3000/"
 let imageURL = "http://localhost:3000/uploads/images/"
 let Model3dURL = "http://localhost:3000/3d-model-files"
-let username = "username1"
+let mockedUsername = "username2"
 //let baseURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/"
 //let imageURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/image-files"
 //let Model3dURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/3d-model-files"

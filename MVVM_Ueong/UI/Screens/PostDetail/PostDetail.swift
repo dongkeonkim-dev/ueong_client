@@ -279,7 +279,7 @@ struct PostDetail: View {
           
           Button(action: {
             
-            if viewModel.writer.username == username {
+            if viewModel.writer.username == UserDefaultsManager.shared.getUsername() ?? mockedUsername {
                 // 조건이 참이면 경고 메시지 설정하고 알림창 띄우기
               
             }else{
@@ -299,7 +299,7 @@ struct PostDetail: View {
                 
                 
                   // ChatView로 이동하는 로직을 여기에 추가
-                chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: username, userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
+                chatViewModel = ChatView.ViewModel(chatRoomId: chatRoomId, username: UserDefaultsManager.shared.getUsername() ?? mockedUsername, userNickname: "유저1", partnerUsername: viewModel.post.writerUsername, partnerNickname: viewModel.writer.nickname, relatedPost: viewModel.post)
                 
               }
               
@@ -334,6 +334,7 @@ struct PostImageSlider: View {
   var body: some View {
     if photos.isEmpty {
       EmptyView()
+      Spacer()
     } else {
       TabView {
         ForEach(photos) { photo in
@@ -373,7 +374,7 @@ struct UserInfoView: View {
             .padding(.trailing, 10)
         } placeholder: {
           ProgressView()
-            .frame(width: 325, height: 325)
+            .frame(width: 60, height: 60)
         }
       } else {
           // 기본 이미지

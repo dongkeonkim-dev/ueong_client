@@ -10,9 +10,9 @@ import Foundation
 class PostRepository {
   
     // 비동기 함수로 나의 포스트 가져오기
-  func getMyPosts(username: String) async throws -> [Post] {
+  func getMyPosts() async throws -> [Post] {
     do {
-      let posts: [Post] = try await APICall.shared.get("post/myPosts", parameters: [("username",username)])
+      let posts: [Post] = try await APICall.shared.get("post/myPosts")
         //            print("Posts retrieved successfully: \(posts.count) my posts found.")
       return posts
     } catch {
@@ -22,9 +22,9 @@ class PostRepository {
   }
   
     // 비동기 함수로 검색된 포스트 가져오기
-  func searchPosts(username: String, village: Int, searchTerm: String, sortBy: String) async throws -> [Post] {
+  func searchPosts(village: Int, searchTerm: String, sortBy: String) async throws -> [Post] {
     do {
-      let posts: [Post] = try await APICall.shared.get("post/search", parameters: [("username",username)], queryParameters: ["emd_id":village, "search_term": searchTerm, "sort_by": sortBy])
+      let posts: [Post] = try await APICall.shared.get("post/search", queryParameters: ["emd_id":village, "search_term": searchTerm, "sort_by": sortBy])
       return posts
     } catch {
       throw error
@@ -32,9 +32,9 @@ class PostRepository {
   }
   
     // 비동기 함수로 특정 포스트 아이디로 포스트 가져오기
-  func getPostById(username: String, postId: Int) async throws -> Post {
+  func getPostById(postId: Int) async throws -> Post {
     do {
-      let post: Post = try await APICall.shared.get("post", parameters: [("post_id",postId),("username",username)])
+      let post: Post = try await APICall.shared.get("post", parameters: [("post_id",postId)])
       return post
     } catch {
       print("Error fetching a post: \(error)")
@@ -43,9 +43,9 @@ class PostRepository {
   }
   
     // 비동기 함수로 사용자 즐겨찾기 목록 가져오기
-  func getFavoriteList(username: String) async throws -> [Post] {
+  func getFavoriteList() async throws -> [Post] {
     do {
-      let posts: [Post] = try await APICall.shared.get("post/favorite", parameters: [("username",username)])
+      let posts: [Post] = try await APICall.shared.get("post/favorite")
       return posts
     } catch {
       print("Error fetching favorite posts: \(error)")
@@ -54,10 +54,10 @@ class PostRepository {
   }
   
     // 비동기 함수로 포스트 작성하기
-  func uploadPost(post: NewPost, photoIds: [Int]) async throws -> Response {
+  func uploadPost(post: NewPost, photoIds: [Int]) async throws -> CreateResponse {
     var parameters = post.toParams()
     parameters.append(("photo_ids", photoIds));
-    let response : Response = try await APICall.shared
+    let response : CreateResponse = try await APICall.shared
       .post("post", parameters: parameters)
     return response
   }

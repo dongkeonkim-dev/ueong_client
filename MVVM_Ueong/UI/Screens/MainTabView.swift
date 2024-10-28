@@ -7,6 +7,7 @@
 import SwiftUI
 
 struct MainTabView: View {
+  @EnvironmentObject var appState : AppState
   init() {
       // Customize the tab bar appearance
     UITabBar.appearance().backgroundColor = UIColor.systemGray6 // Tab bar background color
@@ -27,6 +28,7 @@ struct MainTabView: View {
             Image(systemName: "house")
             Text("홈")
           }
+          .environmentObject(appState)
         
         ChatListView(viewModel: ChatListView.ViewModel())
           .tabItem {
@@ -45,6 +47,7 @@ struct MainTabView: View {
             Image(systemName: "person")
             Text("내 정보")
           }
+          .environmentObject(appState)
           //                }
       }
       .environment(\.horizontalSizeClass, .compact)

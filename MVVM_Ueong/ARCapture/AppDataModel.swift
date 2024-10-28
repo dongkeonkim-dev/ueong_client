@@ -170,9 +170,9 @@ class AppDataModel: ObservableObject, Identifiable {
     /// Creates a new object capture session.
     private func startNewCapture() -> Bool {
         logger.log("startNewCapture() called...")
-        if !ObjectCaptureSession.isSupported {
-            preconditionFailure("ObjectCaptureSession is not supported on this device!")
-        }
+//        if !ObjectCaptureSession.isSupported {
+//            preconditionFailure("ObjectCaptureSession is not supported on this device!")
+//        }
 
         guard let folderManager = CaptureFolderManager() else {
             return false

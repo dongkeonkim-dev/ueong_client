@@ -29,7 +29,11 @@ extension PostsList {
     
     func fetchVillageList(){
       Task{ @MainActor in
-        self.myVillages = try await myVillageRepository.getMyVillages(username: username)
+        self.myVillages = try await myVillageRepository.getMyVillages()
+        guard myVillages.count > 0 else {
+          self.selection = Emd(for: .noVillage)
+          return
+        }
         self.selection = myVillages[0]
       }
     }
@@ -54,7 +58,6 @@ extension PostsList {
       do {
         await MainActor.run { self.posts.removeAll() } // 초기화
         let fetchedPosts = try await postRepository.searchPosts(
-          username: username,
           village: selection?.id ?? 0,
           searchTerm: searchTerm,
           sortBy: sortBy
@@ -70,7 +73,7 @@ extension PostsList {
     }
     
     
-    private func fetchPhotosForPosts() async {
+    func fetchPhotosForPosts() async {
       await withThrowingTaskGroup(of: (Int, [Photo]).self) { group in
         for post in posts {
           group.addTask {
@@ -104,9 +107,9 @@ extension PostsList {
           
           do {
             if posts[index].isFavorite {
-              _ = try await favoriteRepository.addFavorite(postId: post.id, username: username)
+              _ = try await favoriteRepository.addFavorite(postId: post.id)
             } else {
-              _ = try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+              _ = try await favoriteRepository.deleteFavorite(postId: post.id)
             }
           } catch {
             print("Error updating favorite status for post \(post.id): \(error)")
@@ -123,12 +126,10 @@ extension PostsList {
         }
       }
     }
-  
-//    func disvisiblePostRow(post: Post) {
-//      if let index = posts.firstIndex(where: { $0.id == post.id }) {
-//        posts[index].isVisible.toggle()
-//      }
-//    }
+    
+    func addPostRow(post: Post) {
+      posts.insert(post, at:0)
+    }
   }
 }
 

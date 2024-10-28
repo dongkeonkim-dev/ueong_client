@@ -1,173 +1,158 @@
 import SwiftUI
 import PhotosUI
 
-// MARK: - 내 정보
+  // MARK: - 내 정보
 struct MyAccountView: View {
-    @StateObject var viewModel = MyAccountView.ViewModel()
-
-    var body: some View {
-        VStack {
-            HStack {
-                Text("내 정보")
-                    .font(.system(size: 25).weight(.bold))
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-            
-            ScrollView {
-                VStack(spacing: 20) {
-                    ProfileHeaderView(user: viewModel.user)
-                    AccountInfoView(user: viewModel.user, logoutAction: {
-                        // viewModel.logout()
-                    })
-                    
-                    AccountActionsView(
-                        editInfoDestination: AccountEditView(viewModel: AccountEditView.ViewModel(), mViewModel: viewModel),
-                        salesListDestination: SalesListView(viewModel: SalesListView.ViewModel()), // 임시 텍스트로 대체
-                        deleteAccountAction: {
-                            // 탈퇴 액션
-                        }
-                    )
-                    
-                }
-                .onAppear(){
-                    viewModel.fetchPage()
-                }
-                .padding(.leading, 5)
-            }
-        }
-   }
-}
-
-// MARK: - 프로필 헤더
-struct ProfileHeaderView: View {
-    let user: User
-
-    var body: some View {
-        VStack {
-            if let photoUrl = user.profilePhotoUrl, let url = URL(string: baseURL.joinPath(photoUrl)) {
-                // 서버에서 불러온 기존 이미지를 표시
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 325, height: 325)
-                        .clipped()
-                        .clipShape(Circle())
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 325, height: 325)
-                }
-            } else {
-                // 기본 이미지
-                Image(systemName: "person.circle.fill")
-                    .foregroundColor(.gray)
-                    .font(.system(size: 325, weight: .thin))
-            }
-            
-            HStack {
-                Text(user.nickname)
-                    .padding(.leading, 8)
-                    .tracking(2)
-                    .font(.system(size: 26))
-                Spacer()
-//                HStack(spacing: -3) {
-//                    Image(systemName: "star.fill")
-//                    Image(systemName: "star.fill")
-//                    Image(systemName: "star.fill")
-//                    Image(systemName: "star.fill")
-//                    Image(systemName: "star")
-//                }
-                .font(.system(size: 12, weight: .bold))
-                .foregroundColor(.blue)
-            }
-            .padding(.horizontal, 20)
-            .padding(.leading, -6)
-        }
+  @EnvironmentObject var appState: AppState
+  @StateObject var viewModel = MyAccountView.ViewModel()
+  
+  var body: some View {
+    VStack {
+      headerView
+      ScrollView {
+        contentView
+          .onAppear {
+            viewModel.fetchPage()
+          }
+          .padding(.leading, 5)
+      }
     }
-}
-
-// MARK: - 계정 정보
-struct AccountInfoView: View {
-    let user: User
-    var logoutAction: () -> Void
-
-    var body: some View {
-        VStack(spacing: 20) {
-            HStack {
-                Text("ID:")
-                    .bold()
-                Text(user.username)
-                Spacer()
-            }
-            .padding(.horizontal, 20)
-
-            HStack {
-                Text(user.email)
-                Spacer()
-                Button(action: logoutAction) {
-                    HStack(spacing: 3) {
-                        Text("로그아웃")
-                        Image(systemName: "rectangle.portrait.and.arrow.right")
-                    }
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(.blue)
-                }
-            }
-            .padding(.horizontal, 20)
-        }
+  }
+  
+    // MARK: - Header View
+  private var headerView: some View {
+    HStack {
+      Text("내 정보")
+        .font(.system(size: 25).weight(.bold))
+      Spacer()
     }
-}
-
-// MARK: - 네비게이션 링크 및 액션 버튼을 포함한 뷰 (AccountActionsView)
-struct AccountActionsView: View {
-    let editInfoDestination: AccountEditView
-    let salesListDestination: SalesListView
-    var deleteAccountAction: () -> Void
-
-    var body: some View {
-        VStack(spacing: 20) {
-            Divider().padding(5)
-
-            // 정보수정으로 가는 NavigationLink
-            NavigationLink(destination: editInfoDestination) {
-                HStack {
-                    Image(systemName: "gearshape")
-                    Text("정보수정")
-                    Spacer()
-                }
-            }
-            .font(.body)
-            .padding(.horizontal)
-
-            // 판매 목록으로 가는 NavigationLink
-            NavigationLink(destination: salesListDestination) {
-                HStack {
-                    Image(systemName: "list.bullet.rectangle.portrait")
-                    Text("판매목록")
-                    Spacer()
-                }
-            }
-            .font(.body)
-            .padding(.horizontal)
-
-            Divider().padding(5)
-
-            // 회원 탈퇴 버튼은 여전히 액션 처리
-            Button(action: deleteAccountAction) {
-                HStack {
-                    Image(systemName: "trash")
-                    Text("회원 탈퇴")
-                    Spacer()
-                }
-                .foregroundColor(.red)
-                .font(.body)
-                .padding(.horizontal)
-            }
-        }
+    .padding(.horizontal, 20)
+  }
+  
+    // MARK: - Content View
+  private var contentView: some View {
+    VStack(spacing: 20) {
+      profileHeaderView
+      accountInfoView
+      accountActionsView
     }
-}
-
-#Preview {
-    MyAccountView(viewModel: MyAccountView.ViewModel())
+  }
+  
+    // MARK: - 프로필 헤더
+  private var profileHeaderView: some View {
+    VStack {
+      if let photoUrl = viewModel.user.profilePhotoUrl,
+         let url = URL(string: baseURL.joinPath(photoUrl)) {
+        AsyncImage(url: url) { image in
+          image
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(width: 325, height: 325)
+            .clipped()
+            .clipShape(Circle())
+        } placeholder: {
+          ProgressView()
+            .frame(width: 325, height: 325)
+        }
+      } else {
+        Image(systemName: "person.circle.fill")
+          .foregroundColor(.gray)
+          .font(.system(size: 325, weight: .thin))
+      }
+      
+      HStack {
+        Text(viewModel.user.nickname)
+          .padding(.leading, 8)
+          .tracking(2)
+          .font(.system(size: 26))
+        Spacer()
+          .font(.system(size: 12, weight: .bold))
+          .foregroundColor(.blue)
+      }
+      .padding(.horizontal, 20)
+      .padding(.leading, -6)
+    }
+  }
+  
+    // MARK: - 계정 정보
+  private var accountInfoView: some View {
+    VStack(spacing: 20) {
+      HStack {
+        Text("ID:")
+          .bold()
+        Text(viewModel.user.username)
+        Spacer()
+      }
+      .padding(.horizontal, 20)
+      
+      HStack {
+        Text(viewModel.user.email)
+        Spacer()
+        Button(action: logoutAction) {
+          HStack(spacing: 3) {
+            Text("로그아웃")
+            Image(systemName: "rectangle.portrait.and.arrow.right")
+          }
+          .font(.system(size: 14, weight: .bold))
+          .foregroundColor(.blue)
+        }
+      }
+      .padding(.horizontal, 20)
+    }
+  }
+  
+    // MARK: - 계정 액션
+  private var accountActionsView: some View {
+    VStack(spacing: 20) {
+      Divider().padding(5)
+      
+      NavigationLink(destination: AccountEditView(viewModel: AccountEditView.ViewModel(), mViewModel: viewModel)) {
+        HStack {
+          Image(systemName: "gearshape")
+          Text("정보수정")
+          Spacer()
+        }
+      }
+      .font(.body)
+      .padding(.horizontal)
+      
+      NavigationLink(destination: SalesListView(viewModel: SalesListView.ViewModel())) {
+        HStack {
+          Image(systemName: "list.bullet.rectangle.portrait")
+          Text("판매목록")
+          Spacer()
+        }
+      }
+      .font(.body)
+      .padding(.horizontal)
+      
+      Divider().padding(5)
+      
+      Button(action: deleteAccountAction) {
+        HStack {
+          Image(systemName: "trash")
+          Text("회원 탈퇴")
+          Spacer()
+        }
+        .foregroundColor(.red)
+        .font(.body)
+        .padding(.horizontal)
+      }
+    }
+  }
+  
+    // MARK: - 액션들
+  private func logoutAction() {
+    viewModel.onLogout = {
+      appState.isLoggedIn = false
+    }
+    viewModel.logout()
+  }
+  
+  private func deleteAccountAction() {
+    viewModel.onLogout = {
+      appState.isLoggedIn = false
+    }
+    viewModel.deleteUser()
+  }
 }

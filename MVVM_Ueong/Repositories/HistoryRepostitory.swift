@@ -6,20 +6,20 @@
 //
 
 class HistoryRepository {
-    func getHistory(username: String) async throws -> [History] {
+    func getHistory() async throws -> [History] {
         do {
-            let history: [History] = try await APICall.shared.get("history", parameters: [("username",username)])
+            let history: [History] = try await APICall.shared.get("history")
 //            print("Successfully retrieved address: \(history.count) history for emdId: \(username).")
             return history
         } catch {
-            print("Error fetching address for emdId \(username): \(error)")
+            print("Error fetching address for emdId : \(error)")
             throw error
         }
     }
     
-    func deleteHistory(username: String, searchTerm: String) async {
+    func deleteHistory(searchTerm: String) async {
         do {
-            try await APICall.shared.delete("history", queryParameters: ["username": username, "searchTerm": searchTerm])
+            try await APICall.shared.delete("history", queryParameters: ["searchTerm": searchTerm])
         } catch {
             print("Error deleting history: \(error)")
         }

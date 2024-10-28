@@ -164,6 +164,7 @@ struct SecureInputFieldView: View {
         HStack {
             SecureField(title, text: $text)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .textContentType(.oneTimeCode)
                 .overlay(
                     RoundedRectangle(cornerRadius: 2)
                         .stroke(Color.gray.opacity(0.7), lineWidth: 1)

@@ -1,9 +1,20 @@
-//
-//  Response.swift
-//  MVVM_Ueong
-//
-//  Created by 김동건 on 10/4/24.
-//
+import Foundation
+
+struct CreateResponse: Decodable {
+  let createId: Int
+}
+
+struct CreateMultiResponse: Decodable {
+  let createIds: [Int]
+}
+
+struct UpdateResponse: Decodable {
+  let affectedRows: Int
+}
+
+struct MessageResponse: Decodable {
+  let message: String
+}
 
 struct CreatedPhotosResponse: Decodable {
   let createdPhotos: [Photo]
@@ -25,21 +36,18 @@ enum Response: Decodable {
   init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     
-      // `CreateResponse`인지 확인
     if let createId = try? container.decode(Int.self, forKey: .createId) {
       let response = CreateResponse(createId: createId)
       self = .create(response)
       return
     }
     
-      // `CreateArrayResponse`인지 확인
     if let createIds = try? container.decode([Int].self, forKey: .createIds) {
       let response = CreateMultiResponse(createIds: createIds)
       self = .createMulti(response)
       return
     }
     
-      // `UpdateResponse`인지 확인
     if let affectedRows = try? container.decode(Int.self, forKey: .affectedRows) {
       let response = UpdateResponse(affectedRows: affectedRows)
       self = .update(response)
@@ -54,20 +62,4 @@ enum Response: Decodable {
     
     throw DecodingError.typeMismatch(Response.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unable to decode Response"))
   }
-}
-
-struct CreateResponse {
-  let createId: Int
-}
-
-struct CreateMultiResponse {
-  let createIds: [Int]
-}
-
-struct UpdateResponse {
-  let affectedRows: Int
-}
-
-struct MessageResponse {
-  let message: String
 }

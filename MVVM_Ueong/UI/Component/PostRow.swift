@@ -36,6 +36,7 @@ struct PostRow: View {
               destination: WritePost(
                 emdId: nil,
                 postId: $post.id,
+                addPostRow: {_ in},
                 refreshPostsList: refreshPostsList
               ),
               isActive: $navigateToEdit
@@ -46,7 +47,7 @@ struct PostRow: View {
           }
         }
         .contextMenu {
-          if post.writerUsername == username {
+          if post.writerUsername == UserDefaultsManager.shared.getUsername() {
             Button(action: {
               navigateToEdit = true
             }) {

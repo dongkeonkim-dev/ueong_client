@@ -122,7 +122,7 @@ extension ChatListView {
             do {
                 // 포스트 가져오기
                 var post = try await postRepository
-                  .getPostById(username: "username1", postId: postId)
+                  .getPostById(postId: postId)
                 
                 // 해당 포스트의 사진 가져오기
                 post.photos = try await photoRepository
@@ -136,7 +136,7 @@ extension ChatListView {
         }
         
         func loadChat(completion: @escaping () -> Void) {
-            chatListUp(username: username)
+          chatListUp(username: UserDefaultsManager.shared.getUsername() ?? mockedUsername)
             print("chatListUp called")
             
             // 기존 옵저버 제거

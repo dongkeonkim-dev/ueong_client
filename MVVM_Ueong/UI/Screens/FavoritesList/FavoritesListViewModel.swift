@@ -28,7 +28,7 @@ extension FavoritesListView {
         // 좋아요 목록을 불러오는 함수
         private func loadFavorites() async{
             do {
-                let posts = try await postRepository.getFavoriteList(username: username)
+                let posts = try await postRepository.getFavoriteList()
                 DispatchQueue.main.sync {
                     self.favoritePosts = posts
                     print("Successfully retrieved \(posts.count) posts.")
@@ -64,9 +64,9 @@ extension FavoritesListView {
                     
                     do {
                         if favoritePosts[index].isFavorite {
-                            try await favoriteRepository.addFavorite(postId: post.id, username: username)
+                            try await favoriteRepository.addFavorite(postId: post.id)
                         } else {
-                            try await favoriteRepository.deleteFavorite(postId: post.id, username: username)
+                            try await favoriteRepository.deleteFavorite(postId: post.id)
                         }
                     } catch {
                         print("Error updating favorite status for post \(post.id): \(error)")

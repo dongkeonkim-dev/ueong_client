@@ -126,7 +126,7 @@ struct SelectRegion: View {
 
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    SelectRegion(viewModel: PostsList.ViewModel(), selection: .constant(Emd()), options: [Emd()], maxWidth: 130)
+    SelectRegion(viewModel: PostsList.ViewModel(), selection: .constant(Emd(for: .mockedUp)), options: [Emd(for: .mockedUp)], maxWidth: 130)
   }
 }
 

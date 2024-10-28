@@ -22,18 +22,18 @@ extension AccountEditView {
         }
         
         func fetchPage(){
-            Task { @MainActor in
-                self.editing = true
-                self.user = try await userRepository.getUserByUsername(username: username)
-                self.editedUser = EditedUser(
-                    username: user.username,
-                    password: "",
-                    confirmPassword: "",
-                    email: user.email,
-                    nickname: user.nickname
-                )
-                self.isImagePickerPresented = false
-            }
+          Task { @MainActor in
+            self.editing = true
+            self.user = try await userRepository.getUser()
+            self.editedUser = EditedUser(
+              username: user.username,
+              password: "",
+              confirmPassword: "",
+              email: user.email,
+              nickname: user.nickname
+            )
+            self.isImagePickerPresented = false
+          }
         }
         
         func saveChanges() {
@@ -55,9 +55,9 @@ extension AccountEditView {
                 try await userRepository.editUser(userData: editedUser, profileImage: profileImage)
                 // 저장 후 현재 뷰를 닫기
 //                self.isImagePickerPresented = false
-                
             }
         }
+      
     }
 }
 

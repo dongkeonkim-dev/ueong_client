@@ -28,7 +28,7 @@ struct ChatView: View {
             MessageInputView(newMessage: $newMessage, sendMessageAction: {
              
                 if !newMessage.isEmpty {
-                    viewModel.sendMessageOrCreateChat(chatRoomId: viewModel.chatRoomId, username: username, partnerUsername: viewModel.partnerUsername, messageContent: newMessage, postId: viewModel.relatedPost.id)
+                    viewModel.sendMessageOrCreateChat(chatRoomId: viewModel.chatRoomId, username: UserDefaultsManager.shared.getUsername() ?? mockedUsername, partnerUsername: viewModel.partnerUsername, messageContent: newMessage, postId: viewModel.relatedPost.id)
                     
                     newMessage = "" // 메시지 전송 후 입력 필드를 비웁니다.
                 }
@@ -121,20 +121,20 @@ struct ChatBubbleView: View {
         HStack {
             VStack(alignment: .leading) {
                 
-                Text(message.senderUsername == username ? "" : message.senderUsername)
+                Text(message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? "" : message.senderUsername)
                     .font(.caption)
                     .foregroundColor(.gray)
                 Text(message.messageText)
                     .padding()
                     .background(Color.gray.opacity(0.2))
                     .cornerRadius(10)
-                    .frame(maxWidth: .infinity, alignment: message.senderUsername == username ? .trailing : .leading)
+                    .frame(maxWidth: .infinity, alignment: message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? .trailing : .leading)
 //                if let sentTime = message.sentTime {
 //                    Text(sentTime, style: .time)
                 Text(message.sentTime)
                         .font(.caption2)
                         .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: message.senderUsername == username ? .trailing : .leading)
+                        .frame(maxWidth: .infinity, alignment: message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? .trailing : .leading)
 //                } else {
 //                    // sentTime이 nil일 때 처리할 내용을 여기 작성
 //                    Text("Unknown Time")

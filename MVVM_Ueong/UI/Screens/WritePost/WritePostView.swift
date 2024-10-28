@@ -11,71 +11,120 @@ enum FocusField: Hashable {
 }
 
 struct WritePost: View {
-  @StateObject var wViewModel: WritePost.ViewModel
+  @StateObject var wViewModel: ViewModel
+  @Environment(\.dismiss) var dismiss  // 수정된 부분
+  var addPostRow: (Post) -> Void
   var refreshPostsList: () -> Void
   
   init(
     emdId: Int?,
     postId: Int?,
+    addPostRow: @escaping (Post) -> Void,
     refreshPostsList: @escaping () -> Void
-    //Cannot use instance member 'refreshPostsList' as a default parameter
   ) {
-    self._wViewModel = StateObject(wrappedValue: WritePost.ViewModel(
+    self.addPostRow = addPostRow
+    self.refreshPostsList = refreshPostsList
+    self._wViewModel = StateObject(wrappedValue: ViewModel(
       emdId: emdId,
       postId: postId,
+      addPostRow: addPostRow,
       refreshPostsList: refreshPostsList
     ))
-    self.refreshPostsList = refreshPostsList
   }
   
   @FocusState private var focusField: FocusField?
   @State private var showPicker: Bool = false
   @State private var showCaptureView: Bool = false
   
+    // MARK: - Body
   var body: some View {
     ScrollView {
       VStack {
-        HStack {
-          ArkitButton(showCaptureView: $showCaptureView)
-          PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel)
-          PhotoIndicator(wViewModel: wViewModel)
-        }
-        .padding(.bottom, 10)
-        .padding(.top, 20)
-        
-          // 제목 입력
-        TitleInputField(
-          focusField: $focusField,
-          title: $wViewModel.post.title)
-          
-        
-          // 가격 입력
-        PriceInputField(
-          focusField: $focusField,
-          price: $wViewModel.post.price)
-          .padding(.top, 30)
-        
-          // 설명 입력
-        DescriptionInputField(
-          focusField: $focusField,
-          text: $wViewModel.post.text)
-          .padding(.top, 30)
-        
-          // 거래 희망 장소
-        LocationSelection(wViewModel: wViewModel)
-          .padding(.top, 30)
+        headerButtons
+        titleInput
+        priceInput
+        descriptionInput
+        locationSelection
       }
       .padding(.horizontal, 20)
       .navigationBarTitle("내 물건 팔기", displayMode: .inline)
       Spacer()
-      
-      ConfirmButton(
-        wViewModel: wViewModel,
-        refreshPostList: refreshPostsList
-      )
-        .padding(.top, 20)
-        .padding(.bottom, 20)
+      confirmButton
     }
+    .padding(.vertical, 20)
+  }
+  
+    // MARK: - Header Buttons
+  private var headerButtons: some View { // 수정된 부분
+    HStack {
+      ArkitButton(showCaptureView: $showCaptureView) // 서브뷰 인스턴스화
+      PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel) // 서브뷰 인스턴스화
+      PhotoIndicator(wViewModel: wViewModel) // 서브뷰 인스턴스화
+    }
+    .padding(.vertical, 10)
+  }
+  
+    // MARK: - Confirm Button
+  private var confirmButton: some View {
+    HStack {
+      Button(action: {
+        Task {
+          await handlePostUpload()
+        }
+      }) {
+        Text("작성 완료")
+          .font(.system(size: 20).weight(.bold))
+          .frame(maxWidth: .infinity)
+          .padding()
+          .background(RoundedRectangle(cornerRadius: 12).fill(Color.blue))
+          .foregroundColor(.white)
+      }
+      .padding(.horizontal)
+    }
+  }
+  
+    // MARK: - Post Upload Handling
+  private func handlePostUpload() async {
+    print("ConfirmButton clicked")
+    if let response = await wViewModel.uploadPost() {
+      print("Post uploaded successfully: upload ID \(response)")
+      dismiss()                   // 수정된 부분
+      refreshPostsList()
+    } else {
+      print("Upload failed: No response received or an error occurred.")
+    }
+  }
+  
+    // MARK: - Title Input
+  private var titleInput: some View {
+    TitleInputField(
+      focusField: $focusField,
+      title: $wViewModel.post.title
+    )
+  }
+  
+    // MARK: - Price Input
+  private var priceInput: some View {
+    PriceInputField(
+      focusField: $focusField,
+      price: $wViewModel.post.price
+    )
+    .padding(.top, 30)
+  }
+  
+    // MARK: - Description Input
+  private var descriptionInput: some View {
+    DescriptionInputField(
+      focusField: $focusField,
+      text: $wViewModel.post.text
+    )
+    .padding(.top, 30)
+  }
+  
+    // MARK: - Location Selection
+  private var locationSelection: some View {
+    LocationSelection(wViewModel: wViewModel)
+      .padding(.top, 30)
   }
 }
 
@@ -96,9 +145,9 @@ struct ArkitButton: View {
     }
     .buttonStyle(PlainButtonStyle())
     .fullScreenCover(isPresented: $showCaptureView) { // MainCaptureView를 모달로 표시
-        MainCaptureView(onDismiss: {
-            showCaptureView = false // 캡처가 끝나면 모달 닫기
-        })
+//        MainCaptureView(onDismiss: {
+//            showCaptureView = false // 캡처가 끝나면 모달 닫기
+//        })
     }
   }
 }
@@ -342,47 +391,8 @@ struct LocationSelection: View {
   }
 }
 
-  // MARK: - Confirm Button
-struct ConfirmButton: View {
-  @ObservedObject var wViewModel: WritePost.ViewModel
-  var refreshPostList: () -> Void = {}
-  
-  @Environment(\.presentationMode) var presentationMode
-  
-  public var body: some View {
-    VStack {
-      Spacer()
-      HStack {
-        Button(action: {
-          Task { @MainActor in
-            print("ConfirmButton clicked")
-            if let response = await wViewModel.uploadPost() {
-              print("Post uploaded successfully: upload ID \(response)")
-              presentationMode.wrappedValue.dismiss()
-              refreshPostList()
-              
-            } else {
-              print("Upload failed: No response received or an error occurred.")
-            }
-          }
-        }) {
-          Text("작성 완료")
-            .font(.system(size: 20).weight(.bold))
-            .frame(maxWidth: .infinity)
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-          RoundedRectangle(cornerRadius: 12).fill(Color.blue)
-        )
-        .padding(.horizontal)
-        .foregroundColor(Color.white)
-      }
-    }
-  }
-}
 
 #Preview {
-  WritePost(emdId: 1, postId: 1, refreshPostsList: {})
+  WritePost(emdId: 1, postId: 1, addPostRow: {_ in}, refreshPostsList: {})
 }
 

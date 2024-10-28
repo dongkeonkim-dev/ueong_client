@@ -8,6 +8,12 @@
 import Foundation
 
 class UserRepository {
+  
+    func getUser() async throws -> User {
+      let user: User = try await APICall.shared.get("user")
+      return user
+    }
+  
     // 비동기 함수로 사용자 이름에 따른 사용자 정보를 가져오기
     func getUserByUsername(username: String) async throws -> User {
         // APICall의 get 메서드를 호출하여 사용자 데이터를 받아옴
@@ -35,6 +41,13 @@ class UserRepository {
             throw error
         }
     }
-
+  
+  func deactivateUser() async throws {
+    do{
+      try await APICall.shared.patch("user/deactivate", parameters: [("is_active", 0)])
+    } catch {
+      throw error
+    }
+  }
 }
 

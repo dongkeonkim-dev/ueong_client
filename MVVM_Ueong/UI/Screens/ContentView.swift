@@ -9,12 +9,22 @@ import SwiftUI
 import CoreData
 
 struct ContentView: View {
-    var body: some View {
-            MainTabView() // 앱의 메인 화면을 TabView로 설정
-        }
+  @EnvironmentObject var appState: AppState
+  var body: some View{
+    Group {
+      if appState.isLoggedIn {
+        MainTabView()
+          .environmentObject(appState)
+      } else {
+        AuthenticationView()
+          .environmentObject(appState)
+      }
+    }
+  }
 }
 
 
+
 #Preview {
-    ContentView()
+  ContentView()
 }
