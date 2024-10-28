@@ -107,10 +107,10 @@ extension WritePost {
           let response: Response = try await postRepository
             .uploadPost(post: post, photoIds: photoIds, arId: arId)
           self.isPosting = false
-          let uploadedPost = try await postRepository.getPostById(postId: response.createId)
+          let uploadedPost = try await postRepository.getPostById(postId: response.createId) //Value of type 'Response' has no member 'createId'
           self.addPostRow(uploadedPost)
           //self.refreshPostsList()
-          return .create(response)
+          return .create(response) //Cannot convert value of type 'Response' to expected argument type 'CreateResponse'
         } else {
           //편집
           let photoIds = self.selectedPhotos.map{$0.id}
