@@ -19,7 +19,7 @@ class HistoryRepository {
     
     func deleteHistory(searchTerm: String) async {
         do {
-            try await APICall.shared.delete("history", queryParameters: ["searchTerm": searchTerm])
+            try await APICall.shared.delete("history", queryParameters: ["search_term": searchTerm])
         } catch {
             print("Error deleting history: \(error)")
         }

@@ -32,7 +32,7 @@ struct LoginView: View {
         
         Button(action: {
           Task {
-            await viewModel.login()
+            loginAction()
           }
         }) {
           if viewModel.isLoading {
@@ -61,9 +61,16 @@ struct LoginView: View {
       .onChange(of: viewModel.loginSuccess) { success in
         if success {
           appState.isLoggedIn = true
+          print(appState.isLoggedIn)
           presentationMode.wrappedValue.dismiss()
         }
       }
+    }
+  }
+    // MARK: - 액션들
+  private func loginAction() {
+    Task{
+      await viewModel.login()
     }
   }
 }

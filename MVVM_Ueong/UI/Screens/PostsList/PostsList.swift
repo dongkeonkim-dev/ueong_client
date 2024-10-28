@@ -66,7 +66,10 @@ struct PostsList: View {
     }
     .onChange(of: appState.isLoggedIn) { isLoggedIn in
       if isLoggedIn {
-        viewModel.fetchVillageList()
+        Task{
+          await viewModel.fetchVillageList()
+          await viewModel.fetchPosts()
+        }
       }
     }
   }

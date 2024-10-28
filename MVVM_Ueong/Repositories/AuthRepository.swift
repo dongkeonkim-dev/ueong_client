@@ -1,7 +1,7 @@
 import Foundation
 
 class AuthRepository {
-  func signup(username: String, password: String, email: String, nickname: String) async throws -> SignupResponse {
+  func signup(username: String, password: String, email: String, nickname: String) async throws -> TokenResponse {
     let endpoint = "auth/signup"
     let parameters: [(String, Any)] = [
       ("username", username),
@@ -9,17 +9,17 @@ class AuthRepository {
       ("email", email),
       ("nickname", nickname)
     ]
-    let response: SignupResponse = try await APICall.shared.post(endpoint, parameters: parameters)
+    let response: TokenResponse = try await APICall.shared.post(endpoint, parameters: parameters)
     return response
   }
   
-  func login(username: String, password: String) async throws -> LoginResponse {
+  func login(username: String, password: String) async throws -> TokenResponse {
     let endpoint = "auth/login"
     let parameters: [(String, Any)] = [
       ("username", username),
       ("password", password)
     ]
-    let response: LoginResponse = try await APICall.shared.post(endpoint, parameters: parameters)
+    let response: TokenResponse = try await APICall.shared.post(endpoint, parameters: parameters)
     return response
   }
   
