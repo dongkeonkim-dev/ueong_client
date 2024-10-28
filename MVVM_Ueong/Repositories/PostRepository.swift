@@ -54,13 +54,18 @@ class PostRepository {
   }
   
     // 비동기 함수로 포스트 작성하기
-  func uploadPost(post: NewPost, photoIds: [Int]) async throws -> Response {
-    var parameters = post.toParams()
-    parameters.append(("photo_ids", photoIds));
-    let response : Response = try await APICall.shared
-      .post("post", parameters: parameters)
-    return response
-  }
+    func uploadPost(post: NewPost, photoIds: [Int], arId: Int?) async throws -> Response {
+        var parameters = post.toParams()
+        parameters.append(("photo_ids", photoIds))
+        if let arId = arId { // arId가 nil이 아닐 경우에만 추가
+            parameters.append(("ar_id", arId))
+        }
+        let response: Response = try await APICall.shared
+            .post("post", parameters: parameters)
+        return response
+    }
+    
+
   
   func editPost(post: NewPost, photoIds: [Int]) async throws -> Response {
     var parameters = post.toParams()

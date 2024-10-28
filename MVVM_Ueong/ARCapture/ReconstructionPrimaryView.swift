@@ -163,7 +163,7 @@ struct ReconstructionProgressView: View {
                             print("Model file has been successfully created at: \(outputFile.path)")
 
                             // usdz 파일을 rootModelFolder에 복사 (커스텀 코드)
-                            let modelFileName = "새로운파일이름.usdz" // usdz 파일 이름 {게시글 제목으로 이름 저장}
+                            let modelFileName = "3D_\(UUID().uuidString).usdz" // usdz 파일 이름 {게시글 제목으로 이름 저장}
                             let destinationURL = appModel.scanFolderManager.rootModelFolder.appendingPathComponent(modelFileName)
 
                             do {
