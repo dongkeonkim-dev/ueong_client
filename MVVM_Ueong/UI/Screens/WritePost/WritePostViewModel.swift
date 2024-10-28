@@ -104,13 +104,20 @@ extension WritePost {
           //생성
           let photoIds = self.selectedPhotos.map{$0.id}
           let arId = self.selectedARFile?.id
-          let response: Response = try await postRepository
+          let response = try await postRepository
             .uploadPost(post: post, photoIds: photoIds, arId: arId)
           self.isPosting = false
-          let uploadedPost = try await postRepository.getPostById(postId: response.createId)
-          self.addPostRow(uploadedPost)
-          //self.refreshPostsList()
-          return .create(response)
+          switch response {
+            case .create(let createResponse):
+              let createId = createResponse.createId
+              let uploadedPost = try await postRepository.getPostById(postId: createId)
+              self.addPostRow(uploadedPost)
+              return response
+            default:
+                // Handle unexpected response types
+              print("Unexpected response type: \(response)")
+              return nil
+          }
         } else {
           //편집
           let photoIds = self.selectedPhotos.map{$0.id}

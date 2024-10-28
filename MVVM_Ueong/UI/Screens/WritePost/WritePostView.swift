@@ -85,7 +85,7 @@ struct WritePost: View {
     // MARK: - Header Buttons
   private var headerButtons: some View { // 수정된 부분
     HStack {
-      ArkitButton(showCaptureView: $showCaptureView) // 서브뷰 인스턴스화
+      ArkitButton(showCaptureView: $showCaptureView, wViewModel: wViewModel) // 서브뷰 인스턴스화
       PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel) // 서브뷰 인스턴스화
       PhotoIndicator(wViewModel: wViewModel) // 서브뷰 인스턴스화
     }

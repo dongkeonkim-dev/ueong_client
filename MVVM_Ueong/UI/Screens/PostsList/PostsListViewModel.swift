@@ -32,6 +32,7 @@ extension PostsList {
         self.myVillages = try await myVillageRepository.getMyVillages()
         guard myVillages.count > 0 else {
           self.selection = Emd(for: .noVillage)
+          
           return
         }
         self.selection = myVillages[0]

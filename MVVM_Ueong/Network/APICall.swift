@@ -221,7 +221,7 @@ class APICall {
   func addHeaders(to request: inout URLRequest) throws {
     guard let username = userDefaultsManager.getUsername() else {
       print("사용자 이름을 가져올 수 없습니다.")
-      throw URLError(.userAuthenticationRequired)
+      return
     }
     
     guard let token = tokenManager.getAccessToken(for: username) else {
