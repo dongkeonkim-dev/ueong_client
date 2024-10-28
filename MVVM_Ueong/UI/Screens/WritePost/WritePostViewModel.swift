@@ -23,17 +23,14 @@ extension WritePost {
     @Published var selectedPhotos: [Photo] = [] // 선택된 이미지 배열
     @Published var isLocationSelected: Bool = false // NavigationLink의 대체 역할을 할 상태 변수
     @Published var state: createOrEdit = .create
-    var addPostRow: (Post) -> Void
     @Published var selectedARFile: AR?
     var refreshPostsList: () -> Void = {}
     
     init(
       emdId: Int?,
       postId: Int?,
-      addPostRow: @escaping (Post) -> Void,
       refreshPostsList: @escaping () -> Void
     ){
-      self.addPostRow = addPostRow
       self.refreshPostsList = refreshPostsList
       fetchPage(emdId: emdId, postId: postId)
     }
@@ -47,7 +44,7 @@ extension WritePost {
           print("edit")
           //post 정보 초기화
           let existPost: Post = try await postRepository
-            .getPostById(postId: postId)
+            .getPostById(username: username, postId: postId)
           self.post = NewPost(from: existPost)
             
             
@@ -64,7 +61,7 @@ extension WritePost {
           print("create")
           //post 정보 초기화
           self.post.emdId = emdId
-          self.post.writerUsername = UserDefaultsManager.shared.getUsername() ?? ""
+          self.post.writerUsername = username
           self.post.locationDetail = ""
           self.selectedPhotos = []
           self.selectedARFile = nil // 새 포스트 시 AR 파일 초기화
@@ -82,8 +79,6 @@ extension WritePost {
         
       }
     }
-    
-    
       
     // fetchARFile (AR파일 가져오기)
     func fetchARFile(postId: Int?) async {
@@ -95,8 +90,8 @@ extension WritePost {
       }
     }
       
+      
     // uploadPost (포스트 생성)
-    @MainActor   
     func uploadPost() async -> Response? {
       guard !isPosting else { return nil }
       do { // 비동기 호출로 게시물 업로드
@@ -106,11 +101,12 @@ extension WritePost {
           let arId = self.selectedARFile?.id
           let response: Response = try await postRepository
             .uploadPost(post: post, photoIds: photoIds, arId: arId)
-          self.isPosting = false
-          let uploadedPost = try await postRepository.getPostById(postId: response.createId) //Value of type 'Response' has no member 'createId'
-          self.addPostRow(uploadedPost)
-          //self.refreshPostsList()
-          return .create(response) //Cannot convert value of type 'Response' to expected argument type 'CreateResponse'
+            
+          await MainActor.run {
+            self.isPosting = false
+            self.refreshPostsList()
+          }
+          return response // 응답 반환
         } else {
           //편집
           let photoIds = self.selectedPhotos.map{$0.id}
@@ -172,12 +168,12 @@ extension WritePost {
     }
       
     
-      func addSelectedARFile(_ url: URL) async {
-          let validFileTypes = ["usdz", "reality"]
-              guard validFileTypes.contains(url.pathExtension) else {
-                  print("잘못된 파일 타입")
-                  return
-              }
+    func addSelectedARFile(_ url: URL) async {
+        let validFileTypes = ["usdz", "reality"]
+            guard validFileTypes.contains(url.pathExtension) else {
+                print("잘못된 파일 타입")
+                return
+            }
           
         Task {@MainActor in
             selectedARFile = await uploadARFile(url)
