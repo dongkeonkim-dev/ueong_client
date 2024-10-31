@@ -56,12 +56,12 @@ struct ImagePicker: UIViewControllerRepresentable {
 struct MultiImagePicker: UIViewControllerRepresentable {
   
   var onImagesPicked: ([UIImage]) -> Void // 사진 선택 후 사용할 클로져
-  var selectedImages: [UIImage] = [] // 선택된 이미지 배열
+  var selectedImageCounts: Int
   @Binding var isPresented: Bool // Picker의 상태를 관리하는 변수
   
   var configuration: PHPickerConfiguration {
     var config = PHPickerConfiguration(photoLibrary: .shared())
-    config.selectionLimit = 10 - selectedImages.count // 최대 선택 가능 이미지 수
+    config.selectionLimit = 10 - selectedImageCounts // 최대 선택 가능 이미지 수
     config.filter = .images // 이미지 필터링
     return config
   }

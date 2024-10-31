@@ -214,15 +214,18 @@ struct ArkitButton: View {
 struct PhotoPickerButton: View {
   @Binding var showPicker: Bool
   @ObservedObject var wViewModel: WritePost.ViewModel
+  var maxCount: Int = 10
   
   var body: some View {
     Button(action: {
-      showPicker.toggle()
+      if wViewModel.selectedPhotos.count < maxCount {
+        showPicker.toggle()
+      }
     }) {
       ButtonShapePicker(
         systemImageName: "photo",
         count: wViewModel.selectedPhotos.count,
-        maxCount: 10
+        maxCount: maxCount
       )
     }
     .fullScreenCover(isPresented: $showPicker) {
@@ -232,6 +235,7 @@ struct PhotoPickerButton: View {
             await wViewModel.addSelectedImages(images)
           }
         },
+        selectedImageCounts: wViewModel.selectedPhotos.count,
         isPresented: $showPicker
       )
     }

@@ -100,15 +100,9 @@ class APICall {
         request = URLRequest(url: requestURL)
         request.httpMethod = method == 
           .post ? "POST" : "PATCH"
-        do {
-          try addHeaders(to: &request)
-        } catch {
-          print("헤더 추가 중 에러 발생: \(error)")
-          throw error
-        }
-        
         var bodyData = Data()
         
+        //파일이 있는 경우
         if !files.isEmpty {
           let boundary = "Boundary-\(UUID().uuidString)"
           request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
@@ -130,13 +124,13 @@ class APICall {
             bodyData.append("\r\n")
           }
           bodyData.append("--\(boundary)--\r\n")
-          print(bodyData)
+          
+        //파일이 없는 경우
         } else {
           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
           let jsonDict = Dictionary(uniqueKeysWithValues: parameters)
           let jsonData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
           bodyData.append(jsonData)
-          print(bodyData)
         }
         request.httpBody = bodyData
         
@@ -165,12 +159,6 @@ class APICall {
         }
         request = URLRequest(url: url)
         request.httpMethod = "GET"
-        do {
-          try addHeaders(to: &request)
-        } catch {
-          print("헤더 추가 중 에러 발생: \(error)")
-          throw error
-        }
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
       case .delete:
@@ -183,13 +171,14 @@ class APICall {
         }
         request = URLRequest(url: url)
         request.httpMethod = "DELETE"
-        do {
-          try addHeaders(to: &request)
-        } catch {
-          print("헤더 추가 중 에러 발생: \(error)")
-          throw error
-        }
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    }
+    
+    do {
+      try addHeaders(to: &request)
+    } catch {
+      print("헤더 추가 중 에러 발생: \(error)")
+      throw error
     }
     
     print("HTTP Method:", request.httpMethod ?? "nil", "URL:", request.url?.absoluteString ?? "nil")
@@ -229,12 +218,11 @@ class APICall {
       return
     }
     
-    print("addHeaders: ", token)
+    //토큰 추가
     request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.accessTokenHeader)
-    
-    if let headers = request.allHTTPHeaderFields {
-      print("**** HTTP Headers: \(headers)")
-    }
+//    if let headers = request.allHTTPHeaderFields {
+//      print("**** HTTP Headers: \(headers)")
+//    }
   }
 }
 
@@ -252,19 +240,6 @@ enum Method {
   case get
   case delete
   case patch
-}
-
-extension String {
-  func joinPath(_ pathComponent: String) -> String {
-    var result = self
-    if result.hasSuffix("/") && pathComponent.hasPrefix("/") {
-      result.removeLast()
-    } else if !result.hasSuffix("/") && !pathComponent.hasPrefix("/") {
-      result.append("/")
-    }
-    result.append(pathComponent)
-    return result
-  }
 }
 
 struct File {

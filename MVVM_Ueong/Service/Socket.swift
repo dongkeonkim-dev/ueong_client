@@ -33,7 +33,7 @@ class SocketManagerService {
             print("소켓 연결됨")
             // 소켓 연결 성공 시 메시지 전송
             self.socket.emit("acknowledge", "클라이언트가 연결되었습니다.")
-            self.socket.emit("registerUser", mockedUsername)  // 여기에 username을 전달
+          self.socket.emit("registerUser", UserDefaultsManager.shared.getUsername() ?? "")  // 여기에 username을 전달
             NotificationCenter.default.post(name: .socketConnected, object: nil)
 
         }
