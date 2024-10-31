@@ -1,8 +1,10 @@
 import Foundation
 
-final class AppState: ObservableObject, APICallDelegate {
+final class AppState: ObservableObject {
   
   @Published var isLoggedIn: Bool = false
+  @Published var showTokenExpiredAlert: Bool = false
+  @Published var tokenExpiredMessage: String = ""
   
   private let userDefaultsManager: UserDefaultsManager
   private let authRepository: AuthRepository
@@ -17,18 +19,35 @@ final class AppState: ObservableObject, APICallDelegate {
     self.authRepository = authRepository
     self.tokenManager = tokenManager
     
-    APICall.shared.delegate = self
-    
+    setupNotifications()
     autoLogin()
   }
   
-  func handleHTTPError(_ statusCode: Int, responseData: Data) {
-    DispatchQueue.main.async {
-      if statusCode == 401 {
+  private func setupNotifications() {
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(handleTokenExpired),
+      name: .tokenExpired,
+      object: nil
+    )
+  }
+  
+  @objc private func handleTokenExpired(_ notification: Notification) {
+    if let message = notification.userInfo?["message"] as? String {
+      DispatchQueue.main.async {
+        self.tokenExpiredMessage = message
+        self.showTokenExpiredAlert = true
         self.isLoggedIn = false
       }
     }
   }
+  
+//  func handleHTTPError(_ statusCode: Int, responseData: Data) {
+//    DispatchQueue.main.async {
+//      if statusCode == 401 {
+//      }
+//    }
+//  }
 
   // MARK: - initialize
   private func autoLogin() {
@@ -78,4 +97,7 @@ final class AppState: ObservableObject, APICallDelegate {
       print("handleValidationError: 토큰 검증 실패 - error: \(error.localizedDescription)")
     }
   }
+}
+extension Notification.Name {
+  static let tokenExpired = Notification.Name("tokenExpired")
 }

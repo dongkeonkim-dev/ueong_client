@@ -20,6 +20,13 @@ struct ContentView: View {
           .environmentObject(appState)
       }
     }
+    .alert("알림", isPresented: $appState.showTokenExpiredAlert) {
+      Button("확인") {
+        appState.setLoggedIn(false)
+      }
+    } message: {
+      Text(appState.tokenExpiredMessage)
+    }
   }
 }
 
