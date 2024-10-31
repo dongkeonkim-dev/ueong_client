@@ -1,6 +1,6 @@
 import Foundation
 
-final class AppState: ObservableObject {
+final class AppState: ObservableObject, APICallDelegate {
   
   @Published var isLoggedIn: Bool = false
   
@@ -17,7 +17,17 @@ final class AppState: ObservableObject {
     self.authRepository = authRepository
     self.tokenManager = tokenManager
     
+    APICall.shared.delegate = self
+    
     autoLogin()
+  }
+  
+  func handleHTTPError(_ statusCode: Int, responseData: Data) {
+    DispatchQueue.main.async {
+      if statusCode == 401 {
+        self.isLoggedIn = false
+      }
+    }
   }
 
   // MARK: - initialize

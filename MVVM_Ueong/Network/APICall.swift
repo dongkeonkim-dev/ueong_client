@@ -5,10 +5,16 @@
     //
     import Foundation
 
+protocol APICallDelegate: AnyObject {
+  func handleHTTPError(_ statusCode: Int, responseData: Data)
+}
+
 class APICall {
   static let shared = APICall()
   let userDefaultsManager = UserDefaultsManager.shared
   let tokenManager = TokenManager.shared
+  
+  weak var delegate: APICallDelegate?
   
   func get<T: Decodable>(
     _ endpoint: String,
@@ -186,11 +192,11 @@ class APICall {
       // 네트워크 요청 수행
     let (data, response) = try await URLSession.shared.data(for: request)
     
-    guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-      let responseString = String(data: data, encoding: .utf8) ?? "No response body"
-      print("**** Server Error Response: \(responseString)")
-      throw NSError(domain: "Server error", code: (response as? HTTPURLResponse)?.statusCode ?? -1, userInfo: [NSLocalizedDescriptionKey: responseString])
+    guard let httpResponse = response as? HTTPURLResponse else {
+      throw URLError(.badServerResponse)
     }
+    
+    try handleHTTPStatusCode(httpResponse.statusCode, responseData: data)
     
       // JSON 응답을 출력
     if let jsonResponse = String(data: data, encoding: .utf8) {
@@ -207,7 +213,27 @@ class APICall {
     return nil
   }
   
-  func addHeaders(to request: inout URLRequest) throws {
+    /// HTTP 상태 코드를 처리하는 함수
+    /// - Parameter statusCode: HTTP 응답 상태 코드
+    /// - Returns: 정상 응답인 경우 void
+    /// - Throws: 상태 코드에 따른 에러
+  private func handleHTTPStatusCode(_ statusCode: Int, responseData: Data) throws {
+    print("statusCode: ",statusCode)
+    switch statusCode {
+      case 200...399:
+          // 성공 응답 처리
+        return // JSON 디코딩으로 진행
+        
+      case 400...599:
+          // 서버 오류 처리
+        delegate?.handleHTTPError(statusCode, responseData: responseData)
+      default:
+        return
+    }
+  }
+  
+  
+  private func addHeaders(to request: inout URLRequest) throws {
     guard let username = userDefaultsManager.getUsername() else {
       print("사용자 이름을 가져올 수 없습니다.")
       return
@@ -220,9 +246,6 @@ class APICall {
     
     //토큰 추가
     request.setValue("Bearer \(token)", forHTTPHeaderField: Constants.accessTokenHeader)
-//    if let headers = request.allHTTPHeaderFields {
-//      print("**** HTTP Headers: \(headers)")
-//    }
   }
 }
 
