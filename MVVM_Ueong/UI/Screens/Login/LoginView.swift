@@ -5,6 +5,15 @@ struct LoginView: View {
   @StateObject private var viewModel = LoginViewModel()
   @Environment(\.presentationMode) var presentationMode
   
+    // 애니메이션 상태를 관리할 프로퍼티 추가
+  @State private var scale: CGFloat = 0.8
+  let isFromSignup: Bool
+  
+    // 이니셜라이저 추가
+  init(isFromSignup: Bool = false) {
+    self.isFromSignup = isFromSignup
+  }
+  
   var body: some View {
     NavigationView {
       VStack(spacing: 20) {
@@ -13,7 +22,24 @@ struct LoginView: View {
           .resizable()
           .aspectRatio(contentMode: .fit)
           .frame(width: 220)
-          
+          .scaleEffect(scale)
+          .onAppear {
+            if !isFromSignup {
+                // 1단계: 1.1로 확대
+              withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
+                scale = 1.4
+              }
+              
+                // 2단계: 1.0배로 스프링
+              DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                withAnimation(.spring(response: 0.2, dampingFraction: 0.3)) {
+                  scale = 1.0
+                }
+              }
+            } else {
+              scale = 1.0  // 회원가입에서 돌아올 때는 바로 1.0
+            }
+          }
         TextField("ID", text: $viewModel.username)
           .textFieldStyle(RoundedBorderTextFieldStyle())
           .frame(width: 220)

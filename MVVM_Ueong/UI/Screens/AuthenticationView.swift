@@ -7,7 +7,7 @@ struct AuthenticationView: View {
   var body: some View {
     VStack {
       if showLogin {
-        LoginView()
+        LoginView(isFromSignup: !showLogin)
           .environmentObject(appState)
       } else {
         SignupView()

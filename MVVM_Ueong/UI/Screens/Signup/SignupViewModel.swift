@@ -12,13 +12,10 @@ class SignupViewModel: ObservableObject {
   @Published var errorMessage: String?
   
   private let authRepository: AuthRepository
-  private let appState: AppState
   
     /// 이니셜라이저에서 의존성 주입을 통해 AuthRepository와 AppState를 받습니다.
-  init(authRepository: AuthRepository = AuthRepository(),
-       appState: AppState = AppState()) {
+  init(authRepository: AuthRepository = AuthRepository()) {
     self.authRepository = authRepository
-    self.appState = appState
   }
   
   func signup() async {
