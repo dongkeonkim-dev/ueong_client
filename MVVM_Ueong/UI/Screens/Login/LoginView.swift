@@ -6,7 +6,7 @@ struct LoginView: View {
   @Environment(\.presentationMode) var presentationMode
   
     // 애니메이션 상태를 관리할 프로퍼티 추가
-  @State private var scale: CGFloat = 0.8
+  @State private var scale: CGFloat = 0.0
   let isFromSignup: Bool
   
     // 이니셜라이저 추가
@@ -24,7 +24,7 @@ struct LoginView: View {
           .frame(width: 220)
           .scaleEffect(scale)
           .onAppear {
-            if !isFromSignup {
+            if true {//!isFromSignup {
                 // 1단계: 1.1로 확대
               withAnimation(.spring(response: 0.2, dampingFraction: 1.0)) {
                 scale = 1.4
