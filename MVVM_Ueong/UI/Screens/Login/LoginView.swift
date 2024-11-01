@@ -41,12 +41,14 @@ struct LoginView: View {
             }
           }
         TextField("ID", text: $viewModel.username)
-          .textFieldStyle(RoundedBorderTextFieldStyle())
+          .padding(7)
+          .overlay(RoundedRectangle(cornerRadius: 5).stroke((Color.gray.opacity(0.5)), lineWidth: 1))
           .frame(width: 220)
           .padding(.horizontal, 60)
         
         SecureField("비밀번호", text: $viewModel.password)
-          .textFieldStyle(RoundedBorderTextFieldStyle())
+          .padding(7)
+          .overlay(RoundedRectangle(cornerRadius: 5).stroke((Color.gray.opacity(0.5)), lineWidth:1))
           .frame(width: 220)
           .padding(.horizontal, 60)
         
