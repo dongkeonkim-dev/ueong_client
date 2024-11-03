@@ -93,7 +93,7 @@ struct MyAccountView: View {
             Text("로그아웃")
             Image(systemName: "rectangle.portrait.and.arrow.right")
           }
-          .font(.system(size: 14, weight: .bold))
+          .font(.system(size: 16, weight: .bold))
           .foregroundColor(.blue)
         }
       }
@@ -155,4 +155,8 @@ struct MyAccountView: View {
     }
     viewModel.deleteUser()
   }
+}
+
+#Preview(){
+  MyAccountView(viewModel:MyAccountView.ViewModel())
 }

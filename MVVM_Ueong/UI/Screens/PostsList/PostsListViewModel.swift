@@ -24,12 +24,12 @@ extension PostsList {
       Task{
         await fetchVillageList()
         await fetchPosts()
-        
       }
     }
     
     func fetchVillageList() async{
       Task{ @MainActor in
+        print("fetching villageList")
         self.myVillages = try await myVillageRepository.getMyVillages()
         print("myVillages 불러오기: \(myVillages)")
         guard myVillages.count > 0 else {
@@ -48,7 +48,7 @@ extension PostsList {
       print("fetching PostsList")
       
       Task{ @MainActor in
-        isFetching = true // 네트워크 작업 시작 표시
+        //isFetching = true // 네트워크 작업 시작 표시
       }
         // `defer`로 항상 실행될 코드를 보장
       defer {
@@ -67,9 +67,14 @@ extension PostsList {
         
         await MainActor.run {
           self.posts = fetchedPosts
+          self.isFetching = false
         }
         await fetchPhotosForPosts() // 포스트별 사진 로드
       } catch {
+        
+        await MainActor.run{
+          self.isFetching = false
+        }
         print("Error fetching posts: \(error.localizedDescription)")
       }
     }
@@ -98,6 +103,8 @@ extension PostsList {
           print("Error fetching photos: \(error.localizedDescription)")
         }
       }
+      
+      //postIds = post.map{in post post.id}
     }
       //각 post의 좋아요를 관리하는 함수
     func togglePostsListFavorite(post: Post) {

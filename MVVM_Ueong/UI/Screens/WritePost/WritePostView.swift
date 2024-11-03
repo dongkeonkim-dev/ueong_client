@@ -182,15 +182,18 @@ var body: some View {
 struct PhotoPickerButton: View {
   @Binding var showPicker: Bool
   @ObservedObject var wViewModel: WritePost.ViewModel
+  var maxCount: Int = 10
   
   var body: some View {
     Button(action: {
-      showPicker.toggle()
+      if wViewModel.selectedPhotos.count < maxCount {
+        showPicker.toggle()
+      }
     }) {
       ButtonShapePicker(
         systemImageName: "photo",
         count: wViewModel.selectedPhotos.count,
-        maxCount: 10
+        maxCount: maxCount
       )
     }
     .fullScreenCover(isPresented: $showPicker) {
@@ -200,6 +203,7 @@ struct PhotoPickerButton: View {
             await wViewModel.addSelectedImages(images)
           }
         },
+        selectedImageCounts: wViewModel.selectedPhotos.count,
         isPresented: $showPicker
       )
     }
@@ -320,8 +324,13 @@ struct TitleInputField: View {
       VStack(alignment: .leading) {
         Text("제목")
         TextField("제목을 입력하세요.", text: $title)
-          .textFieldStyle(RoundedBorderTextFieldStyle())
           .focused(focusField, equals: .title) // 특정 필드에 포커스
+          .textFieldStyle(PlainTextFieldStyle())
+          .padding(7)
+          .overlay(
+            RoundedRectangle(cornerRadius: 5)
+              .stroke((Color.gray.opacity(0.5)), lineWidth: 1.5)  // 테두리 두께 1.5로 설정
+          )
       }
       Spacer()
     }
@@ -361,8 +370,13 @@ struct PriceInputField: View {
               }
             }
           ))
-          .textFieldStyle(RoundedBorderTextFieldStyle())
           .focused(focusField, equals: .price) // 특정 필드에 포커스
+          .textFieldStyle(PlainTextFieldStyle())
+          .padding(7)
+          .overlay(
+            RoundedRectangle(cornerRadius: 5)
+              .stroke((Color.gray.opacity(0.5)), lineWidth: 1.5)  // 테두리 두께 1.5로 설정
+          )
         }
       }
       Spacer()
@@ -384,7 +398,7 @@ struct DescriptionInputField: View {
           .focused(focusField, equals: .explanation) // 특정 필드에 포커스
           .overlay(
             RoundedRectangle(cornerRadius: 5)
-              .stroke(Color.gray.opacity(0.16), lineWidth: 1)
+              .stroke(Color.gray.opacity(0.5), lineWidth: 1)
           )
       }
       Spacer()
@@ -413,7 +427,7 @@ struct LocationSelection: View {
             )
             .overlay(
               RoundedRectangle(cornerRadius: 5)
-                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                .stroke(Color.gray.opacity(0.5), lineWidth: 1)
             )
         }
       }

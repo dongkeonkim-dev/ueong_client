@@ -174,22 +174,23 @@ extension WritePost {
     func addSelectedImages(_ images: [UIImage]) async {
       let datas = images.compactMap { $0.jpegData(compressionQuality: 0.8) }
       Task {@MainActor in
-        selectedPhotos = await uploadImages(imageDatas: datas) ?? []
+        let uploadedImages = await uploadImages(imageDatas: datas) ?? []
+        selectedPhotos.append(contentsOf: uploadedImages)
       }
     }
       
     
-      func addSelectedARFile(_ url: URL) async {
-          let validFileTypes = ["usdz", "reality"]
-              guard validFileTypes.contains(url.pathExtension) else {
-                  print("잘못된 파일 타입")
-                  return
-              }
-          
-        Task {@MainActor in
-            selectedARFile = await uploadARFile(url)
-        }
+    func addSelectedARFile(_ url: URL) async {
+      let validFileTypes = ["usdz", "reality"]
+      guard validFileTypes.contains(url.pathExtension) else {
+        print("잘못된 파일 타입")
+        return
       }
+      
+      Task {@MainActor in
+        selectedARFile = await uploadARFile(url)
+      }
+    }
       
       
       

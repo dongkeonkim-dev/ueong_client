@@ -26,7 +26,7 @@ class PhotoRepository {
       File(
         data: imageData,
         fieldName: "image",
-        fileName: "image.jpg",
+        fileName: "image.jpg" + UUID().uuidString,
         mimeType: "image/jpeg"
       )
     }
