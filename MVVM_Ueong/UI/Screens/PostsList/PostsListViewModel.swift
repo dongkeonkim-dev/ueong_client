@@ -11,6 +11,7 @@ extension PostsList {
     @Published var posts: [Post] = []
     @Published var myVillages : [Emd] = []
     @Published var selection: Emd? = nil// 기본값을 사용하여 초기화
+    @Published var arOnly: Bool = true
     @Published var sortBy: String = "create_at" // 기본 정렬 기준
     @Published var searchTerm: String = ""
     @Published var isFetching = false // 네트워크 요청 중인지 여부
@@ -62,6 +63,7 @@ extension PostsList {
         let fetchedPosts = try await postRepository.searchPosts(
           village: selection?.id ?? 0,
           searchTerm: searchTerm,
+          arOnly: arOnly,
           sortBy: sortBy
         )
         

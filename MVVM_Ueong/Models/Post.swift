@@ -24,6 +24,7 @@ struct Post: Identifiable, Decodable {
   var status: String
   var favoriteCount: Int
   var isActive: Bool
+  var ar_model_id: Int?
   
   enum CodingKeys: String, CodingKey {
     case id = "post_id"
