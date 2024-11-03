@@ -13,7 +13,7 @@ struct ArView: View {
     @ObservedObject var viewModel: ArView.ViewModel
  
   var body: some View{
-      let url = baseURL.joinPath(viewModel.url)
+      let url = baseURL.joinPath(viewModel.url)+".usdz"
       Text("\(url)")
       ARQuickLookController(modelFile: URL(string: url)!)
   }
