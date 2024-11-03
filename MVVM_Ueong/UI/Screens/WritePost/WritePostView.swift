@@ -1,6 +1,5 @@
 
 
-
 import SwiftUI
 import UIKit
 import ARKit
@@ -39,6 +38,8 @@ struct WritePost: View {
   @FocusState private var focusField: FocusField?
   @State private var showPicker: Bool = false
   @State private var showCaptureView: Bool = false
+    
+// -------------------------------------------------------------------------------------------------------
   
     // MARK: - Body
   var body: some View {
@@ -82,17 +83,11 @@ struct WritePost: View {
     .padding(.vertical, 20)
   }
   
-    // MARK: - Header Buttons
-  private var headerButtons: some View { // 수정된 부분
-    HStack {
-      ArkitButton(showCaptureView: $showCaptureView, wViewModel: wViewModel) // 서브뷰 인스턴스화
-      PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel) // 서브뷰 인스턴스화
-      PhotoIndicator(wViewModel: wViewModel) // 서브뷰 인스턴스화
-    }
-    .padding(.vertical, 10)
-  }
+
   
-    // MARK: - Confirm Button
+// -------------------------------------------------------------------------------------------------------
+
+  // MARK: - Confirm Button
   private var confirmButton: some View {
     HStack {
       Button(action: {
@@ -110,8 +105,10 @@ struct WritePost: View {
       .padding(.horizontal)
     }
   }
-  
-    // MARK: - Post Upload Handling
+    
+// -------------------------------------------------------------------------------------------------------
+
+  // MARK: - Post Upload Handling
   private func handlePostUpload() async {
     print("ConfirmButton clicked")
     if let response = await wViewModel.uploadPost() {
@@ -123,89 +120,60 @@ struct WritePost: View {
     }
   }
   
-    // MARK: - Title Input
-  private var titleInput: some View {
-    TitleInputField(
-      focusField: $focusField,
-      title: $wViewModel.post.title
-    )
-  }
-  
-    // MARK: - Price Input
-  private var priceInput: some View {
-    PriceInputField(
-      focusField: $focusField,
-      price: $wViewModel.post.price
-    )
-    .padding(.top, 30)
-  }
-  
-    // MARK: - Description Input
-  private var descriptionInput: some View {
-    DescriptionInputField(
-      focusField: $focusField,
-      text: $wViewModel.post.text
-    )
-    .padding(.top, 30)
-  }
-  
-    // MARK: - Location Selection
-  private var locationSelection: some View {
-    LocationSelection(wViewModel: wViewModel)
-      .padding(.top, 30)
-  }
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 // 기존 ArkitButton에 파일 선택 버튼 추가
 // MARK: - Arkit Button
 struct ArkitButton: View {
-    @Binding var showCaptureView: Bool
-    @State private var showModelOptions = false
-    @State private var showDocumentPicker = false // State variable to trigger document picker
-    @ObservedObject var wViewModel: WritePost.ViewModel // Observing the ViewModel
+@Binding var showCaptureView: Bool
+@State private var showModelOptions = false
+@State private var showDocumentPicker = false // State variable to trigger document picker
+@ObservedObject var wViewModel: WritePost.ViewModel // Observing the ViewModel
 
-    var body: some View {
-        VStack {
-            Button(action: {
-                showModelOptions.toggle()
-            }) {
-                ButtonShapePicker(
-                    systemImageName: "arkit",
-                    count: wViewModel.selectedARFile == nil ? 0 : 1, // Update count based on selection
-                    maxCount: 1
-                )
-            }
-            .buttonStyle(PlainButtonStyle())
-            .confirmationDialog("모델 선택하기", isPresented: $showModelOptions) {
-                Button("모델 생성하기") {
-                    showCaptureView = true
-                }
-                Button("모델 선택하기") {
-                    showDocumentPicker = true // Trigger the document picker for "Select Model"
-                }
-                Button("취소", role: .cancel) {
-                    showModelOptions = false
-                }
-            } message: {
-            
-            }
-            .fullScreenCover(isPresented: $showCaptureView) {
-                MainCaptureView(onDismiss: {
-                    showCaptureView = false
-                })
-            }
-            .sheet(isPresented: $showDocumentPicker) {
-                CustomDocumentPickerView { url in
-                    // Update selected AR file
-                    Task{
-                        await wViewModel.addSelectedARFile(url) // Store the selected file URL
-                    }
-                    showDocumentPicker = false // Close the document picker
-                }
-            }
-
+var body: some View {
+    VStack {
+        Button(action: {
+            showModelOptions.toggle()
+        }) {
+            ButtonShapePicker(
+                systemImageName: "arkit",
+                count: wViewModel.selectedARFile == nil ? 0 : 1, // Update count based on selection
+                maxCount: 1
+            )
         }
+        .buttonStyle(PlainButtonStyle())
+        .confirmationDialog("모델 선택하기", isPresented: $showModelOptions) {
+            Button("모델 생성하기") {
+                showCaptureView = true
+            }
+            Button("모델 선택하기") {
+                showDocumentPicker = true // Trigger the document picker for "Select Model"
+            }
+            Button("취소", role: .cancel) {
+                showModelOptions = false
+            }
+        } message: {
+        
+        }
+        .fullScreenCover(isPresented: $showCaptureView) {
+            MainCaptureView(onDismiss: {
+                showCaptureView = false
+            })
+        }
+        .sheet(isPresented: $showDocumentPicker) {
+            CustomDocumentPickerView { url in
+                // Update selected AR file
+                Task{
+                    await wViewModel.addSelectedARFile(url) // Store the selected file URL
+                }
+                showDocumentPicker = false // Close the document picker
+            }
+        }
+
     }
+}
 }
 
 
@@ -237,6 +205,8 @@ struct PhotoPickerButton: View {
     }
   }
 }
+
+// -------------------------------------------------------------------------------------------------------
 
 //MARK: - ButtonShape
 struct ButtonShapePicker: View {
@@ -273,6 +243,9 @@ struct ButtonShapePicker: View {
       )
   }
 }
+
+// -------------------------------------------------------------------------------------------------------
+
   // MARK: - Photo Indicator
 struct PhotoIndicator: View {
   @ObservedObject var wViewModel : WritePost.ViewModel
@@ -449,45 +422,7 @@ struct LocationSelection: View {
   }
 }
 
-  // MARK: - Confirm Button
-struct ConfirmButton: View {
-  @ObservedObject var wViewModel: WritePost.ViewModel
-  var refreshPostList: () -> Void = {}
-  
-  @Environment(\.presentationMode) var presentationMode
-  
-  public var body: some View {
-    VStack {
-      Spacer()
-      HStack {
-        Button(action: {
-          Task { @MainActor in
-            print("ConfirmButton clicked")
-            if let response = await wViewModel.uploadPost() {
-              print("Post uploaded successfully: upload ID \(response)")
-              presentationMode.wrappedValue.dismiss()
-              refreshPostList()
-              
-            } else {
-              print("Upload failed: No response received or an error occurred.")
-            }
-          }
-        }) {
-          Text("작성 완료")
-            .font(.system(size: 20).weight(.bold))
-            .frame(maxWidth: .infinity)
-        }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-          RoundedRectangle(cornerRadius: 12).fill(Color.blue)
-        )
-        .padding(.horizontal)
-        .foregroundColor(Color.white)
-      }
-    }
-  }
-}
+
 //---------------------------------------------------------------------------------------------
 
 struct CustomDocumentPickerView: UIViewControllerRepresentable {
@@ -574,3 +509,92 @@ extension CustomDocumentPickerViewController: UIDocumentPickerDelegate {
 //                }
 //                .padding(.top, 5)
 //            }
+
+
+
+
+
+// MARK: - Header Buttons
+//  private var headerButtons: some View { // 수정된 부분
+//    HStack {
+//      ArkitButton(showCaptureView: $showCaptureView, wViewModel: wViewModel) // 서브뷰 인스턴스화
+//      PhotoPickerButton(showPicker: $showPicker, wViewModel: wViewModel) // 서브뷰 인스턴스화
+//      PhotoIndicator(wViewModel: wViewModel) // 서브뷰 인스턴스화
+//    }
+//    .padding(.vertical, 10)
+//  }
+
+
+// MARK: - Confirm Button
+//struct ConfirmButton: View {
+//  @ObservedObject var wViewModel: WritePost.ViewModel
+//  var refreshPostList: () -> Void = {}
+//
+//  @Environment(\.presentationMode) var presentationMode
+//
+//  public var body: some View {
+//    VStack {
+//      Spacer()
+//      HStack {
+//        Button(action: {
+//            print("12343214234")
+//          Task { @MainActor in
+//            print("ConfirmButton clicked")
+//            if let response = await wViewModel.uploadPost() {
+//              print("Post uploaded successfully: upload ID \(response)")
+//              presentationMode.wrappedValue.dismiss()
+//              refreshPostList()
+//
+//            } else {
+//              print("Upload failed: No response received or an error occurred.")
+//            }
+//          }
+//        }) {
+//          Text("작성 완료")
+//            .font(.system(size: 20).weight(.bold))
+//            .frame(maxWidth: .infinity)
+//        }
+//        .padding()
+//        .frame(maxWidth: .infinity)
+//        .background(
+//          RoundedRectangle(cornerRadius: 12).fill(Color.blue)
+//        )
+//        .padding(.horizontal)
+//        .foregroundColor(Color.white)
+//      }
+//    }
+//  }
+//}
+
+
+//// MARK: - Title Input
+//private var titleInput: some View {
+//TitleInputField(
+//  focusField: $focusField,
+//  title: $wViewModel.post.title
+//)
+//}
+//
+//// MARK: - Price Input
+//private var priceInput: some View {
+//PriceInputField(
+//  focusField: $focusField,
+//  price: $wViewModel.post.price
+//)
+//.padding(.top, 30)
+//}
+//
+//// MARK: - Description Input
+//private var descriptionInput: some View {
+//DescriptionInputField(
+//  focusField: $focusField,
+//  text: $wViewModel.post.text
+//)
+//.padding(.top, 30)
+//}
+//
+//// MARK: - Location Selection
+//private var locationSelection: some View {
+//LocationSelection(wViewModel: wViewModel)
+//  .padding(.top, 30)
+//}

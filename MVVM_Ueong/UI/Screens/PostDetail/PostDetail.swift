@@ -281,6 +281,8 @@ struct PostDetail: View {
             
             if viewModel.writer.username == UserDefaultsManager.shared.getUsername() ?? mockedUsername {
                 // 조건이 참이면 경고 메시지 설정하고 알림창 띄우기
+                alertMessage = "자신이 등록한 글과는 채팅할 수 없습니다."
+                showAlert = true
               
             }else{
               
@@ -318,6 +320,13 @@ struct PostDetail: View {
           .background(
             NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {}
           )
+          .alert(isPresented: $showAlert) {
+              Alert(
+                  title: Text("알림"),
+                  message: Text(alertMessage),
+                  dismissButton: .default(Text("확인"))
+              )
+          }
         }
         .padding(.horizontal, 30)
       }

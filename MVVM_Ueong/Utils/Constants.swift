@@ -12,20 +12,22 @@ struct Constants {
   static let accessTokenHeader = "Authorization"
   
   struct Keychain {
-    static let accessToken = "com.\(Constants.serviceName).accessToken"
-    static let refreshToken = "com.\(Constants.serviceName).refreshToken"
+//    static let accessToken = "com.\(Constants.serviceName).accessToken"
+//    static let refreshToken = "com.\(Constants.serviceName).refreshToken"
+      static let accessToken = "com.\(Constants.serviceName).accessToken"
+      static let refreshToken = "com.\(Constants.serviceName).refreshToken"
   }
 }
 
 #if DEBUG
-let baseURL = "http://localhost:3000/"
-let imageURL = "http://localhost:3000/uploads/images/"
-let Model3dURL = "http://localhost:3000/3d-model-files"
+//let baseURL = "http://localhost:3000/"
+//let imageURL = "http://localhost:3000/uploads/images/"
+//let Model3dURL = "http://localhost:3000/3d-model-files"
+//let mockedUsername = "username2"
+let baseURL = "http://ec2-13-124-48-216.ap-northeast-2.compute.amazonaws.com:3000/"
+let imageURL = "http://ec2-13-124-48-216.ap-northeast-2.compute.amazonaws.com/uploads/images/"
+let Model3dURL = "http://ec2-13-124-48-216.ap-northeast-2.compute.amazonaws.com/uploads/models"
 let mockedUsername = "username2"
-//let baseURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/"
-//let imageURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/image-files"
-//let Model3dURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/3d-model-files"
-//let username = "username1"
 #else
 let baseURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/"
 let imageURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/image-files"

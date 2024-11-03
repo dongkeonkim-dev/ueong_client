@@ -23,28 +23,28 @@ struct ChatListView: View {
                         .padding(.horizontal, 10)
                 }
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
-                
+
                 Button(action: {}) {
                     Text("판매")
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
                 }
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
-                
+
                 Button(action: {}) {
                     Text("구매")
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
                 }
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
-                
+
                 Button(action: {}) {
                     Text("안 읽은 채팅방")
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
                 }
                 .background(RoundedRectangle(cornerRadius: 12).fill(Color.gray.opacity(0.3)))
-                
+
                 Spacer()
             }
             .padding(.top, 5)
@@ -55,6 +55,10 @@ struct ChatListView: View {
                 Button(action: {
                     // 채팅 뷰모델을 비동기적으로 생성
                     Task {
+                        // chatViewModel을 항상 nil로 초기화하여 새로운 채팅 뷰모델을 생성
+                        chatViewModel = nil
+                        isChatViewActive = false
+
                         if let post = await viewModel.fetchPost(by: chat.relatedPostId) {
                             chatViewModel = ChatView.ViewModel(
                                 chatRoomId: chat.id,
@@ -119,21 +123,20 @@ struct ChatListView: View {
                     }
                     .padding(.vertical, 8)
                 }
-                .background(
-                    NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {
-                        EmptyView()
-                    }
-                    .hidden() // NavigationLink를 숨깁니다.
-                )
             }
             .listStyle(PlainListStyle())
+
+            // NavigationLink를 List 바깥에 배치
+            NavigationLink(destination: chatViewModel.map { ChatView(viewModel: $0) }, isActive: $isChatViewActive) {
+                EmptyView()
+            }
+            .hidden() // NavigationLink를 숨깁니다.
         }
         .onAppear {
             // 뷰가 나타날 때 호출되는 코드
-            viewModel.loadChat{
-                // // loadChat 함수의 실행이 끝난 후 수행할 작업
+            viewModel.loadChat {
+                // loadChat 함수의 실행이 끝난 후 수행할 작업
             }
         }
     }
 }
-

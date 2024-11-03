@@ -24,7 +24,7 @@ class ArRepository {
         // AR 파일 데이터를 File 구조체로 변환
         let arFileToUpload = File(
             data: data,
-            fieldName: "ar_file",
+            fieldName: "model",
             fileName: "model.usdz", // 파일 이름을 적절하게 설정
             mimeType: "model/usdz"   // MIME 타입을 적절하게 설정
         )
