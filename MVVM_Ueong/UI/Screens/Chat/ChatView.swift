@@ -43,6 +43,9 @@ struct ChatView: View {
         .onAppear(){
             
         }
+        .onDisappear(){
+            
+        }
     }
 }
 

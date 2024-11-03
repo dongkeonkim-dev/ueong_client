@@ -6,10 +6,12 @@ extension ChatListView {
     var roomsIds: [Int] = [] // 채팅방 ID를 저장하는 변수
     
     private var chatListObserver: NSObjectProtocol?
+      
+    private var sendMessageObserver: NSObjectProtocol? // sendMessageResponse에 대한 새로운 옵저버
+
     
     init() {
       print("ChatListViewModel 생성")
-      
       
     }
     
@@ -111,32 +113,44 @@ extension ChatListView {
       }
     }
     
-    func loadChat(completion: @escaping () -> Void) {
-      chatListUp(username: UserDefaultsManager.shared.getUsername() ?? mockedUsername)
-      print("chatListUp called")
-      
+      func loadChat(completion: @escaping () -> Void) {
+        chatListUp(username: UserDefaultsManager.shared.getUsername() ?? mockedUsername)
+        print("chatListUp 호출됨")
+        
         // 기존 옵저버 제거
-      if let observer = chatListObserver {
-        NotificationCenter.default.removeObserver(observer)
-      }
-      
+        if let observer = chatListObserver {
+          NotificationCenter.default.removeObserver(observer)
+        }
+        
         // chatListResponse 알림 수신 등록
-      chatListObserver = NotificationCenter.default.addObserver(forName: .chatListResponse, object: nil, queue: .main) { notification in
-        if let userInfo = notification.userInfo,
-           let success = userInfo["success"] as? Bool,
-           let chatsData = userInfo["chats"] as? [[String: Any]] {
-          self.updateChats(with: chatsData) // 채팅 목록 업데이트
-          print("updateChats called")
-          
-          self.joinChatRoom(roomIds: self.roomsIds)
-          print("joinChatRoom called")
-          
+        chatListObserver = NotificationCenter.default.addObserver(forName: .chatListResponse, object: nil, queue: .main) { notification in
+          if let userInfo = notification.userInfo,
+             let success = userInfo["success"] as? Bool,
+             let chatsData = userInfo["chats"] as? [[String: Any]] {
+            self.updateChats(with: chatsData) // 채팅 목록 업데이트
+            print("updateChats 호출됨")
+            
+            self.joinChatRoom(roomIds: self.roomsIds)
+            print("joinChatRoom 호출됨")
+            
             // 모든 작업이 완료된 후 completion 핸들러 호출
-          completion()
-        } else {
-          print("Failed to update chats: no valid data in userInfo")
+            completion()
+          } else {
+            print("채팅 업데이트 실패: userInfo에 유효한 데이터가 없습니다.")
+          }
+        }
+        
+        // sendMessageResponse에 대한 옵저버 추가
+        if let observer = sendMessageObserver {
+          NotificationCenter.default.removeObserver(observer)
+        }
+        
+        sendMessageObserver = NotificationCenter.default.addObserver(forName: .sendMessageResponse, object: nil, queue: .main) { notification in
+          // 메시지를 전송한 후 채팅 목록을 새로 고침
+          self.chatListUp(username: UserDefaultsManager.shared.getUsername() ?? mockedUsername)
+          print("메시지 전송 후 채팅 목록 업데이트")
         }
       }
-    }
+      
   }
 }

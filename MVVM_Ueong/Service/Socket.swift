@@ -9,6 +9,7 @@ extension Notification.Name {
     static let loadExistingMessagesResponse = Notification.Name("loadExistingMessagesResponse")
     static let sendMessageResponse = Notification.Name("sendMessageResponse")
     static let joinChatRoomResponse = Notification.Name("joinChatRoom")
+    static let allReadMessageResponse = Notification.Name("allReadMessageResponse")
 
 }
 
@@ -109,6 +110,14 @@ class SocketManagerService {
             }
         }
         
+//        socket.on("allReadMessageResponse") { data, ack in
+//                    if let message = data.first as? String, message == "success" {
+//                        // 서버로부터 "success" 메시지를 받으면 알림을 발생시킴
+//                        NotificationCenter.default.post(name: .allReadMessageResponse, object: nil)
+//                        print("allReadMessage 알림 발생")
+//                    }
+//                }
+        
         
     }
 
@@ -144,6 +153,10 @@ class SocketManagerService {
     
     func joinChatRoom(roomIds: [Int]){
         socket.emit("joinChatRoom", roomIds)
+    }
+    
+    func allReadMessage(chatRoomId: Int, username: String){
+        socket.emit("allReadMessage", chatRoomId, username)
     }
     
     

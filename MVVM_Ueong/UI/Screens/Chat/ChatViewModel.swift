@@ -130,6 +130,13 @@ extension ChatView {
         isRead: isRead,
         chatId: chatId)
     }
+      
+      
+    private func allReadMessage(chatRoomId: Int, username: String) {
+        SocketManagerService.shared.allReadMessage(chatRoomId: chatRoomId, username: username)
+    }
+      
+      
   }
 }
 
