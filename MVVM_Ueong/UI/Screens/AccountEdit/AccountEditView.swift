@@ -98,7 +98,7 @@ struct AccountEditView: View {
                     HStack {
                         Button(action: {
                             Task{
-                                viewModel.saveChanges()
+                                try await viewModel.saveChanges()
                                 mViewModel.fetchPage()
                                 presentationMode.wrappedValue.dismiss()
                             }

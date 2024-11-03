@@ -45,6 +45,8 @@ struct PostsList: View {
                   }
                 }
               )
+              .contentShape(Rectangle())  // 전체 영역을 탭 가능하게
+              .zIndex(Double(viewModel.posts.count - viewModel.posts.firstIndex(where: { $0.id == post.id })!))  // zIndex 설정
             }
           }
           .onChange(of: viewModel.posts.count) {

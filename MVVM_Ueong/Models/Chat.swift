@@ -1,27 +1,66 @@
 import Foundation
 
 struct Chat: Identifiable, Decodable {
-    let id: Int                          // 채팅 ID
-    let partnerUsername: String           // 상대방의 사용자 이름
-    let partnerNickname: String           // 상대방의 닉네임
-    let partnerProfilePhotoURL: String?   // 상대방의 프로필 사진 URL (optional)
-    let lastMessageText: String           // 마지막 메시지 텍스트
-    let rawLastSentTime: String           // 마지막 메시지 전송 시간 (ISO 8601 형식)
-    let relatedPostId: Int                // 관련된 포스트 ID
-    let unreadMessages: Int                // 읽지 않은 메시지 수
-    let lastSenderNickname: String         // 마지막 메시지를 보낸 사용자의 닉네임
-
-    // CodingKeys를 통해 JSON 키와 Swift 속성 간의 매핑
-    enum CodingKeys: String, CodingKey {
-        case id = "chat_id"
-        case partnerUsername = "partnerUsername" // 상대방의 사용자 이름 (JSON에서 이 값이 있을 경우 수정 필요)
-        case partnerNickname = "partnerNickname"
-        case partnerProfilePhotoURL = "partnerProfilePhotoURL" // 판매자 프로필 사진 URL
-        case lastMessageText = "lastMessageText"
-        case rawLastSentTime = "rawLastSentTime"
-        case relatedPostId = "relatedPostId"
-        case unreadMessages = "unreadMessages"
-        case lastSenderNickname = "lastSenderNickname" // 마지막 메시지를 보낸 사용자의 닉네임
-    }
+  let id: Int
+  let partnerUsername: String
+  let partnerNickname: String
+  let partnerProfilePhotoURL: String?
+  let lastMessageText: String
+  let lastSentTime: Date?
+  let relatedPostId: Int
+  let unreadMessages: Int
+  let lastSenderNickname: String
+  
+  enum CodingKeys: String, CodingKey {
+    case id = "chat_id"
+    case partnerUsername
+    case partnerNickname
+    case partnerProfilePhotoURL
+    case lastMessageText
+    case rawLastSentTime  // 서버에서 받는 날짜 문자열
+    case relatedPostId
+    case unreadMessages
+    case lastSenderNickname
+  }
+  
+  init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+      // 기본 필드 디코딩
+    id = try container.decode(Int.self, forKey: .id)
+    partnerUsername = try container.decode(String.self, forKey: .partnerUsername)
+    partnerNickname = try container.decode(String.self, forKey: .partnerNickname)
+    partnerProfilePhotoURL = try container.decodeIfPresent(String.self, forKey: .partnerProfilePhotoURL)
+    lastMessageText = try container.decode(String.self, forKey: .lastMessageText)
+    relatedPostId = try container.decode(Int.self, forKey: .relatedPostId)
+    unreadMessages = try container.decode(Int.self, forKey: .unreadMessages)
+    lastSenderNickname = try container.decode(String.self, forKey: .lastSenderNickname)
+    
+      // 날짜 문자열을 Date로 변환
+    let rawLastSentTime = try container.decode(String.self, forKey: .rawLastSentTime)
+    lastSentTime = DATETIMEToDate(TIMESTAMP: rawLastSentTime)
+  }
+  
+  init(
+    id: Int,
+    partnerUsername: String,
+    partnerNickname: String,
+    partnerProfilePhotoURL: String?,
+    lastMessageText: String,
+    lastSentTime: Date,
+    relatedPostId: Int,
+    unreadMessages: Int,
+    lastSenderNickname: String
+  ) {
+    self.id = id
+    self.partnerUsername = partnerUsername
+    self.partnerNickname = partnerNickname
+    self.partnerProfilePhotoURL = partnerProfilePhotoURL
+    self.lastMessageText = lastMessageText
+    self.relatedPostId = relatedPostId
+    self.unreadMessages = unreadMessages
+    self.lastSenderNickname = lastSenderNickname
+    self.lastSentTime = lastSentTime
+  }
+  
 }
-
