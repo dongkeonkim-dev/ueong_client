@@ -195,11 +195,13 @@ import MapKit
 struct PostDetail: View {
   @StateObject var viewModel: PostDetail.ViewModel
   @StateObject private var chatListViewModel = ChatListView.ViewModel()
-
   @State private var chatViewModel: ChatView.ViewModel?
   @State private var chatRoomId: Int?
   @State private var isChatViewActive = false
-  
+    
+  @State private var isArViewActive = false // AR 뷰 활성화 상태를 관리할 변수
+  @State private var arModelUrl: String = ""
+    
   @State private var showAlert = false // 알림 창을 제어하는 상태 변수
   @State private var alertMessage = "" // 알림 창에 표시할 메시지
   
@@ -261,22 +263,41 @@ struct PostDetail: View {
             .foregroundStyle(Color.black)
             .font(.system(size: 19, weight: .bold))
           Spacer() // 왼쪽 요소와 오른쪽 요소 사이에 공간 추가
-          
-            // AR모델 확인하기 (현재 모델이 없는 상태)
-          Button(action: {
-              
-              
-              // AR 버튼 클릭 시 실행할 코드
-            print("AR")
-          }) {
-            Text("AR")
-                  .padding(10)
-                  .background(Color.blue)
-                  .foregroundColor(.white)
-                  .cornerRadius(5)
             
+// --------------------------------------------------------------------------------------------
+            Button(action: {
+                // 비동기 작업을 시작
+                Task {
+                    if viewModel.post.ar_model_id == nil {
+                        alertMessage = "등록된 AR 모델이 없습니다."
+                        showAlert = true
+                    } else {
+                        if let a = await viewModel.getARFileByPostId(){
+                            arModelUrl = a.url
+                            print(arModelUrl)
+                            isArViewActive = true
+                        }
+                        
+
+                    }
+                    print("AR")
+                }
+            }) {
+                Text("AR")
+                    .padding(10)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(5)
+            }
+            .background(
+                NavigationLink(destination: ArView(viewModel: ArView.ViewModel(url: arModelUrl)), isActive: $isArViewActive) {
+                    EmptyView() // NavigationLink에 사용할 빈 뷰
+                }
+            )
+
+
             
-          }
+// --------------------------------------------------------------------------------------
           
           Button(action: {
             

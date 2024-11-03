@@ -21,6 +21,7 @@ extension PostDetail {
     let userRepository = UserRepository()
     let addressRepository = AddressRepository()
     let favoriteRepository = FavoriteRepository()
+    let arRepository = ArRepository()
     
     init(postId: Int) {
       self.postId = postId
@@ -48,6 +49,15 @@ extension PostDetail {
         post.favoriteCount += post.isFavorite ? 1 : -1
         print(post)
       }
+    }
+      
+    func getARFileByPostId() async -> AR? {
+        do {
+            return try await arRepository.getARFileByPostId(postId: postId)
+        } catch {
+            print("Failed to get AR file by postId: \(error)")
+            return nil // 에러 발생 시 nil 반환 (필요에 따라 다르게 처리 가능)
+        }
     }
       
 
