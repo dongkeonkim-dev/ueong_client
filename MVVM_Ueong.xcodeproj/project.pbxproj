@@ -267,6 +267,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0D89F2CB2CCDB3EB004C5AF1 /* Signup */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Signup; sourceTree = "<group>"; };
 		0D89F2CD2CCDB3FE004C5AF1 /* Login */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Login; sourceTree = "<group>"; };
+		1F9BFE1D2CD733EE008F7250 /* AugmentedReality */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = AugmentedReality; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -583,6 +584,7 @@
 		1FC52FAA2CA2CFE4001A933B /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				1F9BFE1D2CD733EE008F7250 /* AugmentedReality */,
 				0D89F2F12CCDFB98004C5AF1 /* AuthenticationView.swift */,
 				0D89F2CD2CCDB3FE004C5AF1 /* Login */,
 				0D89F2CB2CCDB3EB004C5AF1 /* Signup */,
@@ -666,6 +668,7 @@
 			fileSystemSynchronizedGroups = (
 				0D89F2CB2CCDB3EB004C5AF1 /* Signup */,
 				0D89F2CD2CCDB3FE004C5AF1 /* Login */,
+				1F9BFE1D2CD733EE008F7250 /* AugmentedReality */,
 			);
 			name = MVVM_Ueong;
 			packageProductDependencies = (

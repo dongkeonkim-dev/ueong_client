@@ -58,7 +58,7 @@ class PostRepository {
         var parameters = post.toParams()
         parameters.append(("photo_ids", photoIds))
         if let arId = arId { // arId가 nil이 아닐 경우에만 추가
-            parameters.append(("ar_id", arId))
+            parameters.append(("ar_model_id", arId))
         }
         let response: Response = try await APICall.shared
             .post("post", parameters: parameters)

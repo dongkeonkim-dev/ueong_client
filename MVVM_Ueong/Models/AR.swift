@@ -15,9 +15,9 @@ struct AR: Identifiable, Decodable {
   var uploadAt: Date?
   
   enum CodingKeys: String, CodingKey {
-    case id = "AR_id"
+    case id = "ar_model_id"
     case postId = "post_id"
-    case url = "AR_path"
+    case url = "ar_model_directory"
     case rawUploadAt = "upload_at" // JSON의 필드 이름
   }
   

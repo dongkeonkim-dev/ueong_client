@@ -49,6 +49,8 @@ extension PostDetail {
         print(post)
       }
     }
+      
+
   }
 }
 

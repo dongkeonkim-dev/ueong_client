@@ -30,10 +30,10 @@ class ArRepository {
         )
         
         // API 호출을 통해 AR 파일 업로드
-        let response: CreatedARResponse = try await APICall.shared.post("ar", files: [arFileToUpload])
+        let response: AR = try await APICall.shared.post("ar", files: [arFileToUpload])
         
         // 업로드된 AR 파일 반환
-        return response.createdAR
+        return response
     }
     
     func deleteARFile(arId: Int) async throws {

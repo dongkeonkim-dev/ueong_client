@@ -195,6 +195,7 @@ import MapKit
 struct PostDetail: View {
   @StateObject var viewModel: PostDetail.ViewModel
   @StateObject private var chatListViewModel = ChatListView.ViewModel()
+
   @State private var chatViewModel: ChatView.ViewModel?
   @State private var chatRoomId: Int?
   @State private var isChatViewActive = false
@@ -263,19 +264,19 @@ struct PostDetail: View {
           
             // AR모델 확인하기 (현재 모델이 없는 상태)
           Button(action: {
+              
+              
               // AR 버튼 클릭 시 실행할 코드
             print("AR")
           }) {
             Text("AR")
-              .frame(width: 40) // Set explicit width and height
-              .padding(10) // 버튼의 패딩
-              .foregroundColor(.white) // 버튼의 텍스트 색상
-              .cornerRadius(5) // 버튼의 모서리 둥글기
-              .background(false ? Color.blue : Color.gray)
+                  .padding(10)
+                  .background(Color.blue)
+                  .foregroundColor(.white)
+                  .cornerRadius(5)
             
             
           }
-          .disabled(false) // 3D모델이 있으면 버튼 활성화 (현재 없는 상태)
           
           Button(action: {
             
