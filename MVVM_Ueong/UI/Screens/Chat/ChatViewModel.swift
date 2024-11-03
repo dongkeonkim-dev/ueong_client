@@ -9,6 +9,7 @@ extension ChatView {
     let partnerNickname: String
     var relatedPost: Post
     var chatRoomId: Int?
+    let postRepository = PostRepository()
     
     private var sendMessageObserver: NSObjectProtocol?
     private var loadExistingMessagesObserver: NSObjectProtocol?
@@ -137,7 +138,30 @@ extension ChatView {
     }
       
       
+    
+    
+    func togglePostStatus(post: Post) {
+      Task { @MainActor in
+        do {
+          let newStatus = post.status == "거래대기" ? "거래완료" : "거래대기"
+          
+            // API 호출
+          let response = try await postRepository.changePostStatus(
+            postId: post.id,
+            status: newStatus
+          )
+          
+            // View 새로고침 트리거
+          objectWillChange.send()
+          relatedPost.status = newStatus
+          
+        } catch {
+          print("상태 변경 실패: \(error)")
+        }
+      }
+    }
   }
 }
+
 
 
