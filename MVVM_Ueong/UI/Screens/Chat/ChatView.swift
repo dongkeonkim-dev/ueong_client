@@ -47,10 +47,10 @@ struct ChatView: View {
         .navigationTitle("\(viewModel.partnerNickname)")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear(){
-            
+            viewModel.allReadMessage(chatRoomId: viewModel.chatRoomId!, username: UserDefaultsManager.shared.getUsername() ?? mockedUsername)
         }
         .onDisappear(){
-            
+            viewModel.allReadMessage(chatRoomId: viewModel.chatRoomId!, username: UserDefaultsManager.shared.getUsername() ?? mockedUsername)
         }
     }
 }
