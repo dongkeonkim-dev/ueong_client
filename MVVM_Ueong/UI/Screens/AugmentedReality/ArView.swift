@@ -9,29 +9,58 @@ import os
 
 
 struct ArView: View {
+  @ObservedObject var viewModel: ArView.ViewModel
+  @State private var modelData: Data? = nil
+  @State private var localURL: URL? = nil
+  
+  var body: some View {
+    VStack {
+      if let localURL = localURL {
+        ARQuickLookController(modelFile: localURL)
+      } else {
+        ProgressView("모델 로딩 중...")
+          .onAppear {
+            loadModel()
+          }
+      }
+    }
+  }
+  
+  private func loadModel() {
+    let remoteURL = baseURL.joinPath(viewModel.url)
     
-    @ObservedObject var viewModel: ArView.ViewModel
- 
-  var body: some View{
-      let url = baseURL.joinPath(viewModel.url)+".usdz"
-      Text("\(url)")
-      ARQuickLookController(modelFile: URL(string: url)!)
+    // 임시 파일 URL 생성
+    guard let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+    let localURL = documentsPath.appendingPathComponent("model.usdz")
+    
+    // 비동기로 모델 다운로드
+    URLSession.shared.dataTask(with: URL(string: remoteURL)!) { data, response, error in
+      guard let data = data else { return }
+      
+      do {
+        // 임시 파일에 저장
+        try data.write(to: localURL)
+        
+        // UI 업데이트는 메인 스레드에서
+        DispatchQueue.main.async {
+          self.localURL = localURL
+        }
+      } catch {
+        print("모델 저장 실패: \(error)")
+      }
+    }.resume()
   }
 }
 
 private struct ARQuickLookController: UIViewControllerRepresentable {
-
-    
-    let modelFile: URL
-
-    
-    func makeUIViewController(context: Context) -> QLPreviewControllerWrapper {
-        let controller = QLPreviewControllerWrapper()
-        controller.qlvc.dataSource = context.coordinator
-        controller.qlvc.delegate = context.coordinator
-        return controller
-    }
-
+  let modelFile: URL
+  
+  func makeUIViewController(context: Context) -> QLPreviewControllerWrapper {
+    let controller = QLPreviewControllerWrapper()
+    controller.qlvc.dataSource = context.coordinator
+    controller.qlvc.delegate = context.coordinator
+    return controller
+  }
     func makeCoordinator() -> ARQuickLookController.Coordinator {
         return Coordinator(parent: self)
     }
