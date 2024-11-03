@@ -22,7 +22,7 @@ class UserRepository {
     }
     
      // 사용자 정보 수정 (파일 업로드 포함)
-    func editUser(userData: EditedUser, profileImage: Data?) async throws {
+    func editUser(userData: EditedUser, profileImage: Data?) async throws -> UpdateResponse{
         do {
             let parameters = userData.toParams()
             
@@ -34,11 +34,27 @@ class UserRepository {
             }
             
             // API 호출
-            try await APICall.shared.patch("user", parameters: parameters, files: imagesToUpload)
-//            print("User information updated successfully.")
+          let response: Response = try await APICall.shared.patch(
+            "user",
+            parameters: parameters,
+            files: imagesToUpload
+          )
+          
+            // Response enum에서 UpdateResponse 추출
+          switch response {
+            case .update(let updateResponse):
+              return updateResponse
+            default:
+              throw NSError(
+                domain: "UserRepository",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "Unexpected response type"]
+              )
+          }
+          
         } catch {
-            print("Error updating user information: \(error)")
-            throw error
+          print("Error updating user information: \(error)")
+          throw error
         }
     }
   

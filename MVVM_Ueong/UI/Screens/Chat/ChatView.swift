@@ -114,40 +114,40 @@ struct MessageListView: View {
 
 // MARK: - 채팅 버블 ---------------------------------------------------------------------------------------------------------
 struct ChatBubbleView: View {
-    @ObservedObject var viewModel: ChatView.ViewModel
-    let message: Message
-
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                
-                Text(message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? "" : message.senderUsername)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                Text(message.messageText)
-                    .padding()
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-                    .frame(maxWidth: .infinity, alignment: message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? .trailing : .leading)
-//                if let sentTime = message.sentTime {
-//                    Text(sentTime, style: .time)
-                Text(message.sentTime)
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity, alignment: message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? .trailing : .leading)
-//                } else {
-//                    // sentTime이 nil일 때 처리할 내용을 여기 작성
-//                    Text("Unknown Time")
-//                        .font(.caption2)
-//                        .foregroundColor(.gray)
-//                        .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
-//                }
-            }
-            Spacer()
-        }
-        .padding(.vertical, 2)
-        .id(message.id) // ID로 메시지를 추적
+  @ObservedObject var viewModel: ChatView.ViewModel
+  let message: Message
+  
+  var body: some View {
+    HStack {
+      VStack(alignment: .leading) {
+        
+        Text(message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? "" : message.senderUsername)
+          .font(.caption)
+          .foregroundColor(.gray)
+        Text(message.messageText)
+          .padding()
+          .background(Color.gray.opacity(0.2))
+          .cornerRadius(10)
+          .frame(maxWidth: .infinity, alignment: message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? .trailing : .leading)
+          //                if let sentTime = message.sentTime {
+          //                    Text(sentTime, style: .time)
+        Text(chatTime(message.sentTime))
+          .font(.caption2)
+          .foregroundColor(.gray)
+          .frame(maxWidth: .infinity, alignment: message.senderUsername == UserDefaultsManager.shared.getUsername() ?? mockedUsername ? .trailing : .leading)
+          //                } else {
+          //                    // sentTime이 nil일 때 처리할 내용을 여기 작성
+          //                    Text("Unknown Time")
+          //                        .font(.caption2)
+          //                        .foregroundColor(.gray)
+          //                        .frame(maxWidth: .infinity, alignment: message.senderUsername == viewModel.username ? .trailing : .leading)
+          //                }
+      }
+      Spacer()
     }
+    .padding(.vertical, 2)
+    .id(message.id) // ID로 메시지를 추적
+  }
 }
 //-------------------------------------------------------------------------------------------------------------------------
 

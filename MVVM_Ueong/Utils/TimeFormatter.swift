@@ -42,3 +42,71 @@ func timeAgo(_ date: Date?) -> String {
         return "방금 전" // 1분 이내의 경우
     }
 }
+
+func chatListTime(_ date: Date?) -> String {
+  guard let date = date else {
+    return "알 수 없음"
+  }
+  
+  let calendar = Calendar.current
+  let now = Date()
+  let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date, to: now)
+  
+    // 날짜 포맷터 설정
+  let dateFormatter = DateFormatter()
+  dateFormatter.locale = Locale(identifier: "ko_KR")
+  
+    // 올해인지 확인
+  if calendar.component(.year, from: date) != calendar.component(.year, from: now) {
+      // 올해가 아니면 YYYY.MM.dd
+    dateFormatter.dateFormat = "yyyy.MM.dd"
+    return dateFormatter.string(from: date)
+  }
+  
+    // 오늘인지 확인
+  if calendar.isDateInToday(date) {
+      // 오늘이면 HH:mm
+    dateFormatter.dateFormat = "HH:mm"
+    return dateFormatter.string(from: date)
+  }
+  
+    // 어제인지 확인
+  if calendar.isDateInYesterday(date) {
+    return "어제"
+  }
+  
+    // 올해면서 어제/오늘이 아니면 MM월 dd일
+  dateFormatter.dateFormat = "M월 d일"
+  return dateFormatter.string(from: date)
+}
+
+func chatTime(_ date: Date?) -> String {
+  guard let date = date else {
+    return "알 수 없음"
+  }
+  
+  let calendar = Calendar.current
+  let now = Date()
+  
+    // 날짜 포맷터 설정
+  let timeFormatter = DateFormatter()
+  timeFormatter.locale = Locale(identifier: "ko_KR")
+  
+    // 같은 해인지 확인
+  if !calendar.isDate(date, equalTo: now, toGranularity: .year) {
+      // 다른 해면 "YYYY.MM.dd HH:mm"
+    timeFormatter.dateFormat = "yyyy.MM.dd HH:mm"
+    return timeFormatter.string(from: date)
+  }
+  
+    // 같은 날인지 확인
+  if calendar.isDateInToday(date) {
+      // 오늘이면 "HH:mm"
+    timeFormatter.dateFormat = "HH:mm"
+    return timeFormatter.string(from: date)
+  }
+  
+    // 같은 해의 다른 날이면 "MM.dd HH:mm"
+  timeFormatter.dateFormat = "MM.dd HH:mm"
+  return timeFormatter.string(from: date)
+}

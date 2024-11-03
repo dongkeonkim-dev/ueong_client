@@ -29,8 +29,8 @@ let imageURL = "http://43.202.83.112/uploads/images/"
 let Model3dURL = "http://43.202.83.112/uploads/models"
 let mockedUsername = "username2"
 #else
-let baseURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/"
-let imageURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/image-files"
-let Model3dURL = "http://ec2-43-200-8-246.ap-northeast-2.compute.amazonaws.com:3000/3d-model-files"
+let baseURL = "http://43.202.83.112:3000/"
+let imageURL = "http://43.202.83.112/uploads/images/"
+let Model3dURL = "http://43.202.83.112/uploads/models"
 #endif
 
