@@ -12,6 +12,7 @@ struct PostRow: View {
   var togglePostsListFavorite: (Post) -> Void = { _ in }
   var inactivatePost: (Post) -> Void = { _ in }
   var refreshPostsList: () -> Void = {}
+  let togglePostStatus: (Post) -> Void  // 매개변수 타입
   
   @State private var showOptions = false
   @State private var showDeleteConfirmation = false
@@ -53,6 +54,18 @@ struct PostRow: View {
             }) {
               Text("글 수정")
               Image(systemName: "pencil")
+            }
+            
+            Button(action: {
+              Task {
+                togglePostStatus(post)  // post 매개변수 전달
+              }
+            }) {
+              HStack {
+                Text(post.status == "거래대기" ? "거래완료" : "거래대기")
+                Image(systemName: post.status == "거래대기" ? "checkmark.circle" : "clock")
+              }
+              .foregroundColor(post.status == "거래대기" ? .blue : .gray)
             }
             
             Button(role: .destructive) {

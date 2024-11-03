@@ -14,7 +14,13 @@ struct ChatView: View {
             NavigationLink(
                 destination: PostDetail(postId: viewModel.relatedPost.id, togglePostsListFavorite: {_ in})
             ) {
-                PostRow(post: $viewModel.relatedPost, togglePostsListFavorite: {_ in})
+              PostRow(
+                post: $viewModel.relatedPost,
+                togglePostsListFavorite: {_ in},
+                togglePostStatus: { post in  // $ 제거하고 일반 매개변수로
+                  viewModel.togglePostStatus(post: post)  // wrappedValue 사용
+                }
+              )
             }
             
 //-------------------------------------------------------------------------------------------------------------------------

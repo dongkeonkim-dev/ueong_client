@@ -129,6 +129,28 @@ extension PostsList {
       }
     }
     
+    func togglePostStatus(post: Post) {
+      Task { @MainActor in
+        do {
+            // posts 배열에서 해당 포스트 찾기
+          if let index = posts.firstIndex(where: { $0.id == post.id }) {
+            let newStatus = post.status == "거래대기" ? "거래완료" : "거래대기"
+            
+              // API 호출
+            let response = try await postRepository.changePostStatus(
+              postId: post.id,
+              status: newStatus
+            )
+            
+              // 성공 시 로컬 상태 업데이트
+            posts[index].status = newStatus
+          }
+        } catch {
+          print("상태 변경 실패: \(error)")
+        }
+      }
+    }
+    
     func inactivatePost(post: Post) {
       Task { @MainActor in
         _ = try await postRepository.inactivatePost(postId: post.id)

@@ -43,6 +43,9 @@ struct PostsList: View {
                   Task{
                     await viewModel.fetchPosts()
                   }
+                },
+                togglePostStatus: { post in 
+                  viewModel.togglePostStatus(post: post)
                 }
               )
               .contentShape(Rectangle())  // 전체 영역을 탭 가능하게
