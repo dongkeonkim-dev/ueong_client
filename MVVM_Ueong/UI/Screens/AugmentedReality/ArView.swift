@@ -1,5 +1,3 @@
-
-
 import ARKit
 import QuickLook
 import SwiftUI
@@ -12,10 +10,13 @@ struct ArView: View {
   @ObservedObject var viewModel: ArView.ViewModel
   @State private var modelData: Data? = nil
   @State private var localURL: URL? = nil
+  @State private var error: Error? = nil
   
   var body: some View {
     VStack {
-      if let localURL = localURL {
+      if let error = error {
+        Text("모델을 불러오는데 실패했습니다: \(error.localizedDescription)")
+      } else if let localURL = localURL {
         ARQuickLookController(modelFile: localURL)
       } else {
         ProgressView("모델 로딩 중...")
@@ -27,26 +28,34 @@ struct ArView: View {
   }
   
   private func loadModel() {
-    let remoteURL = baseURL.joinPath(viewModel.url)
+    let remoteURL = baseURL.joinPath(viewModel.url)+".usdz"
+    print("Loading model from: \(remoteURL)") // 디버깅용
     
-    // 임시 파일 URL 생성
-    guard let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
-    let localURL = documentsPath.appendingPathComponent("model.usdz")
+    guard let url = URL(string: remoteURL) else {
+      self.error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+      return
+    }
     
-    // 비동기로 모델 다운로드
-    URLSession.shared.dataTask(with: URL(string: remoteURL)!) { data, response, error in
-      guard let data = data else { return }
-      
-      do {
-        // 임시 파일에 저장
-        try data.write(to: localURL)
-        
-        // UI 업데이트는 메인 스레드에서
-        DispatchQueue.main.async {
-          self.localURL = localURL
+    URLSession.shared.dataTask(with: url) { data, response, error in
+      DispatchQueue.main.async {
+        if let error = error {
+          self.error = error
+          return
         }
-      } catch {
-        print("모델 저장 실패: \(error)")
+        
+        guard let data = data else {
+          self.error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])
+          return
+        }
+        
+        do {
+          let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+          let localURL = documentsPath.appendingPathComponent("model.usdz")
+          try data.write(to: localURL)
+          self.localURL = localURL
+        } catch {
+          self.error = error
+        }
       }
     }.resume()
   }

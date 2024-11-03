@@ -25,6 +25,7 @@ struct Post: Identifiable, Decodable {
   var favoriteCount: Int
   var isActive: Bool
   var ar_model_id: Int?
+  var ar_model_directory: String?
   
   enum CodingKeys: String, CodingKey {
     case id = "post_id"
@@ -44,6 +45,7 @@ struct Post: Identifiable, Decodable {
     case favoriteCount = "favorite_count"
     case isActive = "is_active"
     case ar_model_id = "ar_model_id"
+    case ar_model_directory = "ar_model_directory"
   }
   
     //디코더에서 쓰는 생성자
@@ -74,6 +76,7 @@ struct Post: Identifiable, Decodable {
     isActive = isActiveInt != 0
       
     ar_model_id = try container.decode(Int?.self, forKey: .ar_model_id)
+    ar_model_directory = try container.decode(String?.self, forKey: .ar_model_directory)
   }
   
     // 목업데이터를 위한 생성자

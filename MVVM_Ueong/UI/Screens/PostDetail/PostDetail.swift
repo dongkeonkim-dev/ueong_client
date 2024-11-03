@@ -272,13 +272,7 @@ struct PostDetail: View {
                         alertMessage = "등록된 AR 모델이 없습니다."
                         showAlert = true
                     } else {
-                        if let a = await viewModel.getARFileByPostId(){
-                            arModelUrl = a.url
-                            print(arModelUrl)
-                            isArViewActive = true
-                        }
-                        
-
+                        isArViewActive = true
                     }
                     print("AR")
                 }
@@ -290,9 +284,16 @@ struct PostDetail: View {
                     .cornerRadius(5)
             }
             .background(
-                NavigationLink(destination: ArView(viewModel: ArView.ViewModel(url: arModelUrl)), isActive: $isArViewActive) {
-                    EmptyView() // NavigationLink에 사용할 빈 뷰
-                }
+              NavigationLink(
+                destination: Group {
+                  if let directory = viewModel.post.ar_model_directory {
+                    ArView(viewModel: ArView.ViewModel(url: directory))
+                  }
+                },
+                isActive: $isArViewActive
+              ) {
+                EmptyView()
+              }
             )
 
 
