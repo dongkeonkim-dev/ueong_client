@@ -1,9 +1,15 @@
-//
-//
-//import Foundation
-//
-//extension ArView {
-//    class ViewModel: ObservableObject {
-//        @Published var postId: Int = 0
-//    }
-//}
+
+
+import Foundation
+
+extension ArView {
+    class ViewModel: ObservableObject {
+        @Published var url: String
+        
+        init(url: String) {
+            self.url = url
+        }
+        
+        
+    }
+}

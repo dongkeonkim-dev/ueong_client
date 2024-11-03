@@ -43,6 +43,7 @@ struct Post: Identifiable, Decodable {
     case status
     case favoriteCount = "favorite_count"
     case isActive = "is_active"
+    case ar_model_id = "ar_model_id"
   }
   
     //디코더에서 쓰는 생성자
@@ -71,6 +72,8 @@ struct Post: Identifiable, Decodable {
     
     let isActiveInt = try container.decode(Int.self, forKey: .isActive)
     isActive = isActiveInt != 0
+      
+    ar_model_id = try container.decode(Int?.self, forKey: .ar_model_id)
   }
   
     // 목업데이터를 위한 생성자
