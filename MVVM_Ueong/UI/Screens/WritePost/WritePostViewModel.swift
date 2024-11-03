@@ -189,6 +189,7 @@ extension WritePost {
       
       Task {@MainActor in
         selectedARFile = await uploadARFile(url)
+        print(selectedARFile?.id)
       }
     }
       

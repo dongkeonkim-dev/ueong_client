@@ -14,7 +14,11 @@ struct SelectPostOption: View {
   var body: some View {
     HStack(){
       Button(action:{
-        isARSelected.toggle()
+        Task{
+          isARSelected.toggle()
+          viewModel.arOnly = isARSelected
+          await viewModel.fetchPosts()
+        }
       }){
         Text("AR")
           .padding(.vertical, 5)

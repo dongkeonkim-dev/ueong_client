@@ -22,9 +22,9 @@ class PostRepository {
   }
   
     // 비동기 함수로 검색된 포스트 가져오기
-  func searchPosts(village: Int, searchTerm: String, sortBy: String) async throws -> [Post] {
+  func searchPosts(village: Int, searchTerm: String, arOnly: Bool, sortBy: String) async throws -> [Post] {
     do {
-      let posts: [Post] = try await APICall.shared.get("post/search", queryParameters: ["emd_id":village, "search_term": searchTerm, "sort_by": sortBy])
+      let posts: [Post] = try await APICall.shared.get("post/search", queryParameters: ["emd_id":village, "search_term": searchTerm, "ar_only": arOnly, "sort_by": sortBy])
       return posts
     } catch {
       throw error
@@ -58,7 +58,7 @@ class PostRepository {
         var parameters = post.toParams()
         parameters.append(("photo_ids", photoIds))
         if let arId = arId { // arId가 nil이 아닐 경우에만 추가
-            parameters.append(("ar_id", arId))
+            parameters.append(("ar_model_id", arId))
         }
         let response: Response = try await APICall.shared
             .post("post", parameters: parameters)

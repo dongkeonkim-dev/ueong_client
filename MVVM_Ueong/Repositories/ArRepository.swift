@@ -11,7 +11,7 @@ class ArRepository {
     
     func getARFileByPostId(postId: Int) async throws -> AR {
         do {
-          let ARFile: AR = try await APICall.shared.get("ar", parameters: [("postId",postId)])
+          let ARFile: AR = try await APICall.shared.get("ar", parameters: [("post_id",postId)])
           return ARFile
         } catch {
           print("Error fetching photos for post ID \(postId): \(error)")
