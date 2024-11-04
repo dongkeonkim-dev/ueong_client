@@ -463,25 +463,41 @@ class CustomDocumentPickerViewController: UIViewController {
 
         // 배경 색상
         view.backgroundColor = .white
-        
-        // UIDocumentPickerViewController 설정
-        let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.usdz], asCopy: true)
-        documentPicker.delegate = self
-        documentPicker.modalPresentationStyle = .fullScreen // 전체 화면 모드 설정
 
-        // 화면의 절반 크기로 문서 선택기 표시
-        addChild(documentPicker)
-        view.addSubview(documentPicker.view)
+        // 앱 내 Documents/Models 폴더 경로 설정
+        let fileManager = FileManager.default
+        if let documentsURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let modelsFolderURL = documentsURL.appendingPathComponent("Models")
+            
+            // Models 폴더가 없으면 생성
+            if !fileManager.fileExists(atPath: modelsFolderURL.path) {
+                do {
+                    try fileManager.createDirectory(at: modelsFolderURL, withIntermediateDirectories: true, attributes: nil)
+                } catch {
+                    print("Failed to create Models folder: \(error)")
+                }
+            }
 
-        // Autolayout으로 문서 선택기의 크기 및 위치 설정
-        documentPicker.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            documentPicker.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            documentPicker.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            documentPicker.view.topAnchor.constraint(equalTo: view.topAnchor),
-            documentPicker.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1) // 화면의 절반 차지
-        ])
-        documentPicker.didMove(toParent: self)
+            // UIDocumentPickerViewController 설정
+            let documentPicker = UIDocumentPickerViewController(forOpeningContentTypes: [.usdz], asCopy: true)
+            documentPicker.delegate = self
+            documentPicker.modalPresentationStyle = .fullScreen
+            documentPicker.directoryURL = modelsFolderURL // 기본 디렉토리를 Models 폴더로 설정
+
+            // 화면에 문서 선택기 추가
+            addChild(documentPicker)
+            view.addSubview(documentPicker.view)
+
+            // Autolayout으로 문서 선택기의 크기 및 위치 설정
+            documentPicker.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                documentPicker.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                documentPicker.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                documentPicker.view.topAnchor.constraint(equalTo: view.topAnchor),
+                documentPicker.view.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1)
+            ])
+            documentPicker.didMove(toParent: self)
+        }
     }
 }
 

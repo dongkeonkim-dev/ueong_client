@@ -46,6 +46,7 @@ extension ChatListView {
           relatedPostId: relatedPostId,
           unreadMessages: unreadMessages,
           lastSenderNickname: lastSenderNickname
+          
         )
       }
       
